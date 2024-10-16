@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tdc.vlxdonline.R;
 
-public class MainActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity {
 
     RecyclerView rc;
 //    static ImageView image;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setEvents() {
         KhoiTao();
-        HomeCustomerActivity homeCustomerActivity = new HomeCustomerActivity();
+        Customer_HomeActivity homeCustomerActivity = new Customer_HomeActivity();
         homeCustomerActivity.loai = 1;
     }
 
