@@ -30,13 +30,20 @@ public class Owner_HomeActivity extends AppCompatActivity {
     // Bắt sự kiện nhấn Navbar Bottom
     private void EventNavigationBottom() {
         ownerHomeBinding.navOwner.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.nav_home_nhanvien) {
-                ReplaceFragment(new Owner_StaffFragment());
-            } else if (item.getItemId() == R.id.nav_home_dashboard) {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.nav_owner_dashboard) {
                 ReplaceFragment(new Fragment());
-            } else if (item.getItemId() == R.id.nav_home_donhang) {
-                
+            } else if (itemId == R.id.nav_owner_nhanvien) {
+                ReplaceFragment(new Owner_StaffFragment());
+            } else if (itemId == R.id.nav_owner_khachhang) {
+                ReplaceFragment(new Fragment());
+            } else if (itemId == R.id.nav_owner_donhang) {
+                ReplaceFragment(new Fragment());
+            } else if (itemId == R.id.nav_owner_kho) {
+                ReplaceFragment(new Fragment());
             }
+
             return true;
         });
     }
