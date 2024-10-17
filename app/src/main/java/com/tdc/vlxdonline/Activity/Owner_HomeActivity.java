@@ -35,7 +35,7 @@ public class Owner_HomeActivity extends AppCompatActivity {
             if (itemId == R.id.nav_owner_dashboard) {
                 ReplaceFragment(new Fragment());
             } else if (itemId == R.id.nav_owner_nhanvien) {
-                ReplaceFragment(new Owner_StaffFragment());
+                ReplaceFragment(new Owner_NhanVienFragment());
             } else if (itemId == R.id.nav_owner_khachhang) {
                 ReplaceFragment(new Fragment());
             } else if (itemId == R.id.nav_owner_donhang) {
