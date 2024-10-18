@@ -14,9 +14,19 @@ import java.util.List;
 public class NhanVienAdapter extends RecyclerView.Adapter<NhanVienAdapter.NhanVienViewHolder> {
 
     private List<NhanVien> nhanVienList;
+    private OnItemClickListener onItemClickListener;
 
+    // Constructor
     public NhanVienAdapter(List<NhanVien> nhanVienList) {
         this.nhanVienList = nhanVienList;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(NhanVien nhanVien);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
     }
 
     @NonNull
@@ -31,6 +41,13 @@ public class NhanVienAdapter extends RecyclerView.Adapter<NhanVienAdapter.NhanVi
     public void onBindViewHolder(@NonNull NhanVienViewHolder holder, int position) {
         NhanVien nhanVien = nhanVienList.get(position);
         holder.bind(nhanVien);
+
+        // Xử lý sự kiện nhấn vào item
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(nhanVien);
+            }
+        });
     }
 
     @Override

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.tdc.vlxdonline.Adapter.NhanVienAdapter;
 import com.tdc.vlxdonline.Model.NhanVien;
+import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.FragmentOwnerNhanvienBinding;
 
 import java.util.ArrayList;
@@ -45,6 +46,21 @@ public class Owner_NhanVienFragment extends Fragment {
         // Thiết lập Adapter
         nhanVienAdapter = new NhanVienAdapter(nhanVienList);
         ownerNhanvienBinding.ownerRcvNhanVien.setAdapter(nhanVienAdapter);
+
+        // Xử lý sự kiện nhấn vào item trong danh sách
+        nhanVienAdapter.setOnItemClickListener(nhanVien -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("selectedNhanVien", nhanVien); // Truyền dữ liệu nhân viên được chọn
+
+            Owner_NhanVienDetailFragment detailFragment = new Owner_NhanVienDetailFragment();
+            detailFragment.setArguments(bundle); // Gửi dữ liệu sang fragment chi tiết
+
+            // Chuyển sang màn hình chi tiết
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_owner, detailFragment) // R.id.fragment_container là nơi chứa fragment
+                    .addToBackStack(null) // Để quay lại màn hình trước đó khi nhấn nút back
+                    .commit();
+        });
     }
 
     // Phương thức tạo 50 dữ liệu mẫu

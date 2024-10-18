@@ -1,6 +1,8 @@
 package com.tdc.vlxdonline.Model;
 
-public class NhanVien {
+import java.io.Serializable;
+
+public class NhanVien implements Serializable {
     private int id;
     private int idChu;
     private String tenNV;

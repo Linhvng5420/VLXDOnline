@@ -8,13 +8,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tdc.vlxdonline.Model.NhanVien;
 import com.tdc.vlxdonline.R;
+import com.tdc.vlxdonline.databinding.FragmentOwnerNhanvienDetailBinding;
 
 public class Owner_NhanVienDetailFragment extends Fragment {
+
+    private NhanVien selectedNhanVien;
+    private FragmentOwnerNhanvienDetailBinding nhanvienDetailBinding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -25,7 +31,8 @@ public class Owner_NhanVienDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_owner_nhanvien_detail, container, false);
+        nhanvienDetailBinding = FragmentOwnerNhanvienDetailBinding.inflate(inflater, container, false);
+        return nhanvienDetailBinding.getRoot();
     }
 
     @Override
@@ -47,5 +54,18 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             // Quay về Fragment trước đó
             getParentFragmentManager().popBackStack();
         });
+
+        // Lấy dữ liệu từ Bundle
+        if (getArguments() != null) {
+            selectedNhanVien = (NhanVien) getArguments().getSerializable("selectedNhanVien");
+
+            // Hiển thị thông tin nhân viên
+            Log.d("selectedNhanVien", selectedNhanVien.toString());
+
+            nhanvienDetailBinding.tvTenNhanVien.setText(selectedNhanVien.getTenNV());
+            nhanvienDetailBinding.tvChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
+            nhanvienDetailBinding.tvSdt.setText(selectedNhanVien.getSdt());
+            nhanvienDetailBinding.tvEmail.setText(selectedNhanVien.getEmail());
+        }
     }
 }
