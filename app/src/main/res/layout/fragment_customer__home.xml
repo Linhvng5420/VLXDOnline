@@ -15,6 +15,7 @@
             android:id="@+id/sv_customer_home"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_margin="5dp"
             android:background="@drawable/bg_detail"
             android:iconifiedByDefault="false"
             android:searchIcon="@drawable/search" />
@@ -22,13 +23,15 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rc_banner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="250dp"
             android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_img_detail" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="250dp"
+            android:layout_margin="10dp"
             android:layout_marginVertical="5dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="10dp">
@@ -62,7 +65,8 @@
             android:id="@+id/rc_prod_customer_home"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="10dp" />
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/bg_img_detail" />
     </LinearLayout>
 
 </FrameLayout>
