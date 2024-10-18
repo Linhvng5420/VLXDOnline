@@ -50,7 +50,7 @@ public class Customer_HomeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {}
 
-    private void ReplaceFragment(Fragment fragment) {
+    public void ReplaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(customerHomeBinding.frmCustomer.getId(), fragment);

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.ProdDetailCustomerFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="11">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_img_detail" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_detail"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="120dp"
+                                android:layout_height="120dp"
+                                android:background="@drawable/bg_img_detail"
+                                android:src="@drawable/star" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingHorizontal="5dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp"
+                                    android:gravity="center_vertical"
+                                    android:paddingHorizontal="5dp"
+                                    android:text="Thép Hòa Phát"
+                                    android:textSize="15dp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp"
+                                    android:gravity="center_vertical"
+                                    android:paddingHorizontal="5dp"
+                                    android:text="13.640 VND"
+                                    android:textSize="15dp"
+                                    android:textStyle="bold" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp"
+                                    android:paddingHorizontal="5dp">
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="30dp"
+                                        android:gravity="center_vertical"
+                                        android:text="Kho: 500"
+                                        android:textSize="15dp" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="30dp"
+                                        android:gravity="center_vertical"
+                                        android:text="Đã Bán: 150"
+                                        android:textSize="15dp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="30dp"
+                                        android:gravity="center_vertical"
+                                        android:paddingLeft="5dp"
+                                        android:text="Đơn vị tính: "
+                                        android:textSize="15dp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="30dp"
+                                        android:gravity="center_vertical"
+                                        android:text="Tấm"
+                                        android:textSize="15dp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="-2dp"
+                                android:paddingHorizontal="5dp"
+                                android:text="Mô tả:"
+                                android:textSize="16dp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="5dp"
+                                android:paddingBottom="5dp"
+                                android:text="Thép cuộn CB240 chất lượng cao, độ dày 1mm, đàn hồi tốt, cứng cáp, chắc chắn."
+                                android:textSize="15dp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:backgroundTint="#0DF"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginVertical="5dp"
+                        android:text="Đặt Hàng Ngay"
+                        android:textSize="21dp"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="600dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#DFF"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <LinearLayout
+                android:layout_width="110dp"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="5dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:background="#0DF"
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="-"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="1"
+                    android:background="@color/white"/>
+
+                <TextView
+                    android:background="#0DF"
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="+"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <Button
+                android:backgroundTint="#0DF"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Thêm Vào Giỏ Hàng"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>
