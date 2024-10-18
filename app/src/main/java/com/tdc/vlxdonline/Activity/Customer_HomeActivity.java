@@ -1,7 +1,10 @@
 package com.tdc.vlxdonline.Activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -11,6 +14,7 @@ import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.ActivityCustomerHomeBinding;
 
 public class Customer_HomeActivity extends AppCompatActivity {
+    // Binding
     ActivityCustomerHomeBinding customerHomeBinding;
 
     @Override
@@ -19,8 +23,23 @@ public class Customer_HomeActivity extends AppCompatActivity {
         customerHomeBinding = ActivityCustomerHomeBinding.inflate(getLayoutInflater());
         setContentView(customerHomeBinding.getRoot());
 
-        //3. Bắt sự kiện
+        // Bắt sự kiện
         EventNavigationBottom();
+
+        // Sử dụng OnBackPressedDispatcher để tùy chỉnh hành vi khi nhấn nút back
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Kiểm tra xem có Fragment nào trong back stack không
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    // Nếu có Fragment, quay về Fragment trước đó
+                    getSupportFragmentManager().popBackStack();
+                } else {
+                    // Nếu không có Fragment, hiển thị hộp thoại xác nhận thoát
+                    showExitConfirmation();
+                }
+            }
+        });
     }
 
     // Bắt sự kiện nhấn Navbar Bottom
@@ -49,5 +68,26 @@ public class Customer_HomeActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 //        fragmentTransaction.replace(R.id."Thay Thế Tên Fragment_.xml vào đây", fragment);
         fragmentTransaction.commit();
+    }
+
+    // Hiển thị hộp thoại xác nhận trước khi thoát ứng dụng
+    private void showExitConfirmation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Bạn có chắc chắn muốn thoát ứng dụng?")
+                .setCancelable(false)
+                .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Thoát ứng dụng
+                        finishAffinity(); // Đóng tất cả các activity và thoát ứng dụng
+                    }
+                })
+                .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Đóng hộp thoại, không thoát ứng dụng
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }
