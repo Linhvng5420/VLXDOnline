@@ -24,7 +24,7 @@
         android:id="@+id/imgAvatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="8dp"
         android:contentDescription="Avatar"
         android:scaleType="centerCrop"
         android:src="@drawable/nav_nhanvien"
@@ -33,42 +33,146 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    <!-- Edittext Tên Nhân Viên (Mặc định: Không Cho Sửa)-->
+    <!-- EditText Tên Nhân Viên (Mặc định: Không Cho Sửa)-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilTenNhanVien"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginTop="-5dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgAvatar">
 
-    <!-- Edittext Chức Vụ (Mặc định: Không Cho Sửa)-->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etTenNhanVien"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="Tên Nhân Viên" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Edittext Số điện thoại (Mặc định: Không Cho Sửa)-->
-
-    <!-- Edittext Email (Mặc định: Không Cho Sửa)-->
-
-    <!-- Edittext Hình Căn Cước Mặt Trước (Mặc định: Không Cho Sửa)-->
-    <ImageView
-        android:id="@+id/imgCanCuocTruoc"
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:contentDescription="Căn cước mặt trước"
-        android:scaleType="centerCrop"
-        android:src="@drawable/bg_img_detail"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <!-- EditText Chức Vụ -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilChucVu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginTop="-5dp"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgAvatar" />
+        app:layout_constraintTop_toBottomOf="@id/tilTenNhanVien">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etChucVu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="Chức Vụ" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- EditText Số điện thoại -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilSDT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginTop="-5dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tilChucVu">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etSDT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="Số điện thoại" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- EditText Email -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginTop="-5dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tilSDT">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="Email" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Hình Căn Cước Mặt Trước -->
 
     <!-- Hình Căn Cước Mặt Sau -->
     <ImageView
+        android:id="@+id/imgCanCuocTruoc"
+        android:layout_width="180dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="24dp"
+        android:contentDescription="Căn cước mặt trước"
+        android:scaleType="centerCrop"
+        android:src="@drawable/nav_donhang"
+        app:layout_constraintEnd_toStartOf="@+id/imgCanCuocSau"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilEmail" />
+
+    <!-- Nút Chỉnh Sửa -->
+
+    <ImageView
         android:id="@+id/imgCanCuocSau"
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="180dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="10dp"
         android:contentDescription="Căn cước mặt sau"
         android:scaleType="centerCrop"
-        android:src="@drawable/bg_img_detail"
+        android:src="@drawable/nav_donhang"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgCanCuocTruoc" />
+        app:layout_constraintStart_toEndOf="@+id/imgCanCuocTruoc"
+        app:layout_constraintTop_toBottomOf="@+id/tilEmail" />
 
-    <!--Nút Chỉnh Sửa (Nằm ở góc cuối bên phải, hình tròn)-->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnChinhSua"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:contentDescription="Chỉnh sửa"
+        android:src="@drawable/ic_edit"
+        android:visibility="visible"
+        app:backgroundTint="#FF0000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="40dp"
+        app:tint="@color/white" />
 
-    <!--Nút Lưu Lại (Nằm giữa cuối cùng màn hình,  Mặc Định: Ẩn)-->
+    <!-- Nút Lưu Lại (Ẩn) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLuuLai"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="Lưu Lại"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:backgroundTint="#24AA28"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

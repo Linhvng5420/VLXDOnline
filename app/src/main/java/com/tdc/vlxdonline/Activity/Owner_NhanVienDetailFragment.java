@@ -71,13 +71,13 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             Log.d("selectedNhanVien", selectedNhanVien.toString());
 
             // Hiển thị thông tin nhân viên lên các thành phần giao diện (TextView) thông qua binding
-            nhanvienDetailBinding.tvTenNhanVien.setText(selectedNhanVien.getTenNV());
+            nhanvienDetailBinding.etTenNhanVien.setText(selectedNhanVien.getTenNV());
             // Hiển thị chức vụ nhân viên, nếu giá trị ChucVu là 0 thì hiển thị "Kho", nếu là 1 thì hiển thị "Giao Hàng"
-            nhanvienDetailBinding.tvChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
+            nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
             // Hiển thị số điện thoại của nhân viên
-            nhanvienDetailBinding.tvSdt.setText(selectedNhanVien.getSdt());
+            nhanvienDetailBinding.etSDT.setText(selectedNhanVien.getSdt());
             // Hiển thị email của nhân viên
-            nhanvienDetailBinding.tvEmail.setText(selectedNhanVien.getEmail());
+            nhanvienDetailBinding.etEmail.setText(selectedNhanVien.getEmail());
         }
     }
 }
