@@ -2,11 +2,7 @@ package com.tdc.vlxdonline.Activity;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -20,8 +16,8 @@ public class Warehouse_HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_warehouse_home);
-
+        warehouseHomeBinding = ActivityWarehouseHomeBinding.inflate(getLayoutInflater());
+        setContentView(warehouseHomeBinding.getRoot());
 
         //3. Bắt sự kiện
         EventNavigationBottom();
@@ -54,5 +50,4 @@ public class Warehouse_HomeActivity extends AppCompatActivity {
 //        fragmentTransaction.replace(R.id."Thay Thế Tên Fragment_.xml vào đây", fragment);
         fragmentTransaction.commit();
     }
-}
 }
