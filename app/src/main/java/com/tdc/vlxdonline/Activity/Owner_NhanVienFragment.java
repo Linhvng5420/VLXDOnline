@@ -37,14 +37,14 @@ public class Owner_NhanVienFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Thiết lập RecyclerView
-        ownerNhanvienBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        ownerNhanvienBinding.ownerRcvNhanVien.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Sử dụng phương thức generateDummyData() để tạo dữ liệu
         nhanVienList = generateDummyData();
 
         // Thiết lập Adapter
         nhanVienAdapter = new NhanVienAdapter(nhanVienList);
-        ownerNhanvienBinding.recyclerView.setAdapter(nhanVienAdapter);
+        ownerNhanvienBinding.ownerRcvNhanVien.setAdapter(nhanVienAdapter);
     }
 
     // Phương thức tạo 50 dữ liệu mẫu
