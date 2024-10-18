@@ -21,15 +21,16 @@ import java.util.List;
 
 public class Owner_NhanVienFragment extends Fragment {
 
+    // Khai báo đối tượng binding để liên kết với layout của Fragment
     private FragmentOwnerNhanvienBinding ownerNhanvienBinding;
-    private NhanVienAdapter nhanVienAdapter;
-    private List<NhanVien> nhanVienList;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Sử dụng View Binding cho Fragment
+        // Khởi tạo View Binding cho Fragment và liên kết với layout fragment_owner_nhanvien.xml
         ownerNhanvienBinding = FragmentOwnerNhanvienBinding.inflate(inflater, container, false);
+
+        // Trả về đối tượng View được tạo từ binding, đây là root view của Fragment
         return ownerNhanvienBinding.getRoot();
     }
 
@@ -37,46 +38,62 @@ public class Owner_NhanVienFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Thiết lập RecyclerView
+        // Thiết lập layout cho RecyclerView, sử dụng LinearLayoutManager để hiển thị danh sách theo chiều dọc
         ownerNhanvienBinding.ownerRcvNhanVien.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Sử dụng phương thức generateDummyData() để tạo dữ liệu
-        nhanVienList = generateDummyData();
+        // Gọi phương thức generateDummyData() để tạo và nhận danh sách dữ liệu mẫu (50 nhân viên)
+        // Khai báo danh sách nhân viên sẽ được sử dụng để đổ dữ liệu vào RecyclerView
+        List<NhanVien> nhanVienList = generateDummyData();
 
-        // Thiết lập Adapter
-        nhanVienAdapter = new NhanVienAdapter(nhanVienList);
+        // Khởi tạo Adapter với danh sách dữ liệu mẫu và gán nó vào RecyclerView
+        // Khai báo Adapter để hiển thị danh sách nhân viên trong RecyclerView
+        NhanVienAdapter nhanVienAdapter = new NhanVienAdapter(nhanVienList);
         ownerNhanvienBinding.ownerRcvNhanVien.setAdapter(nhanVienAdapter);
 
-        // Xử lý sự kiện nhấn vào item trong danh sách
+        // Thiết lập sự kiện khi nhấn vào một item trong danh sách nhân viên
         nhanVienAdapter.setOnItemClickListener(nhanVien -> {
+            // Tạo Bundle để truyền thông tin nhân viên được chọn qua Fragment chi tiết
             Bundle bundle = new Bundle();
-            bundle.putSerializable("selectedNhanVien", nhanVien); // Truyền dữ liệu nhân viên được chọn
+            bundle.putSerializable("selectedNhanVien", nhanVien); // Đưa dữ liệu nhân viên vào Bundle
 
+            // Tạo một instance của Owner_NhanVienDetailFragment
             Owner_NhanVienDetailFragment detailFragment = new Owner_NhanVienDetailFragment();
-            detailFragment.setArguments(bundle); // Gửi dữ liệu sang fragment chi tiết
 
-            // Chuyển sang màn hình chi tiết
+            // Gán Bundle (chứa thông tin nhân viên) vào Fragment chi tiết
+            detailFragment.setArguments(bundle);
+
+            // Thực hiện chuyển đổi sang Fragment chi tiết, thay thế Fragment hiện tại
             getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_owner, detailFragment) // R.id.fragment_container là nơi chứa fragment
-                    .addToBackStack(null) // Để quay lại màn hình trước đó khi nhấn nút back
-                    .commit();
+                    .replace(R.id.fragment_owner, detailFragment) // Thay thế fragment_owner bằng fragment chi tiết
+                    .addToBackStack(null) // Cho phép quay lại màn hình trước khi nhấn nút Back
+                    .commit(); // Áp dụng transaction
         });
     }
 
-    // Phương thức tạo 50 dữ liệu mẫu
+    // Phương thức tạo dữ liệu mẫu gồm 50 nhân viên
     private List<NhanVien> generateDummyData() {
+        // Khởi tạo danh sách nhân viên rỗng
         List<NhanVien> nhanVienList = new ArrayList<>();
+
+        // Vòng lặp từ 1 đến 50 để tạo 50 nhân viên
         for (int i = 1; i <= 50; i++) {
-            // ChucVu chỉ nhận 0 hoặc 1, sử dụng i % 2 để tạo xen kẽ 0 và 1
+            // ChucVu chỉ nhận giá trị 0 (Kho) hoặc 1 (Giao Hàng), sử dụng i % 2 để luân phiên giữa 0 và 1
             int chucVu = i % 2;
+
+            // Thêm nhân viên vào danh sách với thông tin cơ bản (ID, IDChu, Tên, Chức vụ, Số điện thoại, Email)
             nhanVienList.add(new NhanVien(i, 1, "Nhan Vien " + i, chucVu, "0123456789" + i, "nhanvien" + i + "@example.com"));
         }
+
+        // Trả về danh sách nhân viên sau khi đã tạo đủ 50 phần tử
         return nhanVienList;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ownerNhanvienBinding = null; // Giải phóng binding để tránh rò rỉ bộ nhớ
+
+        // Giải phóng tài nguyên của binding để tránh việc rò rỉ bộ nhớ khi Fragment bị hủy
+        ownerNhanvienBinding = null;
     }
 }
+

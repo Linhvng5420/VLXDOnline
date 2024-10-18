@@ -2,6 +2,7 @@ package com.tdc.vlxdonline.Model;
 
 import java.io.Serializable;
 
+// Lớp NhanVien implement giao diện Serializable để có thể truyền dữ liệu giữa các Activity hoặc Fragment
 public class NhanVien implements Serializable {
     private int id;
     private int idChu;

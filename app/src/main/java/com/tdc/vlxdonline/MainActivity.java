@@ -15,5 +15,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        // Không Sử Dụng
+        // Sử Dụng Để Test Chức Năng
     }
 }
