@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="#F4F4F4">
+
+        <!-- Phần tiêu đề -->
+        <TextView
+            android:id="@+id/headerTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ảnh Sản Phẩm - Banner"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:textColor="#4CAF50"
+            android:paddingBottom="10dp" />
+
+        <!-- Spinner để chọn sản phẩm -->
+        <Spinner
+            android:id="@+id/spinnerProductSelection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Nút Thêm và Xóa Ảnh Sản Phẩm -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnAddProductImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thêm"
+                android:src="@drawable/baseline_camera_alt_24"
+                android:backgroundTint="#4CAF50"
+                android:textColor="#FFFFFF"
+                android:padding="10dp" />
+
+            <Button
+                android:id="@+id/btnDeleteProductImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Xóa"
+                android:backgroundTint="#FF0000"
+                android:textColor="#FFFFFF"
+                android:padding="10dp"
+                android:layout_marginStart="10dp" />
+        </LinearLayout>
+
+        <!-- Phần hiển thị ảnh sản phẩm -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingTop="10dp">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_launcher_foreground"
+                android:layout_margin="5dp" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_launcher_foreground"
+                android:layout_margin="5dp" />
+        </LinearLayout>
+
+        <!-- Phần quản lý banner -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:background="#FFFFFF"
+            android:padding="10dp"
+            android:elevation="2dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Banner"
+                android:textSize="18sp"
+                android:textColor="#4CAF50"
+                android:layout_gravity="center"
+                android:paddingBottom="10dp" />
+
+            <!-- Nút Thêm và Xóa Banner -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnAddBanner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thêm"
+                    android:src="@drawable/baseline_camera_alt_24"
+                    android:backgroundTint="#4CAF50"
+                    android:textColor="#FFFFFF"
+                    android:padding="10dp" />
+
+                <Button
+                    android:id="@+id/btnDeleteBanner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xóa"
+                    android:backgroundTint="#FF0000"
+                    android:textColor="#FFFFFF"
+                    android:padding="10dp"
+                    android:layout_marginStart="10dp" />
+            </LinearLayout>
+
+            <!-- Phần hiển thị banner -->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:src="@drawable/ic_launcher_foreground"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
