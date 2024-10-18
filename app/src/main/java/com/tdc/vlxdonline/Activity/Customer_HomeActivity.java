@@ -3,12 +3,8 @@ package com.tdc.vlxdonline.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,46 +14,43 @@ import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.ActivityCustomerHomeBinding;
 
 public class Customer_HomeActivity extends AppCompatActivity {
-    
-    ActivityCustomerHomeBinding binding;
+    ActivityCustomerHomeBinding customerHomeBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityCustomerHomeBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        setDefaultValues();
-        setNavbarEvents();
+        customerHomeBinding = ActivityCustomerHomeBinding.inflate(getLayoutInflater());
+        setContentView(customerHomeBinding.getRoot());
+
+        //3. Bắt sự kiện
+        EventNavigationBottom();
     }
 
-    private void setDefaultValues() {
-        ReplaceFragment(new Customer_Home_Fragment());
-    }
+    // Bắt sự kiện nhấn Navbar Bottom
+    private void EventNavigationBottom() {
+        customerHomeBinding.navCustomer.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
 
-    private void setNavbarEvents() {
-        binding.navCustomer.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                
-                if (item.getItemId() == R.id.nav_customer_sanpham) {
-                    ReplaceFragment(new Customer_Home_Fragment());
-                } else if (item.getItemId() == R.id.nav_customer_giohang) {
-                    ReplaceFragment(new Customer_Home_Fragment());
-                } else if (item.getItemId() == R.id.nav_customer_donhang) {
-                    ReplaceFragment(new Customer_Home_Fragment());
-                } else if (item.getItemId() == R.id.nav_customer_taikhoan) {
-                    ReplaceFragment(new Customer_Home_Fragment());
-                }
-
-                return true;
+            if (itemId == R.id.nav_owner_dashboard) {
+                ReplaceFragment(new Fragment());
+            } else if (itemId == R.id.nav_owner_nhanvien) {
+                ReplaceFragment(new Fragment());
+            } else if (itemId == R.id.nav_owner_khachhang) {
+                ReplaceFragment(new Fragment());
+            } else if (itemId == R.id.nav_owner_donhang) {
+                ReplaceFragment(new Fragment());
+            } else if (itemId == R.id.nav_owner_kho) {
+                ReplaceFragment(new Fragment());
             }
+
+            return true;
         });
     }
-    
-    private void ReplaceFragment(Fragment fragment){
-        FragmentManager f = getSupportFragmentManager();
-        FragmentTransaction fr = f.beginTransaction();
-        fr.replace(binding.frmCustomer.getId(), fragment);
-        fr.commit();
+
+    private void ReplaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id."Thay Thế Tên Fragment_.xml vào đây", fragment);
+        fragmentTransaction.commit();
     }
 }
