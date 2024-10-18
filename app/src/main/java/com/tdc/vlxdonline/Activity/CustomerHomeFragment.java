@@ -1,30 +1,19 @@
 package com.tdc.vlxdonline.Activity;
 
-import static androidx.core.content.ContextCompat.getSystemService;
-
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.FragmentCustomerHomeBinding;
 
-import org.xmlpull.v1.XmlPullParser;
-
-public class Customer_Home_Fragment extends Fragment {
+public class CustomerHomeFragment extends Fragment {
 
     FragmentCustomerHomeBinding binding;
 

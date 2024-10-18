@@ -1,7 +1,7 @@
 package com.tdc.vlxdonline.Activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.MenuItem;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.navigation.NavigationBarView;
 import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.ActivityCustomerHomeBinding;
 
@@ -23,7 +22,7 @@ public class Customer_HomeActivity extends AppCompatActivity {
         customerHomeBinding = ActivityCustomerHomeBinding.inflate(getLayoutInflater());
         setContentView(customerHomeBinding.getRoot());
 
-        ReplaceFragment(new Customer_Home_Fragment());
+        ReplaceFragment(new CustomerHomeFragment());
         //3. Bắt sự kiện
         EventNavigationBottom();
     }
@@ -34,18 +33,22 @@ public class Customer_HomeActivity extends AppCompatActivity {
             int itemId = item.getItemId();
 
             if (itemId == R.id.nav_customer_sanpham) {
-                ReplaceFragment(new Customer_Home_Fragment());
+                ReplaceFragment(new CustomerHomeFragment());
             } else if (itemId == R.id.nav_customer_giohang) {
-                ReplaceFragment(new Fragment());
+                ReplaceFragment(new CartFragment());
             } else if (itemId == R.id.nav_customer_donhang) {
-                ReplaceFragment(new Fragment());
+                ReplaceFragment(new DonHangFragment());
             } else if (itemId == R.id.nav_customer_taikhoan) {
-                ReplaceFragment(new Fragment());
+                ReplaceFragment(new AccountCustomerFragment());
             }
 
             return true;
         });
     }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {}
 
     private void ReplaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
