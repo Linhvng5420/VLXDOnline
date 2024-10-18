@@ -34,6 +34,7 @@
         </activity>
         <activity
             android:name=".Activity.Customer_HomeActivity"
+            android:screenOrientation="portrait"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>

@@ -14,6 +14,7 @@ import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.ActivityCustomerHomeBinding;
 
 public class Customer_HomeActivity extends AppCompatActivity {
+
     ActivityCustomerHomeBinding customerHomeBinding;
 
     @Override
@@ -22,6 +23,7 @@ public class Customer_HomeActivity extends AppCompatActivity {
         customerHomeBinding = ActivityCustomerHomeBinding.inflate(getLayoutInflater());
         setContentView(customerHomeBinding.getRoot());
 
+        ReplaceFragment(new Customer_Home_Fragment());
         //3. Bắt sự kiện
         EventNavigationBottom();
     }
@@ -31,15 +33,13 @@ public class Customer_HomeActivity extends AppCompatActivity {
         customerHomeBinding.navCustomer.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
 
-            if (itemId == R.id.nav_owner_dashboard) {
+            if (itemId == R.id.nav_customer_sanpham) {
+                ReplaceFragment(new Customer_Home_Fragment());
+            } else if (itemId == R.id.nav_customer_giohang) {
                 ReplaceFragment(new Fragment());
-            } else if (itemId == R.id.nav_owner_nhanvien) {
+            } else if (itemId == R.id.nav_customer_donhang) {
                 ReplaceFragment(new Fragment());
-            } else if (itemId == R.id.nav_owner_khachhang) {
-                ReplaceFragment(new Fragment());
-            } else if (itemId == R.id.nav_owner_donhang) {
-                ReplaceFragment(new Fragment());
-            } else if (itemId == R.id.nav_owner_kho) {
+            } else if (itemId == R.id.nav_customer_taikhoan) {
                 ReplaceFragment(new Fragment());
             }
 
@@ -50,7 +50,7 @@ public class Customer_HomeActivity extends AppCompatActivity {
     private void ReplaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id."Thay Thế Tên Fragment_.xml vào đây", fragment);
+        fragmentTransaction.replace(customerHomeBinding.frmCustomer.getId(), fragment);
         fragmentTransaction.commit();
     }
 }
