@@ -1,7 +1,9 @@
 package com.tdc.vlxdonline.Activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.tdc.vlxdonline.Model.NhanVien;
@@ -28,20 +32,20 @@ public class Owner_NhanVienDetailFragment extends Fragment {
     // Khai báo đối tượng binding để tương tác với các thành phần trong giao diện (layout fragment_owner_nhanvien_detail.xml)
     private FragmentOwnerNhanvienDetailBinding nhanvienDetailBinding;
 
-    // Khai báo các giá trị mà bạn muốn hiển thị trong Spinner
-    String[] chucVuArray = {"Kho", "Giao Hàng"};
-    // Khai báo Spinner
+    // Khai báo Spinner và danh sách chức vụ cho nhân viên
     private Spinner spinnerChucVu;
+    String[] chucVuArray = {"Kho", "Giao Hàng"};
 
-    // Khai báo các hằng số để phân biệt các yêu cầu chọn ảnh
+    // Mã yêu cầu cho việc chọn ảnh
     private static final int PICK_IMAGE_AVATAR = 1;
     private static final int PICK_IMAGE_FRONT_ID = 2;
     private static final int PICK_IMAGE_BACK_ID = 3;
 
-    // Khai báo Uri để lưu trữ đường dẫn của ảnh sau khi chọn
+    // Uri để lưu trữ đường dẫn đến ảnh được chọn
     private Uri avatarUri, frontIdUri, backIdUri;
-    // Khai báo các ImageView cho avatar, CMND trước và CMND sau
-    ImageView ivAvatar, ivFrontId, ivBackId;
+
+    // Các ImageView đại diện cho ảnh avatar, ảnh CMND trước và sau
+    private ImageView ivAvatar, ivFrontId, ivBackId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,30 +56,28 @@ public class Owner_NhanVienDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Gán binding cho layout fragment_owner_nhanvien_detail.xml bằng cách sử dụng phương thức inflate()
         nhanvienDetailBinding = FragmentOwnerNhanvienDetailBinding.inflate(inflater, container, false);
-        // Trả về root của binding, tức là toàn bộ giao diện của fragment
-        return nhanvienDetailBinding.getRoot();
+        return nhanvienDetailBinding.getRoot(); // Trả về toàn bộ giao diện của fragment
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        // Phương thức này được gọi sau khi view đã được tạo
         super.onViewCreated(view, savedInstanceState);
-
-        // Lấy Spinner từ View Binding sau khi binding đã được khởi tạo
-        spinnerChucVu = nhanvienDetailBinding.spinnerChucVu;
 
         // Gán các ImageView từ View Binding
         ivAvatar = nhanvienDetailBinding.ivAvatar;
         ivFrontId = nhanvienDetailBinding.ivFrontId;
         ivBackId = nhanvienDetailBinding.ivBackId;
 
+        // Lấy Spinner từ View Binding
+        spinnerChucVu = nhanvienDetailBinding.spinnerChucVu;
+
         // Thiết lập Toolbar cho Fragment
         EventToolbarBack(view);
 
-        // Lấy thông tin từ đối tượng Bundle, kiểm tra nếu Bundle có dữ liệu được truyền vào
+        // Lấy thông tin từ đối tượng Bundle nếu có
         EventNhanDuLieuBundle();
 
-        // Thiết lập Spinner
+        // Xử lý Spinner chọn chức vụ
         EventChonSpinner();
 
         // Thiết lập sự kiện cho nút Chỉnh Sửa
@@ -85,49 +87,62 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         EventBtnLuuLai();
     }
 
-    // Thiết lập và xử lý sự kiện chọn chức vụ trong Spinner
+    // =======================================
+    // Phần chức năng: Thiết lập Toolbar và điều hướng
+    // =======================================
+
+    private void EventToolbarBack(View view) {
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        // Xử lý khi nhấn nút quay về trên Toolbar
+        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
+    }
+
+    // =======================================
+    // Phần chức năng: Nhận dữ liệu từ Bundle và hiển thị thông tin
+    // =======================================
+
+    private void EventNhanDuLieuBundle() {
+        if (getArguments() != null) {
+            // Lấy thông tin nhân viên từ Bundle
+            selectedNhanVien = (NhanVien) getArguments().getSerializable("selectedNhanVien");
+
+            // Hiển thị thông tin nhân viên lên giao diện
+            nhanvienDetailBinding.etTenNhanVien.setText(selectedNhanVien.getTenNV());
+            nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
+            nhanvienDetailBinding.etSDT.setText(selectedNhanVien.getSdt());
+            nhanvienDetailBinding.etEmail.setText(selectedNhanVien.getEmail());
+        }
+    }
+
+    // =======================================
+    // Phần chức năng: Xử lý Spinner chọn chức vụ
+    // =======================================
+
     private void EventChonSpinner() {
-        // Tạo ArrayAdapter sử dụng layout mặc định cho Spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.select_dialog_item, chucVuArray);
-
-        // Chỉ định layout cho từng item trong Spinner
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Gán adapter vào Spinner
         spinnerChucVu.setAdapter(adapter);
     }
 
-    // Thiết lập sự kiện khi nhấn nút Lưu Lại
-    private void EventBtnLuuLai() {
-        nhanvienDetailBinding.btnLuuLai.setOnClickListener(v -> {
-            // Vô hiệu hóa các trường EditText và hiển thị lại các phần đã ẩn
-            nhanvienDetailBinding.etTenNhanVien.setEnabled(true);
-            nhanvienDetailBinding.etSDT.setEnabled(true);
-            nhanvienDetailBinding.etEmail.setEnabled(true);
+    // =======================================
+    // Phần chức năng: Thiết lập sự kiện cho nút Chỉnh Sửa
+    // =======================================
 
-            // Ẩn Spinner và hiển thị EditText
-            nhanvienDetailBinding.tilChucVu.setVisibility(View.VISIBLE);
-            nhanvienDetailBinding.etChucVu.setVisibility(View.VISIBLE);
-            nhanvienDetailBinding.spinnerChucVu.setVisibility(View.INVISIBLE);
-            nhanvienDetailBinding.tvChucVu.setVisibility(View.INVISIBLE);
-
-            // Hiển thị nút Chỉnh Sửa
-            nhanvienDetailBinding.btnChinhSua.setVisibility(View.VISIBLE);
-
-            // Ẩn nút Lưu Lại
-            nhanvienDetailBinding.btnLuuLai.setVisibility(View.GONE);
-        });
-    }
-
-    // Thiết lập sự kiện khi nhấn nút Chỉnh Sửa, cho phép chọn ảnh
     private void EventBtnChinhSua() {
         nhanvienDetailBinding.btnChinhSua.setOnClickListener(v -> {
-            // Cho phép chỉnh sửa các trường EditText
+            // Kích hoạt chỉnh sửa các trường thông tin
             nhanvienDetailBinding.etTenNhanVien.setEnabled(true);
             nhanvienDetailBinding.etSDT.setEnabled(true);
             nhanvienDetailBinding.etEmail.setEnabled(true);
 
-            // Hiển thị Spinner và TextView Chức Vụ
+            // Hiển thị Spinner chọn chức vụ
             nhanvienDetailBinding.tilChucVu.setVisibility(View.INVISIBLE);
             nhanvienDetailBinding.etChucVu.setVisibility(View.INVISIBLE);
             nhanvienDetailBinding.spinnerChucVu.setVisibility(View.VISIBLE);
@@ -137,21 +152,55 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             nhanvienDetailBinding.btnLuuLai.setVisibility(View.VISIBLE);
             nhanvienDetailBinding.btnChinhSua.setVisibility(View.GONE);
 
-            // Thiết lập sự kiện nhấn vào các ảnh để chọn ảnh
+            // Cho phép người dùng chọn ảnh khi nhấn vào các ImageView
             ivAvatar.setOnClickListener(v1 -> openImagePicker(PICK_IMAGE_AVATAR));
             ivFrontId.setOnClickListener(v1 -> openImagePicker(PICK_IMAGE_FRONT_ID));
             ivBackId.setOnClickListener(v1 -> openImagePicker(PICK_IMAGE_BACK_ID));
         });
     }
 
-    // Phương thức mở trình chọn ảnh với loại ảnh được yêu cầu
+    // =======================================
+    // Phần chức năng: Thiết lập sự kiện cho nút Lưu Lại
+    // =======================================
+
+    private void EventBtnLuuLai() {
+        nhanvienDetailBinding.btnLuuLai.setOnClickListener(v -> {
+            // Vô hiệu hóa các trường chỉnh sửa sau khi lưu
+            nhanvienDetailBinding.etTenNhanVien.setEnabled(false);
+            nhanvienDetailBinding.etSDT.setEnabled(false);
+            nhanvienDetailBinding.etEmail.setEnabled(false);
+
+            // Ẩn Spinner và hiển thị TextView cho chức vụ
+            nhanvienDetailBinding.tilChucVu.setVisibility(View.VISIBLE);
+            nhanvienDetailBinding.etChucVu.setVisibility(View.VISIBLE);
+            nhanvienDetailBinding.spinnerChucVu.setVisibility(View.INVISIBLE);
+            nhanvienDetailBinding.tvChucVu.setVisibility(View.INVISIBLE);
+
+            // Ẩn nút Lưu Lại sau khi lưu
+            nhanvienDetailBinding.btnLuuLai.setVisibility(View.GONE);
+            nhanvienDetailBinding.btnChinhSua.setVisibility(View.VISIBLE);
+
+            // Vô hiệu hóa sự kiện onClick của các ImageView (ngăn người dùng chọn ảnh sau khi lưu)
+            ivAvatar.setOnClickListener(null);
+            ivFrontId.setOnClickListener(null);
+            ivBackId.setOnClickListener(null);
+        });
+    }
+
+    // =======================================
+    // Phần chức năng: Mở trình chọn ảnh
+    // =======================================
+
     private void openImagePicker(int requestCode) {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, requestCode);
     }
 
-    // Xử lý kết quả khi người dùng chọn ảnh và hiển thị ảnh đã chọn lên ImageView
+    // =======================================
+    // Phần chức năng: Xử lý ảnh sau khi chọn
+    // =======================================
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -170,34 +219,13 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         }
     }
 
-    // Thiết lập Toolbar với nút quay lại và xử lý sự kiện quay lại
-    private void EventToolbarBack(View view) {
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+    // =======================================
+    // Phần chức năng: Kiểm tra và yêu cầu quyền truy cập
+    // =======================================
 
-        // Hiển thị nút quay về trên Toolbar
-        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
-
-        // Xử lý sự kiện nhấn nút quay về
-        toolbar.setNavigationOnClickListener(v -> {
-            getParentFragmentManager().popBackStack();
-        });
-    }
-
-    // Nhận dữ liệu từ Bundle và hiển thị thông tin nhân viên
-    private void EventNhanDuLieuBundle() {
-        if (getArguments() != null) {
-            selectedNhanVien = (NhanVien) getArguments().getSerializable("selectedNhanVien");
-
-            // Hiển thị thông tin nhân viên lên giao diện
-            nhanvienDetailBinding.etTenNhanVien.setText(selectedNhanVien.getTenNV());
-            nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
-            nhanvienDetailBinding.etSDT.setText(selectedNhanVien.getSdt());
-            nhanvienDetailBinding.etEmail.setText(selectedNhanVien.getEmail());
+    private void checkPermissions() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PICK_IMAGE_AVATAR);
         }
     }
 }
-
