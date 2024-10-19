@@ -129,6 +129,9 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.select_dialog_item, chucVuArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerChucVu.setAdapter(adapter);
+
+        // Thiết lập lựa chọn mặc định cho Spinner dựa trên chức vụ của nhân viên
+        spinnerChucVu.setSelection(selectedNhanVien.getChucVu()); // 0 cho "Kho" và 1 cho "Giao Hàng"
     }
 
     // =======================================
@@ -165,6 +168,9 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
     private void EventBtnLuuLai() {
         nhanvienDetailBinding.btnLuuLai.setOnClickListener(v -> {
+            // Lưu giá trị Chức vụ từ Spinner
+            selectedNhanVien.setChucVu(spinnerChucVu.getSelectedItemPosition()); // Lưu 0 cho "Kho" và 1 cho "Giao Hàng"
+
             // Vô hiệu hóa các trường chỉnh sửa sau khi lưu
             nhanvienDetailBinding.etTenNhanVien.setEnabled(false);
             nhanvienDetailBinding.etSDT.setEnabled(false);
@@ -184,6 +190,9 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             ivAvatar.setOnClickListener(null);
             ivFrontId.setOnClickListener(null);
             ivBackId.setOnClickListener(null);
+
+            // Cập nhật giao diện với thông tin mới
+            nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
         });
     }
 
