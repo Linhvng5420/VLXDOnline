@@ -12,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -168,33 +170,40 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
     private void EventBtnLuuLai() {
         nhanvienDetailBinding.btnLuuLai.setOnClickListener(v -> {
-            // Lưu giá trị Chức vụ từ Spinner
-            selectedNhanVien.setChucVu(spinnerChucVu.getSelectedItemPosition()); // Lưu 0 cho "Kho" và 1 cho "Giao Hàng"
+            // Tạo hộp thoại xác nhận
+            new AlertDialog.Builder(getContext()).setTitle("Xác Nhận").setMessage("Bạn có chắc chắn muốn lưu thay đổi không?").setPositiveButton("Có", (dialog, which) -> {
+                // Lưu giá trị Chức vụ từ Spinner
+                selectedNhanVien.setChucVu(spinnerChucVu.getSelectedItemPosition()); // Lưu 0 cho "Kho" và 1 cho "Giao Hàng"
 
-            // Vô hiệu hóa các trường chỉnh sửa sau khi lưu
-            nhanvienDetailBinding.etTenNhanVien.setEnabled(false);
-            nhanvienDetailBinding.etSDT.setEnabled(false);
-            nhanvienDetailBinding.etEmail.setEnabled(false);
+                // Vô hiệu hóa các trường chỉnh sửa sau khi lưu
+                nhanvienDetailBinding.etTenNhanVien.setEnabled(false);
+                nhanvienDetailBinding.etSDT.setEnabled(false);
+                nhanvienDetailBinding.etEmail.setEnabled(false);
 
-            // Ẩn Spinner và hiển thị TextView cho chức vụ
-            nhanvienDetailBinding.tilChucVu.setVisibility(View.VISIBLE);
-            nhanvienDetailBinding.etChucVu.setVisibility(View.VISIBLE);
-            nhanvienDetailBinding.spinnerChucVu.setVisibility(View.INVISIBLE);
-            nhanvienDetailBinding.tvChucVu.setVisibility(View.INVISIBLE);
+                // Ẩn Spinner và hiển thị TextView cho chức vụ
+                nhanvienDetailBinding.tilChucVu.setVisibility(View.VISIBLE);
+                nhanvienDetailBinding.etChucVu.setVisibility(View.VISIBLE);
+                nhanvienDetailBinding.spinnerChucVu.setVisibility(View.INVISIBLE);
+                nhanvienDetailBinding.tvChucVu.setVisibility(View.INVISIBLE);
 
-            // Ẩn nút Lưu Lại sau khi lưu
-            nhanvienDetailBinding.btnLuuLai.setVisibility(View.GONE);
-            nhanvienDetailBinding.btnChinhSua.setVisibility(View.VISIBLE);
+                // Ẩn nút Lưu Lại sau khi lưu
+                nhanvienDetailBinding.btnLuuLai.setVisibility(View.GONE);
+                nhanvienDetailBinding.btnChinhSua.setVisibility(View.VISIBLE);
 
-            // Vô hiệu hóa sự kiện onClick của các ImageView (ngăn người dùng chọn ảnh sau khi lưu)
-            ivAvatar.setOnClickListener(null);
-            ivFrontId.setOnClickListener(null);
-            ivBackId.setOnClickListener(null);
+                // Vô hiệu hóa sự kiện onClick của các ImageView (ngăn người dùng chọn ảnh sau khi lưu)
+                ivAvatar.setOnClickListener(null);
+                ivFrontId.setOnClickListener(null);
+                ivBackId.setOnClickListener(null);
 
-            // Cập nhật giao diện với thông tin mới
-            nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
+                // Cập nhật giao diện với thông tin mới
+                nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
+
+                // Hiển thị thông báo lưu thành công
+                Toast.makeText(getContext(), "Đã lưu thành công!", Toast.LENGTH_SHORT).show();
+            }).setNegativeButton("Không", null).show(); // Hiển thị hộp thoại
         });
     }
+
 
     // =======================================
     // Phần chức năng: Mở trình chọn ảnh
