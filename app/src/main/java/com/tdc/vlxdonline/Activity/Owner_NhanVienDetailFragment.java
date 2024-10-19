@@ -192,9 +192,11 @@ public class Owner_NhanVienDetailFragment extends Fragment {
     // =======================================
 
     private void openImagePicker(int requestCode) {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, requestCode);
+        //ACTION_GET_CONTENT: cho phép chọn một tệp từ bất kỳ nguồn nào, bao gồm cả trình quản lý tệp và các ứng dụng khác.
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*"); // Chỉ định loại tệp là hình ảnh
+        intent.addCategory(Intent.CATEGORY_OPENABLE); // Thêm thể loại này để đảm bảo rằng trình quản lý tệp hiển thị các tệp có thể mở được.
+        startActivityForResult(Intent.createChooser(intent, "Chọn ảnh"), requestCode); // Mở trình hộp thoại chọn ảnh
     }
 
     // =======================================
@@ -204,17 +206,24 @@ public class Owner_NhanVienDetailFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // Kiểm tra kết quả trả về từ hoạt động chọn ảnh
         if (resultCode == Activity.RESULT_OK && data != null) {
+            // Lấy Uri của ảnh đã chọn từ Intent data
             Uri selectedImageUri = data.getData();
+
+            // Dựa vào mã yêu cầu để xác định ảnh nào đã được chọn
             if (requestCode == PICK_IMAGE_AVATAR) {
+                // Lưu Uri ảnh đại diện và hiển thị ảnh trong ImageView
                 avatarUri = selectedImageUri;
-                ivAvatar.setImageURI(avatarUri);
+                ivAvatar.setImageURI(avatarUri); // Hiển thị ảnh đại diện
             } else if (requestCode == PICK_IMAGE_FRONT_ID) {
+                // Lưu Uri ảnh CMND trước và hiển thị ảnh trong ImageView
                 frontIdUri = selectedImageUri;
-                ivFrontId.setImageURI(frontIdUri);
+                ivFrontId.setImageURI(frontIdUri); // Hiển thị ảnh CMND trước
             } else if (requestCode == PICK_IMAGE_BACK_ID) {
+                // Lưu Uri ảnh CMND sau và hiển thị ảnh trong ImageView
                 backIdUri = selectedImageUri;
-                ivBackId.setImageURI(backIdUri);
+                ivBackId.setImageURI(backIdUri); // Hiển thị ảnh CMND sau
             }
         }
     }
@@ -222,10 +231,12 @@ public class Owner_NhanVienDetailFragment extends Fragment {
     // =======================================
     // Phần chức năng: Kiểm tra và yêu cầu quyền truy cập
     // =======================================
-
     private void checkPermissions() {
+        // Kiểm tra xem ứng dụng có quyền truy cập vào bộ nhớ ngoài hay không
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // Nếu chưa có quyền, yêu cầu quyền truy cập từ người dùng
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PICK_IMAGE_AVATAR);
         }
     }
+
 }
