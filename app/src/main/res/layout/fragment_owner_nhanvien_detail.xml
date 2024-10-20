@@ -25,13 +25,15 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="8dp"
+        android:background="@color/white"
         android:contentDescription="Avatar"
         android:scaleType="centerCrop"
         android:src="@drawable/nav_nhanvien"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:scaleType="fitCenter" />
 
     <!-- EditText Tên Nhân Viên (Mặc định: Không Cho Sửa)-->
     <com.google.android.material.textfield.TextInputLayout
@@ -154,14 +156,16 @@
         android:layout_height="130dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="24dp"
+        android:background="@drawable/bg_detail"
         android:contentDescription="Căn cước mặt trước"
-        android:scaleType="centerCrop"
+        android:elevation="4dp"
+        android:padding="3dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/nav_donhang"
         app:layout_constraintEnd_toStartOf="@+id/ivBackId"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tilEmail" />
 
-    <!-- Nút Chỉnh Sửa -->
 
     <ImageView
         android:id="@+id/ivBackId"
@@ -170,13 +174,17 @@
         android:layout_marginStart="7dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="10dp"
+        android:background="@drawable/bg_detail"
         android:contentDescription="Căn cước mặt sau"
-        android:scaleType="centerCrop"
+        android:elevation="4dp"
+        android:padding="3dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/nav_donhang"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivFrontId"
         app:layout_constraintTop_toBottomOf="@+id/tilEmail" />
 
+    <!-- Nút Chỉnh Sửa -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnChinhSua"
         android:layout_width="wrap_content"
@@ -186,31 +194,55 @@
         android:contentDescription="Chỉnh sửa"
         android:src="@drawable/ic_edit"
         android:visibility="visible"
-        app:backgroundTint="#FF0000"
+        app:backgroundTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="40dp"
-        app:tint="@color/white" />
+        app:tint="#F44336" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnXoa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:contentDescription="Xóa"
+        android:src="@drawable/ic_trash"
+        android:visibility="invisible"
+        app:backgroundTint="#F44336"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="40dp"
+        app:tint="#FFFFFF" />
 
     <!-- Nút Lưu Lại (Ẩn) -->
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btnLuuLai"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
+        android:contentDescription="Lưu Lại"
+        android:drawableRight="@drawable/ic_save"
+        android:drawableTint="#16721D"
+        android:src="@drawable/ic_save"
         android:text="Lưu Lại"
+        android:textColor="#338337"
+        android:textSize="22sp"
         android:textStyle="bold"
         android:visibility="invisible"
-        app:backgroundTint="#24AA28"
+        app:backgroundTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:maxImageSize="40dp"
+        app:tint="#0ABB13" />
 
     <TextView
         android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="CCCD Mặt Trước"
         android:textAlignment="center"
         android:textStyle="bold"
@@ -218,10 +250,10 @@
         app:layout_constraintTop_toBottomOf="@+id/ivFrontId" />
 
     <TextView
-        android:layout_width="185dp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:text="CCCD Mặt Sau"
         android:textAlignment="center"
         android:textStyle="bold"
