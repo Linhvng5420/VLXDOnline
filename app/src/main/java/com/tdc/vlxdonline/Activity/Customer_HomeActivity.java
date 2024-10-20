@@ -1,7 +1,11 @@
 package com.tdc.vlxdonline.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
@@ -16,6 +20,7 @@ import com.tdc.vlxdonline.databinding.ActivityCustomerHomeBinding;
 public class Customer_HomeActivity extends AppCompatActivity {
     // Binding
     ActivityCustomerHomeBinding customerHomeBinding;
+    private String currentTag = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,21 +31,6 @@ public class Customer_HomeActivity extends AppCompatActivity {
 		// Bắt sự kiện
         ReplaceFragment(new CustomerHomeFragment());
         EventNavigationBottom();
-
-        // Sử dụng OnBackPressedDispatcher để tùy chỉnh hành vi khi nhấn nút back
-        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                // Kiểm tra xem có Fragment nào trong back stack không
-                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                    // Nếu có Fragment, quay về Fragment trước đó
-                    getSupportFragmentManager().popBackStack();
-                } else {
-                    // Nếu không có Fragment, hiển thị hộp thoại xác nhận thoát
-                    showExitConfirmation();
-                }
-            }
-        });
     }
 
     // Bắt sự kiện nhấn Navbar Bottom
@@ -62,31 +52,70 @@ public class Customer_HomeActivity extends AppCompatActivity {
         });
     }
 
+    // Replace khi ấn chọn màn hình khác hiện tại
     private void ReplaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(customerHomeBinding.frmCustomer.getId(), fragment);
-        fragmentTransaction.commit();
+        Fragment currentFragment = fragmentManager.findFragmentById(customerHomeBinding.frmCustomer.getId());
+        if (currentTag == null && currentFragment != null) currentTag = currentFragment.getClass().getName();
+        if (currentTag == null || !currentTag.equals(fragment.getClass().getName())) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(customerHomeBinding.frmCustomer.getId(), fragment);
+            fragmentTransaction.addToBackStack(fragment.getClass().getName());
+            fragmentTransaction.commit();
+        }
+        currentTag = null;
+    }
+
+    // Override onBack để tùy chỉnh quay lại
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
+        int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
+        if (backStackEntryCount > 1) {
+            currentTag = getSupportFragmentManager().getBackStackEntryAt(backStackEntryCount - 2).getName();
+            ChangeNavItem();
+            getSupportFragmentManager().popBackStack();
+        } else {
+            showExitConfirmation();
+        }
     }
 
     // Hiển thị hộp thoại xác nhận trước khi thoát ứng dụng
     private void showExitConfirmation() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Bạn có chắc chắn muốn thoát ứng dụng?")
-                .setCancelable(false)
-                .setPositiveButton("Có", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Thoát ứng dụng
-                        finishAffinity(); // Đóng tất cả các activity và thoát ứng dụng
-                    }
-                })
-                .setNegativeButton("Không", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Đóng hộp thoại, không thoát ứng dụng
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+        builder.setTitle("Thông Báo!").setMessage("Xác Nhận Thoát Ứng Dụng?");
+        builder.setPositiveButton(R.string.thoat, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finishAffinity();
+            }
+        });
+        builder.setNegativeButton(R.string.quay_lai, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        Drawable drawableIcon = getResources().getDrawable(android.R.drawable.ic_dialog_alert);
+        drawableIcon.setTint(Color.RED);
+        builder.setIcon(drawableIcon);
+        Drawable drawableBg = getResources().getDrawable(R.drawable.bg_detail);
+        drawableBg.setTint(Color.rgb(100, 100, 100));
+        AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(drawableBg);
+        alertDialog.show();
+    }
+
+    // Hàm đổi icon navbar khi quay lại fragment trước
+    private void ChangeNavItem(){
+        if (currentTag.equals(CustomerHomeFragment.class.getName())) {
+            customerHomeBinding.navCustomer.setSelectedItemId(R.id.nav_customer_sanpham);
+        } else if (currentTag.equals(CartFragment.class.getName())) {
+            customerHomeBinding.navCustomer.setSelectedItemId(R.id.nav_customer_giohang);
+        } else if (currentTag.equals(DonHangFragment.class.getName())) {
+            customerHomeBinding.navCustomer.setSelectedItemId(R.id.nav_customer_donhang);
+        } else if (currentTag.equals(AccountCustomerFragment.class.getName())) {
+            customerHomeBinding.navCustomer.setSelectedItemId(R.id.nav_customer_taikhoan);
+        }
     }
 }
