@@ -45,16 +45,16 @@ public class NhanVien implements Serializable {
         return TenNV;
     }
 
-    public void setTenNV(String tenNV) {
-        TenNV = tenNV;
+    public void setTenNV(String TenNV) {
+        this.TenNV = TenNV;
     }
 
     public int getChucVu() {
         return ChucVu;
     }
 
-    public void setChucVu(int chucVu) {
-        ChucVu = chucVu;
+    public void setChucVu(int ChucVu) {
+        this.ChucVu = ChucVu;
     }
 
     public String getSDT() {
@@ -69,7 +69,7 @@ public class NhanVien implements Serializable {
         return Email;
     }
 
-    public void setEmail(String email) {
-        Email = email;
+    public void setEmail(String Email) {
+        this.Email = Email;
     }
 }

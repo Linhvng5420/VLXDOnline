@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tdc.vlxdonline.Model.NhanVien;
 import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.FragmentOwnerNhanvienDetailBinding;
@@ -26,6 +28,9 @@ public class Owner_NhanVienDetailFragment extends Fragment {
     // Khai báo đối tượng binding để tương tác với các thành phần trong giao diện (layout fragment_owner_nhanvien_detail.xml)
     private FragmentOwnerNhanvienDetailBinding nhanvienDetailBinding;
 
+    // Khai báo DatabaseReference để kết nối với Firebase
+    private DatabaseReference databaseReference;
+
     // Khai báo Spinner và danh sách chức vụ cho nhân viên
     private Spinner spinnerChucVu;
     private String[] chucVuArray = {"Kho", "Giao Hàng"};
@@ -33,6 +38,8 @@ public class Owner_NhanVienDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Khởi tạo databaseReference với tên nhánh cần truy cập trong Firebase
+        databaseReference = FirebaseDatabase.getInstance().getReference("nhanVien");
     }
 
     @Override
@@ -92,6 +99,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             selectedNhanVien = (NhanVien) getArguments().getSerializable("selectedNhanVien");
 
             // Hiển thị thông tin nhân viên lên giao diện
+            nhanvienDetailBinding.tvIDNhanVien.setText("ID: " + selectedNhanVien.getID());
             nhanvienDetailBinding.etTenNhanVien.setText(selectedNhanVien.getTenNV());
             nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
             nhanvienDetailBinding.etSDT.setText(selectedNhanVien.getSDT());
@@ -139,13 +147,21 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                     .setTitle("Xác Nhận")
                     .setMessage("Bạn có chắc chắn muốn xóa nhân viên không?")
                     .setPositiveButton("Có", (dialog, which) -> {
-                        // Thực hiện thao tác xóa nhân viên tại đây (xóa trong cơ sở dữ liệu hoặc danh sách)
+                        // Xóa nhân viên khỏi Firebase Database
+                        databaseReference = FirebaseDatabase.getInstance().getReference("nhanVien").child(selectedNhanVien.getID()+"");
+                        
+                        databaseReference.removeValue()
+                                .addOnSuccessListener(aVoid -> {
+                                    // Hiển thị thông báo đã xóa thành công
+                                    Toast.makeText(getContext(), "Đã xóa nhân viên!", Toast.LENGTH_SHORT).show();
 
-                        // Hiển thị thông báo đã xóa thành công
-                        Toast.makeText(getContext(), "Đã xóa nhân viên!", Toast.LENGTH_SHORT).show();
-
-                        // Quay lại màn hình quản lý nhân viên sau khi xóa
-                        getParentFragmentManager().popBackStack();
+                                    // Quay lại màn hình quản lý nhân viên sau khi xóa
+                                    getParentFragmentManager().popBackStack();
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Hiển thị thông báo lỗi nếu không xóa được
+                                    Toast.makeText(getContext(), "Lỗi khi xóa nhân viên: ", Toast.LENGTH_SHORT).show();
+                                });
                     })
                     .setNegativeButton("Không", null) // Không làm gì khi người dùng nhấn "Không"
                     .show();
@@ -163,29 +179,37 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                         // Lưu giá trị Chức vụ từ Spinner
                         selectedNhanVien.setChucVu(spinnerChucVu.getSelectedItemPosition()); // Lưu 0 cho "Kho" và 1 cho "Giao Hàng"
 
-                        // Vô hiệu hóa các trường chỉnh sửa sau khi lưu
-                        nhanvienDetailBinding.etTenNhanVien.setEnabled(false);
-                        nhanvienDetailBinding.etSDT.setEnabled(false);
-                        nhanvienDetailBinding.etEmail.setEnabled(false);
+                        // Cập nhật thông tin nhân viên trong Firebase
+                        databaseReference.child(String.valueOf(selectedNhanVien.getID())).setValue(selectedNhanVien)
+                                .addOnSuccessListener(aVoid -> {
+                                    // Vô hiệu hóa các trường chỉnh sửa sau khi lưu
+                                    nhanvienDetailBinding.etTenNhanVien.setEnabled(false);
+                                    nhanvienDetailBinding.etSDT.setEnabled(false);
+                                    nhanvienDetailBinding.etEmail.setEnabled(false);
 
-                        // Ẩn Spinner và hiển thị TextView cho chức vụ
-                        nhanvienDetailBinding.tilChucVu.setVisibility(View.VISIBLE);
-                        nhanvienDetailBinding.etChucVu.setVisibility(View.VISIBLE);
-                        nhanvienDetailBinding.spinnerChucVu.setVisibility(View.INVISIBLE);
-                        nhanvienDetailBinding.tvChucVu.setVisibility(View.INVISIBLE);
+                                    // Ẩn Spinner và hiển thị TextView cho chức vụ
+                                    nhanvienDetailBinding.tilChucVu.setVisibility(View.VISIBLE);
+                                    nhanvienDetailBinding.etChucVu.setVisibility(View.VISIBLE);
+                                    nhanvienDetailBinding.spinnerChucVu.setVisibility(View.INVISIBLE);
+                                    nhanvienDetailBinding.tvChucVu.setVisibility(View.INVISIBLE);
 
-                        // Ẩn nút Lưu Lại, Xóa, Hủy và Hiển thị nút Sửa sau khi lưu
-                        nhanvienDetailBinding.btnLuuLai.setVisibility(View.INVISIBLE);
-                        nhanvienDetailBinding.btnHuy.setVisibility(View.VISIBLE);
-                        nhanvienDetailBinding.btnXoa.setVisibility(View.INVISIBLE);
-                        nhanvienDetailBinding.btnHuy.setVisibility(View.INVISIBLE);
-                        nhanvienDetailBinding.btnChinhSua.setVisibility(View.VISIBLE);
+                                    // Ẩn nút Lưu Lại, Xóa, Hủy và Hiển thị nút Sửa sau khi lưu
+                                    nhanvienDetailBinding.btnLuuLai.setVisibility(View.INVISIBLE);
+                                    nhanvienDetailBinding.btnHuy.setVisibility(View.VISIBLE);
+                                    nhanvienDetailBinding.btnXoa.setVisibility(View.INVISIBLE);
+                                    nhanvienDetailBinding.btnHuy.setVisibility(View.INVISIBLE);
+                                    nhanvienDetailBinding.btnChinhSua.setVisibility(View.VISIBLE);
 
-                        // Cập nhật giao diện với thông tin mới
-                        nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
+                                    // Cập nhật giao diện với thông tin mới
+                                    nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
 
-                        // Hiển thị thông báo lưu thành công
-                        Toast.makeText(getContext(), "Đã lưu thành công!", Toast.LENGTH_SHORT).show();
+                                    // Hiển thị thông báo lưu thành công
+                                    Toast.makeText(getContext(), "Đã lưu thành công!", Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Hiển thị thông báo lỗi nếu không lưu được
+                                    Toast.makeText(getContext(), "Lỗi khi lưu thông tin: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
                     })
                     .setNegativeButton("Không", null) // Hiển thị hộp thoại
                     .show();
@@ -224,3 +248,4 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         });
     }
 }
+
