@@ -63,6 +63,11 @@ public class NhanVienAdapter extends RecyclerView.Adapter<NhanVienAdapter.NhanVi
         return nhanVienList.size();
     }
 
+    // Phương thức để lấy danh sách nhân viên
+    public List<NhanVien> getNhanVienList() {
+        return nhanVienList;
+    }
+
     // ViewHolder cho dữ liệu nhân viên sử dụng View Binding
     public static class NhanVienViewHolder extends RecyclerView.ViewHolder {
         // Binding liên kết với layout của từng item nhân viên
@@ -77,7 +82,7 @@ public class NhanVienAdapter extends RecyclerView.Adapter<NhanVienAdapter.NhanVi
         // Phương thức bind để gán dữ liệu nhân viên vào các view trong item
         public void bind(NhanVien nhanVien) {
             // Hiển thị ID của nhân viên
-            binding.tvId.setText(String.valueOf(nhanVien.getId()));
+            binding.tvId.setText(String.valueOf(nhanVien.getID()));
 
             // Hiển thị tên nhân viên
             binding.tvTenNV.setText(nhanVien.getTenNV());
@@ -88,4 +93,5 @@ public class NhanVienAdapter extends RecyclerView.Adapter<NhanVienAdapter.NhanVi
         }
     }
 }
+
 

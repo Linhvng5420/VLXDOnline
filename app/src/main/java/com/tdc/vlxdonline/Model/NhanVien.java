@@ -4,72 +4,72 @@ import java.io.Serializable;
 
 // Lớp NhanVien implement giao diện Serializable để có thể truyền dữ liệu giữa các Activity hoặc Fragment
 public class NhanVien implements Serializable {
-    private int id;
-    private int idChu;
-    private String tenNV;
-    private int chucVu;
-    private String sdt;
-    private String email;
+    private int ID;
+    private int IDChu;
+    private String TenNV;
+    private int ChucVu;
+    private String SDT;
+    private String Email;
 
     // Constructor rỗng (cần thiết cho Firebase)
     public NhanVien() {}
 
-    // Constructor
-    public NhanVien(int id, int idChu, String tenNV, int chucVu, String sdt, String email) {
-        this.id = id;
-        this.idChu = idChu;
-        this.tenNV = tenNV;
-        this.chucVu = chucVu;
-        this.sdt = sdt;
-        this.email = email;
+    public NhanVien(int ID, int IDChu, String TenNV, int ChucVu, String SDT, String Email) {
+        this.ID = ID;
+        this.IDChu = IDChu;
+        this.TenNV = TenNV;
+        this.ChucVu = ChucVu;
+        this.SDT = SDT;
+        this.Email = Email;
     }
 
     // Getters and Setters
-    public int getId() {
-        return id;
+
+    public int getID() {
+        return ID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
-    public int getIdChu() {
-        return idChu;
+    public int getIDChu() {
+        return IDChu;
     }
 
-    public void setIdChu(int idChu) {
-        this.idChu = idChu;
+    public void setIDChu(int IDChu) {
+        this.IDChu = IDChu;
     }
 
     public String getTenNV() {
-        return tenNV;
+        return TenNV;
     }
 
     public void setTenNV(String tenNV) {
-        this.tenNV = tenNV;
+        TenNV = tenNV;
     }
 
     public int getChucVu() {
-        return chucVu;
+        return ChucVu;
     }
 
     public void setChucVu(int chucVu) {
-        this.chucVu = chucVu;
+        ChucVu = chucVu;
     }
 
-    public String getSdt() {
-        return sdt;
+    public String getSDT() {
+        return SDT;
     }
 
-    public void setSdt(String sdt) {
-        this.sdt = sdt;
+    public void setSDT(String SDT) {
+        this.SDT = SDT;
     }
 
     public String getEmail() {
-        return email;
+        return Email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        Email = email;
     }
 }

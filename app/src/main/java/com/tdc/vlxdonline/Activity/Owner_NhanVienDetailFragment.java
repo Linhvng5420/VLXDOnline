@@ -36,7 +36,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
     // Khai báo Spinner và danh sách chức vụ cho nhân viên
     private Spinner spinnerChucVu;
-    String[] chucVuArray = {"Kho", "Giao Hàng"};
+    private String[] chucVuArray = {"Kho", "Giao Hàng"};
 
     // Mã yêu cầu cho việc chọn ảnh
     private static final int PICK_IMAGE_AVATAR = 1;
@@ -52,6 +52,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkPermissions(); // Kiểm tra quyền truy cập khi fragment được tạo
     }
 
     @Override
@@ -74,29 +75,26 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         spinnerChucVu = nhanvienDetailBinding.spinnerChucVu;
 
         // Thiết lập Toolbar cho Fragment
-        EventToolbarBack(view);
+        setupToolbar(view);
 
         // Lấy thông tin từ đối tượng Bundle nếu có
-        EventNhanDuLieuBundle();
+        retrieveDataFromBundle();
 
         // Xử lý Spinner chọn chức vụ
-        EventChonSpinner();
+        setupSpinner();
 
         // Thiết lập sự kiện cho nút Chỉnh Sửa
-        EventBtnChinhSua();
+        setupEditButton();
 
         // Thiết lập sự kiện cho nút Lưu Lại
-        EventBtnLuuLai();
+        setupSaveButton();
 
         // Thiết lập sự kiện cho nút Xóa
-        EventBtnXoa();
+        setupDeleteButton();
     }
 
-    // =======================================
-    // Phần chức năng: Thiết lập Toolbar và điều hướng
-    // =======================================
-
-    private void EventToolbarBack(View view) {
+    // Thiết lập Toolbar và điều hướng
+    private void setupToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -109,11 +107,8 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
     }
 
-    // =======================================
-    // Phần chức năng: Nhận dữ liệu từ Bundle và hiển thị thông tin
-    // =======================================
-
-    private void EventNhanDuLieuBundle() {
+    // Nhận dữ liệu từ Bundle và hiển thị thông tin
+    private void retrieveDataFromBundle() {
         if (getArguments() != null) {
             // Lấy thông tin nhân viên từ Bundle
             selectedNhanVien = (NhanVien) getArguments().getSerializable("selectedNhanVien");
@@ -121,16 +116,13 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             // Hiển thị thông tin nhân viên lên giao diện
             nhanvienDetailBinding.etTenNhanVien.setText(selectedNhanVien.getTenNV());
             nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
-            nhanvienDetailBinding.etSDT.setText(selectedNhanVien.getSdt());
+            nhanvienDetailBinding.etSDT.setText(selectedNhanVien.getSDT());
             nhanvienDetailBinding.etEmail.setText(selectedNhanVien.getEmail());
         }
     }
 
-    // =======================================
-    // Phần chức năng: Xử lý Spinner chọn chức vụ
-    // =======================================
-
-    private void EventChonSpinner() {
+    // Xử lý Spinner chọn chức vụ
+    private void setupSpinner() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.select_dialog_item, chucVuArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerChucVu.setAdapter(adapter);
@@ -139,11 +131,8 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         spinnerChucVu.setSelection(selectedNhanVien.getChucVu()); // 0 cho "Kho" và 1 cho "Giao Hàng"
     }
 
-    // =======================================
-    // Thiết lập sự kiện cho nút
-    // =======================================
-
-    private void EventBtnChinhSua() {
+    // Thiết lập sự kiện cho nút Chỉnh Sửa
+    private void setupEditButton() {
         nhanvienDetailBinding.btnChinhSua.setOnClickListener(v -> {
             // Kích hoạt chỉnh sửa các trường thông tin
             nhanvienDetailBinding.etTenNhanVien.setEnabled(true);
@@ -168,8 +157,8 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         });
     }
 
-
-    private void EventBtnXoa() {
+    // Thiết lập sự kiện cho nút Xóa
+    private void setupDeleteButton() {
         nhanvienDetailBinding.btnXoa.setOnClickListener(view -> {
             // Tạo hộp thoại xác nhận
             new AlertDialog.Builder(getContext())
@@ -189,8 +178,8 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         });
     }
 
-
-    private void EventBtnLuuLai() {
+    // Thiết lập sự kiện cho nút Lưu Lại
+    private void setupSaveButton() {
         nhanvienDetailBinding.btnLuuLai.setOnClickListener(v -> {
             // Tạo hộp thoại xác nhận
             new AlertDialog.Builder(getContext())
@@ -226,27 +215,22 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
                         // Hiển thị thông báo lưu thành công
                         Toast.makeText(getContext(), "Đã lưu thành công!", Toast.LENGTH_SHORT).show();
-                    }).setNegativeButton("Không", null).show(); // Hiển thị hộp thoại
+                    })
+                    .setNegativeButton("Không", null) // Hiển thị hộp thoại
+                    .show();
         });
     }
 
-
-    // =======================================
-    // Phần chức năng: Mở trình chọn ảnh
-    // =======================================
-
+    // Mở trình chọn ảnh
     private void openImagePicker(int requestCode) {
-        //ACTION_GET_CONTENT: cho phép chọn một tệp từ bất kỳ nguồn nào, bao gồm cả trình quản lý tệp và các ứng dụng khác.
+        // ACTION_GET_CONTENT: cho phép chọn một tệp từ bất kỳ nguồn nào, bao gồm cả trình quản lý tệp và các ứng dụng khác.
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*"); // Chỉ định loại tệp là hình ảnh
         intent.addCategory(Intent.CATEGORY_OPENABLE); // Thêm thể loại này để đảm bảo rằng trình quản lý tệp hiển thị các tệp có thể mở được.
         startActivityForResult(Intent.createChooser(intent, "Chọn ảnh"), requestCode); // Mở trình hộp thoại chọn ảnh
     }
 
-    // =======================================
-    // Phần chức năng: Xử lý ảnh sau khi chọn
-    // =======================================
-
+    // Xử lý ảnh sau khi chọn
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -272,9 +256,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         }
     }
 
-    // =======================================
-    // Phần chức năng: Kiểm tra và yêu cầu quyền truy cập
-    // =======================================
+    // Kiểm tra và yêu cầu quyền truy cập
     private void checkPermissions() {
         // Kiểm tra xem ứng dụng có quyền truy cập vào bộ nhớ ngoài hay không
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -282,5 +264,4 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PICK_IMAGE_AVATAR);
         }
     }
-
 }

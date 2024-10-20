@@ -28,8 +28,11 @@ public class Owner_NhanVienFragment extends Fragment {
     // Khai báo đối tượng binding để liên kết với layout của Fragment
     private FragmentOwnerNhanvienBinding ownerNhanvienBinding;
 
-    //FireBase: Khai báo DatabaseReference
+    // Firebase: Khai báo DatabaseReference
     private DatabaseReference databaseReference;
+
+    // Adapter để hiển thị danh sách nhân viên
+    private NhanVienAdapter nhanVienAdapter;
 
     @Nullable
     @Override
@@ -45,29 +48,19 @@ public class Owner_NhanVienFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        //FireBase: Khởi tạo databaseReference
+        // Firebase: Khởi tạo databaseReference
         databaseReference = FirebaseDatabase.getInstance().getReference("nhanVien"); // Đảm bảo rằng "nhanVien" là tên đúng trong Firebase Database
 
         // Thiết lập layout cho RecyclerView, sử dụng LinearLayoutManager để hiển thị danh sách theo chiều dọc
         ownerNhanvienBinding.ownerRcvNhanVien.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        //FireBase: Gọi phương thức để lấy dữ liệu từ Firebase
+        // Khởi tạo danh sách nhân viên và adapter
         List<NhanVien> nhanVienList = new ArrayList<>();
-        getNhanVienData();
-
-        /*
-        // Gọi phương thức generateDummyData() để tạo và nhận danh sách dữ liệu mẫu (50 nhân viên)
-        // Khai báo danh sách nhân viên sẽ được sử dụng để đổ dữ liệu vào RecyclerView
-        List<NhanVien> nhanVienList = generateDummyData();
-
-
-        // Khởi tạo Adapter với danh sách dữ liệu mẫu và gán nó vào RecyclerView
+        nhanVienAdapter = new NhanVienAdapter(nhanVienList);
         ownerNhanvienBinding.ownerRcvNhanVien.setAdapter(nhanVienAdapter);
-         */
 
-        // Khai báo Adapter để hiển thị danh sách nhân viên trong RecyclerView
-        NhanVienAdapter nhanVienAdapter = new NhanVienAdapter(nhanVienList);
+        // Firebase: Gọi phương thức để lấy dữ liệu từ Firebase
+        getNhanVienData();
 
         // Thiết lập sự kiện khi nhấn vào một item trong danh sách nhân viên
         nhanVienAdapter.setOnItemClickListener(nhanVien -> {
@@ -93,16 +86,18 @@ public class Owner_NhanVienFragment extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<NhanVien> nhanVienList = new ArrayList<>();
+                // Xóa danh sách cũ trước khi thêm dữ liệu mới
+                nhanVienAdapter.getNhanVienList().clear();
+
+                // Duyệt qua các snapshot và thêm dữ liệu nhân viên vào danh sách
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     NhanVien nhanVien = snapshot.getValue(NhanVien.class);
                     if (nhanVien != null) {
-                        nhanVienList.add(nhanVien);
+                        nhanVienAdapter.getNhanVienList().add(nhanVien);
                     }
                 }
-                // Cập nhật adapter với dữ liệu mới
-                NhanVienAdapter nhanVienAdapter = new NhanVienAdapter(nhanVienList);
-                ownerNhanvienBinding.ownerRcvNhanVien.setAdapter(nhanVienAdapter);
+                // Thông báo cho adapter cập nhật dữ liệu
+                nhanVienAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -110,24 +105,6 @@ public class Owner_NhanVienFragment extends Fragment {
                 // Xử lý lỗi nếu có
             }
         });
-    }
-
-    // Phương thức tạo dữ liệu mẫu gồm 50 nhân viên
-    private List<NhanVien> generateDummyData() {
-        // Khởi tạo danh sách nhân viên rỗng
-        List<NhanVien> nhanVienList = new ArrayList<>();
-
-        // Vòng lặp từ 1 đến 50 để tạo 50 nhân viên
-        for (int i = 1; i <= 50; i++) {
-            // ChucVu chỉ nhận giá trị 0 (Kho) hoặc 1 (Giao Hàng), sử dụng i % 2 để luân phiên giữa 0 và 1
-            int chucVu = i % 2;
-
-            // Thêm nhân viên vào danh sách với thông tin cơ bản (ID, IDChu, Tên, Chức vụ, Số điện thoại, Email)
-            nhanVienList.add(new NhanVien(i, 1, "Nhan Vien " + i, chucVu, "0123456789" + i, "nhanvien" + i + "@example.com"));
-        }
-
-        // Trả về danh sách nhân viên sau khi đã tạo đủ 50 phần tử
-        return nhanVienList;
     }
 
     @Override
@@ -138,4 +115,5 @@ public class Owner_NhanVienFragment extends Fragment {
         ownerNhanvienBinding = null;
     }
 }
+
 
