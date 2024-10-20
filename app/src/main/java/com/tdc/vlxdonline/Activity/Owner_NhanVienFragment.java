@@ -1,16 +1,20 @@
 package com.tdc.vlxdonline.Activity;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tdc.vlxdonline.Adapter.NhanVienAdapter;
 import com.tdc.vlxdonline.Model.NhanVien;
 import com.tdc.vlxdonline.R;
@@ -23,6 +27,9 @@ public class Owner_NhanVienFragment extends Fragment {
 
     // Khai báo đối tượng binding để liên kết với layout của Fragment
     private FragmentOwnerNhanvienBinding ownerNhanvienBinding;
+
+    //FireBase: Khai báo DatabaseReference
+    private DatabaseReference databaseReference;
 
     @Nullable
     @Override
@@ -37,17 +44,30 @@ public class Owner_NhanVienFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+        //FireBase: Khởi tạo databaseReference
+        databaseReference = FirebaseDatabase.getInstance().getReference("nhanVien"); // Đảm bảo rằng "nhanVien" là tên đúng trong Firebase Database
+
         // Thiết lập layout cho RecyclerView, sử dụng LinearLayoutManager để hiển thị danh sách theo chiều dọc
         ownerNhanvienBinding.ownerRcvNhanVien.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        //FireBase: Gọi phương thức để lấy dữ liệu từ Firebase
+        List<NhanVien> nhanVienList = new ArrayList<>();
+        getNhanVienData();
+
+        /*
         // Gọi phương thức generateDummyData() để tạo và nhận danh sách dữ liệu mẫu (50 nhân viên)
         // Khai báo danh sách nhân viên sẽ được sử dụng để đổ dữ liệu vào RecyclerView
         List<NhanVien> nhanVienList = generateDummyData();
 
+
         // Khởi tạo Adapter với danh sách dữ liệu mẫu và gán nó vào RecyclerView
+        ownerNhanvienBinding.ownerRcvNhanVien.setAdapter(nhanVienAdapter);
+         */
+
         // Khai báo Adapter để hiển thị danh sách nhân viên trong RecyclerView
         NhanVienAdapter nhanVienAdapter = new NhanVienAdapter(nhanVienList);
-        ownerNhanvienBinding.ownerRcvNhanVien.setAdapter(nhanVienAdapter);
 
         // Thiết lập sự kiện khi nhấn vào một item trong danh sách nhân viên
         nhanVienAdapter.setOnItemClickListener(nhanVien -> {
@@ -66,6 +86,29 @@ public class Owner_NhanVienFragment extends Fragment {
                     .replace(R.id.fragment_owner, detailFragment) // Thay thế fragment_owner bằng fragment chi tiết
                     .addToBackStack(null) // Cho phép quay lại màn hình trước khi nhấn nút Back
                     .commit(); // Áp dụng transaction
+        });
+    }
+
+    private void getNhanVienData() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<NhanVien> nhanVienList = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    NhanVien nhanVien = snapshot.getValue(NhanVien.class);
+                    if (nhanVien != null) {
+                        nhanVienList.add(nhanVien);
+                    }
+                }
+                // Cập nhật adapter với dữ liệu mới
+                NhanVienAdapter nhanVienAdapter = new NhanVienAdapter(nhanVienList);
+                ownerNhanvienBinding.ownerRcvNhanVien.setAdapter(nhanVienAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Xử lý lỗi nếu có
+            }
         });
     }
 
