@@ -28,7 +28,7 @@
         android:textStyle="bold"/>
     <EditText
         style="@style/item_lg"
-        android:id="@+id/edt_ho_ten"
+        android:id="@+id/edt_ho_ten_rg"
         android:hint="Nhập Họ Tên ....."/>
 
     <TextView
@@ -42,7 +42,7 @@
         android:textStyle="bold"/>
     <EditText
         style="@style/item_lg"
-        android:id="@+id/edt_SDT"
+        android:id="@+id/edt_SDT_rg"
         android:hint="Nhập Số Điện Thoại ....."/>
 
     <TextView
@@ -56,7 +56,7 @@
         android:textStyle="bold"/>
     <EditText
         style="@style/item_lg"
-        android:id="@+id/edt_email_lg"
+        android:id="@+id/edt_email_rg"
         android:hint="Nhập Email ....."/>
 
     <TextView
@@ -70,7 +70,7 @@
         android:textStyle="bold"/>
     <EditText
         style="@style/item_lg"
-        android:id="@+id/edt_pass_lg"
+        android:id="@+id/edt_pass_rg"
         android:hint="Nhập Mật khẩu ....."
         android:inputType="textPassword"/>
 
@@ -85,13 +85,13 @@
         android:textStyle="bold"/>
     <EditText
         style="@style/item_lg"
-        android:id="@+id/edt_rePass_lg"
+        android:id="@+id/edt_rePass_rg"
         android:hint="Nhập Lại Mật khẩu ....."
         android:inputType="textPassword"/>
 
     <Spinner
         android:layout_marginTop="14dp"
-        android:id="@+id/sp_role_lg"
+        android:id="@+id/sp_role_rg"
         android:layout_width="250dp"
         android:layout_height="35dp"
         android:background="@drawable/bg_item_lg"

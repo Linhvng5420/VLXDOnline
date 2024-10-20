@@ -53,7 +53,7 @@ public class Customer_HomeActivity extends AppCompatActivity {
     }
 
     // Replace khi ấn chọn màn hình khác hiện tại
-    private void ReplaceFragment(Fragment fragment) {
+    public void ReplaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(customerHomeBinding.frmCustomer.getId());
         if (currentTag == null && currentFragment != null) currentTag = currentFragment.getClass().getName();
@@ -99,8 +99,8 @@ public class Customer_HomeActivity extends AppCompatActivity {
         Drawable drawableIcon = getResources().getDrawable(android.R.drawable.ic_dialog_alert);
         drawableIcon.setTint(Color.RED);
         builder.setIcon(drawableIcon);
-        Drawable drawableBg = getResources().getDrawable(R.drawable.bg_detail);
-        drawableBg.setTint(Color.rgb(100, 100, 100));
+        Drawable drawableBg = getResources().getDrawable(R.drawable.bg_item_lg);
+        drawableBg.setTint(Color.rgb(130, 130, 130));
         AlertDialog alertDialog = builder.create();
         alertDialog.getWindow().setBackgroundDrawable(drawableBg);
         alertDialog.show();
