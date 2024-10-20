@@ -87,6 +87,9 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
         // Thiết lập sự kiện cho nút Lưu Lại
         EventBtnLuuLai();
+
+        // Thiết lập sự kiện cho nút Xóa
+        EventBtnXoa();
     }
 
     // =======================================
@@ -137,7 +140,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
     }
 
     // =======================================
-    // Phần chức năng: Thiết lập sự kiện cho nút Chỉnh Sửa
+    // Thiết lập sự kiện cho nút
     // =======================================
 
     private void EventBtnChinhSua() {
@@ -153,9 +156,10 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             nhanvienDetailBinding.spinnerChucVu.setVisibility(View.VISIBLE);
             nhanvienDetailBinding.tvChucVu.setVisibility(View.VISIBLE);
 
-            // Hiển thị nút Lưu Lại
+            // Hiển thị nút Lưu Lại, nút Xóa. Ẩn nút Chỉnh Sửa
             nhanvienDetailBinding.btnLuuLai.setVisibility(View.VISIBLE);
-            nhanvienDetailBinding.btnChinhSua.setVisibility(View.GONE);
+            nhanvienDetailBinding.btnChinhSua.setVisibility(View.INVISIBLE);
+            nhanvienDetailBinding.btnXoa.setVisibility(View.VISIBLE);
 
             // Cho phép người dùng chọn ảnh khi nhấn vào các ImageView
             ivAvatar.setOnClickListener(v1 -> openImagePicker(PICK_IMAGE_AVATAR));
@@ -164,43 +168,65 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         });
     }
 
-    // =======================================
-    // Phần chức năng: Thiết lập sự kiện cho nút Lưu Lại
-    // =======================================
+
+    private void EventBtnXoa() {
+        nhanvienDetailBinding.btnXoa.setOnClickListener(view -> {
+            // Tạo hộp thoại xác nhận
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Xác Nhận")
+                    .setMessage("Bạn có chắc chắn muốn xóa nhân viên không?")
+                    .setPositiveButton("Có", (dialog, which) -> {
+                        // Thực hiện thao tác xóa nhân viên tại đây (xóa trong cơ sở dữ liệu hoặc danh sách)
+
+                        // Hiển thị thông báo đã xóa thành công
+                        Toast.makeText(getContext(), "Đã xóa nhân viên!", Toast.LENGTH_SHORT).show();
+
+                        // Quay lại màn hình quản lý nhân viên sau khi xóa
+                        getParentFragmentManager().popBackStack();
+                    })
+                    .setNegativeButton("Không", null) // Không làm gì khi người dùng nhấn "Không"
+                    .show();
+        });
+    }
+
 
     private void EventBtnLuuLai() {
         nhanvienDetailBinding.btnLuuLai.setOnClickListener(v -> {
             // Tạo hộp thoại xác nhận
-            new AlertDialog.Builder(getContext()).setTitle("Xác Nhận").setMessage("Bạn có chắc chắn muốn lưu thay đổi không?").setPositiveButton("Có", (dialog, which) -> {
-                // Lưu giá trị Chức vụ từ Spinner
-                selectedNhanVien.setChucVu(spinnerChucVu.getSelectedItemPosition()); // Lưu 0 cho "Kho" và 1 cho "Giao Hàng"
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Xác Nhận")
+                    .setMessage("Bạn có chắc chắn muốn lưu thay đổi không?")
+                    .setPositiveButton("Có", (dialog, which) -> {
+                        // Lưu giá trị Chức vụ từ Spinner
+                        selectedNhanVien.setChucVu(spinnerChucVu.getSelectedItemPosition()); // Lưu 0 cho "Kho" và 1 cho "Giao Hàng"
 
-                // Vô hiệu hóa các trường chỉnh sửa sau khi lưu
-                nhanvienDetailBinding.etTenNhanVien.setEnabled(false);
-                nhanvienDetailBinding.etSDT.setEnabled(false);
-                nhanvienDetailBinding.etEmail.setEnabled(false);
+                        // Vô hiệu hóa các trường chỉnh sửa sau khi lưu
+                        nhanvienDetailBinding.etTenNhanVien.setEnabled(false);
+                        nhanvienDetailBinding.etSDT.setEnabled(false);
+                        nhanvienDetailBinding.etEmail.setEnabled(false);
 
-                // Ẩn Spinner và hiển thị TextView cho chức vụ
-                nhanvienDetailBinding.tilChucVu.setVisibility(View.VISIBLE);
-                nhanvienDetailBinding.etChucVu.setVisibility(View.VISIBLE);
-                nhanvienDetailBinding.spinnerChucVu.setVisibility(View.INVISIBLE);
-                nhanvienDetailBinding.tvChucVu.setVisibility(View.INVISIBLE);
+                        // Ẩn Spinner và hiển thị TextView cho chức vụ
+                        nhanvienDetailBinding.tilChucVu.setVisibility(View.VISIBLE);
+                        nhanvienDetailBinding.etChucVu.setVisibility(View.VISIBLE);
+                        nhanvienDetailBinding.spinnerChucVu.setVisibility(View.INVISIBLE);
+                        nhanvienDetailBinding.tvChucVu.setVisibility(View.INVISIBLE);
 
-                // Ẩn nút Lưu Lại sau khi lưu
-                nhanvienDetailBinding.btnLuuLai.setVisibility(View.GONE);
-                nhanvienDetailBinding.btnChinhSua.setVisibility(View.VISIBLE);
+                        // Ẩn nút Lưu Lại, nút xóa sau khi lưu
+                        nhanvienDetailBinding.btnLuuLai.setVisibility(View.INVISIBLE);
+                        nhanvienDetailBinding.btnChinhSua.setVisibility(View.VISIBLE);
+                        nhanvienDetailBinding.btnXoa.setVisibility(View.INVISIBLE);
 
-                // Vô hiệu hóa sự kiện onClick của các ImageView (ngăn người dùng chọn ảnh sau khi lưu)
-                ivAvatar.setOnClickListener(null);
-                ivFrontId.setOnClickListener(null);
-                ivBackId.setOnClickListener(null);
+                        // Vô hiệu hóa sự kiện onClick của các ImageView (ngăn người dùng chọn ảnh sau khi lưu)
+                        ivAvatar.setOnClickListener(null);
+                        ivFrontId.setOnClickListener(null);
+                        ivBackId.setOnClickListener(null);
 
-                // Cập nhật giao diện với thông tin mới
-                nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
+                        // Cập nhật giao diện với thông tin mới
+                        nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
 
-                // Hiển thị thông báo lưu thành công
-                Toast.makeText(getContext(), "Đã lưu thành công!", Toast.LENGTH_SHORT).show();
-            }).setNegativeButton("Không", null).show(); // Hiển thị hộp thoại
+                        // Hiển thị thông báo lưu thành công
+                        Toast.makeText(getContext(), "Đã lưu thành công!", Toast.LENGTH_SHORT).show();
+                    }).setNegativeButton("Không", null).show(); // Hiển thị hộp thoại
         });
     }
 
