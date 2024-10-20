@@ -11,6 +11,9 @@ public class NhanVien implements Serializable {
     private String sdt;
     private String email;
 
+    // Constructor rỗng (cần thiết cho Firebase)
+    public NhanVien() {}
+    
     // Constructor
     public NhanVien(int id, int idChu, String tenNV, int chucVu, String sdt, String email) {
         this.id = id;
