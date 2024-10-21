@@ -40,7 +40,6 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:hint="Tên Nhân Viên"
-            android:text="Tên Nhân Viên - Text"
             android:visibility="visible" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -63,7 +62,6 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:hint="Chức Vụ"
-            android:text="Chức Vụ"
             android:visibility="visible" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -179,7 +177,6 @@
         android:contentDescription="Lưu Lại"
         android:drawableRight="@drawable/ic_save"
         android:drawableTint="#16721D"
-        android:src="@drawable/ic_save"
         android:text="Lưu Lại"
         android:textColor="#338337"
         android:textSize="22sp"
@@ -193,26 +190,6 @@
         app:maxImageSize="40dp"
         app:tint="#0ABB13" />
 
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/btnThemNV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:contentDescription="Thêm Nhân Viên"
-        android:drawableTint="#16721D"
-        android:src="@drawable/ic_save"
-        android:text="Thêm Nhân Viên"
-        android:textColor="#338337"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:visibility="invisible"
-        app:backgroundTint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:maxImageSize="40dp" />
 
     <!-- Nút Hủy Chỉnh Sửa -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -236,9 +213,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:background="@drawable/bg_item_lg"
-        android:padding="20dp"
+        android:backgroundTint="#6851A5"
+        android:padding="10dp"
         android:text="TextView"
-        android:textColor="#18991D"
+        android:textColor="#F5F5F5"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

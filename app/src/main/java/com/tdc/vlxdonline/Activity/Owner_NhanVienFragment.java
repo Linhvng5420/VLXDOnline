@@ -1,9 +1,12 @@
 package com.tdc.vlxdonline.Activity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -21,7 +25,9 @@ import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.FragmentOwnerNhanvienBinding;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Owner_NhanVienFragment extends Fragment {
 
@@ -29,16 +35,26 @@ public class Owner_NhanVienFragment extends Fragment {
     private FragmentOwnerNhanvienBinding ownerNhanvienBinding;
 
     // Firebase: Khai báo DatabaseReference
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReferenceNhanVien;
+    private DatabaseReference databaseReferenceChucVu;
 
     // Adapter để hiển thị danh sách nhân viên
     private NhanVienAdapter nhanVienAdapter;
+
+    private Map<String, String> chucVuMap = new HashMap<>();  // Khai báo Map để lưu chức vụ
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Khởi tạo View Binding cho Fragment và liên kết với layout fragment_owner_nhanvien.xml
         ownerNhanvienBinding = FragmentOwnerNhanvienBinding.inflate(inflater, container, false);
+
+        // Thiết lập OnTouchListener để ẩn bàn phím khi chạm ra ngoài EditText
+        ownerNhanvienBinding.getRoot().setOnTouchListener((v, event) -> {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            return false;     // Trả về false để tiếp tục xử lý các sự kiện chạm khác nếu có
+        });
 
         // Trả về đối tượng View được tạo từ binding, đây là root view của Fragment
         return ownerNhanvienBinding.getRoot();
@@ -49,7 +65,8 @@ public class Owner_NhanVienFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Firebase: Khởi tạo databaseReference
-        databaseReference = FirebaseDatabase.getInstance().getReference("nhanVien"); // Đảm bảo rằng "nhanVien" là tên đúng trong Firebase Database
+        databaseReferenceNhanVien = FirebaseDatabase.getInstance().getReference("NhanVien");
+        databaseReferenceChucVu = FirebaseDatabase.getInstance().getReference("ChucVu");
 
         // Thiết lập layout cho RecyclerView, sử dụng LinearLayoutManager để hiển thị danh sách theo chiều dọc
         ownerNhanvienBinding.ownerRcvNhanVien.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -61,6 +78,7 @@ public class Owner_NhanVienFragment extends Fragment {
 
         // Firebase: Gọi phương thức để lấy dữ liệu từ Firebase
         getNhanVienData();
+        getChucVuData();
 
         // Sự kiện khi nhấn nút Thêm Nhân Viên
         SuKienThemNhanVien();
@@ -112,21 +130,49 @@ public class Owner_NhanVienFragment extends Fragment {
     }
 
     private void getNhanVienData() {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReferenceNhanVien.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Xóa danh sách cũ trước khi thêm dữ liệu mới
-                nhanVienAdapter.getNhanVienList().clear();
+                nhanVienAdapter.getNhanVienList().clear();  // Xóa danh sách cũ
 
-                // Duyệt qua các snapshot và thêm dữ liệu nhân viên vào danh sách
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    NhanVien nhanVien = snapshot.getValue(NhanVien.class);
-                    if (nhanVien != null) {
-                        nhanVienAdapter.getNhanVienList().add(nhanVien);
+                    try {
+                        NhanVien nhanVien = snapshot.getValue(NhanVien.class);
+                        if (nhanVien != null) {
+                            // Thay thế mã chức vụ bằng tên chức vụ
+                            String tenChucVu = chucVuMap.get(nhanVien.getChucVu());
+                            nhanVien.setChucVu(tenChucVu != null ? tenChucVu : "N/A");  // Nếu không tìm thấy, đặt là "N/A"
+
+                            nhanVienAdapter.getNhanVienList().add(nhanVien);  // Thêm nhân viên vào danh sách
+                        }
+                    } catch (DatabaseException e) {
+                        Log.e("FirebaseError", "Lỗi chuyển đổi dữ liệu: " + e.getMessage());
                     }
                 }
-                // Thông báo cho adapter cập nhật dữ liệu
-                nhanVienAdapter.notifyDataSetChanged();
+                nhanVienAdapter.notifyDataSetChanged();  // Cập nhật adapter
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Xử lý lỗi nếu có
+            }
+        });
+    }
+
+
+
+    private void getChucVuData() {
+        databaseReferenceChucVu.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                chucVuMap.clear();  // Xóa danh sách chức vụ cũ trước khi thêm mới
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String maChucVu = snapshot.getKey();  // Lấy mã chức vụ
+                    String tenChucVu = snapshot.child("Ten").getValue(String.class);  // Lấy tên chức vụ
+                    if (maChucVu != null && tenChucVu != null) {
+                        chucVuMap.put(maChucVu, tenChucVu);  // Thêm vào Map
+                    }
+                }
             }
 
             @Override

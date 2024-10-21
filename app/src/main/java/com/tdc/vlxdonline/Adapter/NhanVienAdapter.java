@@ -87,9 +87,7 @@ public class NhanVienAdapter extends RecyclerView.Adapter<NhanVienAdapter.NhanVi
             // Hiển thị tên nhân viên
             binding.tvTenNV.setText(nhanVien.getTenNV());
 
-            // Hiển thị chức vụ: 0 là Kho, 1 là Giao Hàng
-            String chucVuText = nhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng";
-            binding.tvChucVu.setText(chucVuText); // Gán giá trị chức vụ vào TextView
+            binding.tvChucVu.setText(nhanVien.getChucVu()); // Gán giá trị chức vụ vào TextView
         }
     }
 }

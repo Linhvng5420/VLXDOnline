@@ -4,40 +4,38 @@ import java.io.Serializable;
 
 // Lớp NhanVien implement giao diện Serializable để có thể truyền dữ liệu giữa các Activity hoặc Fragment
 public class NhanVien implements Serializable {
-    private int ID;
-    private int IDChu;
+    private String ID;
+    private String IDChu;
     private String TenNV;
-    private int ChucVu;
+    private String ChucVu;
     private String SDT;
     private String Email;
 
     // Constructor rỗng (cần thiết cho Firebase)
     public NhanVien() {}
 
-    public NhanVien(int ID, int IDChu, String TenNV, int ChucVu, String SDT, String Email) {
+    public NhanVien(String ID, String IDChu, String tenNV, String chucVu, String SDT, String email) {
         this.ID = ID;
         this.IDChu = IDChu;
-        this.TenNV = TenNV;
-        this.ChucVu = ChucVu;
+        TenNV = tenNV;
+        ChucVu = chucVu;
         this.SDT = SDT;
-        this.Email = Email;
+        Email = email;
     }
 
-    // Getters and Setters
-
-    public int getID() {
+    public String getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 
-    public int getIDChu() {
+    public String getIDChu() {
         return IDChu;
     }
 
-    public void setIDChu(int IDChu) {
+    public void setIDChu(String IDChu) {
         this.IDChu = IDChu;
     }
 
@@ -45,16 +43,16 @@ public class NhanVien implements Serializable {
         return TenNV;
     }
 
-    public void setTenNV(String TenNV) {
-        this.TenNV = TenNV;
+    public void setTenNV(String tenNV) {
+        TenNV = tenNV;
     }
 
-    public int getChucVu() {
+    public String getChucVu() {
         return ChucVu;
     }
 
-    public void setChucVu(int ChucVu) {
-        this.ChucVu = ChucVu;
+    public void setChucVu(String chucVu) {
+        ChucVu = chucVu;
     }
 
     public String getSDT() {
@@ -69,7 +67,7 @@ public class NhanVien implements Serializable {
         return Email;
     }
 
-    public void setEmail(String Email) {
-        this.Email = Email;
+    public void setEmail(String email) {
+        Email = email;
     }
 }

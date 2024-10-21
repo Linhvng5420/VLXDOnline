@@ -21,25 +21,28 @@ import com.tdc.vlxdonline.Model.NhanVien;
 import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.FragmentOwnerNhanvienDetailBinding;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Owner_NhanVienDetailFragment extends Fragment {
 
     // Khai báo đối tượng NhanVien để lưu trữ thông tin nhân viên được chọn
     private NhanVien selectedNhanVien;
     // Khai báo đối tượng binding để tương tác với các thành phần trong giao diện (layout fragment_owner_nhanvien_detail.xml)
     private FragmentOwnerNhanvienDetailBinding nhanvienDetailBinding;
-
-    // Khai báo DatabaseReference để kết nối với Firebase
-    private DatabaseReference databaseReference;
-
     // Khai báo Spinner và danh sách chức vụ cho nhân viên
     private Spinner spinnerChucVu;
     private String[] chucVuArray = {"Kho", "Giao Hàng"};
+
+    // Khai báo DatabaseReference để kết nối với Firebase
+    private DatabaseReference databaseReference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Khởi tạo databaseReference với tên nhánh cần truy cập trong Firebase
-        databaseReference = FirebaseDatabase.getInstance().getReference("nhanVien");
+        databaseReference = FirebaseDatabase.getInstance().getReference("NhanVien");
     }
 
     @Override
@@ -61,10 +64,10 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
         if (isAddingNewEmployee) {
             // Hiển thị giao diện thêm mới
-            setupAddNewEmployeeUI();
+            setupThemNhanVienMoiUI();
         } else {
             // Xử lý hiển thị chi tiết nhân viên (trường hợp chỉnh sửa)
-            retrieveDataFromBundle();
+            nhanDuLieuTuBundle();
             setupEditButton();
         }
 
@@ -73,10 +76,10 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
         if (isAddingNewEmployee) {
             // Hiển thị giao diện thêm mới
-            setupAddNewEmployeeUI();
+            setupThemNhanVienMoiUI();
         } else {
             // Xử lý hiển thị chi tiết nhân viên
-            retrieveDataFromBundle();
+            nhanDuLieuTuBundle();
             setupEditButton();
         }
 
@@ -118,22 +121,22 @@ public class Owner_NhanVienDetailFragment extends Fragment {
     }
 
 
-    private void retrieveDataFromBundle() {
+    private void nhanDuLieuTuBundle() {
         if (getArguments() != null) {
             // Lấy thông tin nhân viên từ Bundle
             selectedNhanVien = (NhanVien) getArguments().getSerializable("selectedNhanVien");
 
             if (selectedNhanVien != null) {
                 // Hiển thị thông tin nhân viên lên giao diện (trường hợp chỉnh sửa)
-                nhanvienDetailBinding.tvIDNhanVien.setText("ID: " + selectedNhanVien.getID());
+                nhanvienDetailBinding.tvIDNhanVien.setText("ID " + selectedNhanVien.getID());
                 nhanvienDetailBinding.etTenNhanVien.setText(selectedNhanVien.getTenNV());
-                nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
+                nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu());
                 nhanvienDetailBinding.etSDT.setText(selectedNhanVien.getSDT());
                 nhanvienDetailBinding.etEmail.setText(selectedNhanVien.getEmail());
             }
         } else {
             // Trường hợp thêm nhân viên mới, không có dữ liệu => để các trường trống
-            nhanvienDetailBinding.tvIDNhanVien.setText("ID: Tự động tạo");
+            nhanvienDetailBinding.tvIDNhanVien.setText("ID Tự động tạo");
             nhanvienDetailBinding.etTenNhanVien.setText("");
             nhanvienDetailBinding.etChucVu.setText("");
             nhanvienDetailBinding.etSDT.setText("");
@@ -147,14 +150,16 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerChucVu.setAdapter(adapter);
 
+        List<String> chucVuList = new ArrayList<>(Arrays.asList("Kho", "Giao Hàng"));
+
         // Thiết lập lựa chọn mặc định cho Spinner nếu đang chỉnh sửa nhân viên
+        String chucVuSelected = selectedNhanVien.getChucVu();
+        int position = chucVuList.indexOf(chucVuSelected);
         if (selectedNhanVien != null) {
-            spinnerChucVu.setSelection(selectedNhanVien.getChucVu()); // 0 cho "Kho" và 1 cho "Giao Hàng"
+            spinnerChucVu.setSelection(position);
         }
     }
 
-
-    // Thiết lập sự kiện cho nút Chỉnh Sửa
     // Thiết lập sự kiện cho nút Chỉnh Sửa
     private void setupEditButton() {
         if (selectedNhanVien == null) return; // Không cần xử lý nếu không có nhân viên để chỉnh sửa
@@ -218,7 +223,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                     .setMessage("Bạn có chắc chắn muốn lưu thay đổi không?")
                     .setPositiveButton("Có", (dialog, which) -> {
                         // Lưu giá trị Chức vụ từ Spinner
-                        selectedNhanVien.setChucVu(spinnerChucVu.getSelectedItemPosition()); // Lưu 0 cho "Kho" và 1 cho "Giao Hàng"
+//                        selectedNhanVien.setChucVu(spinnerChucVu.getSelectedItemPosition()); // Lưu 0 cho "Kho" và 1 cho "Giao Hàng"
 
                         // Cập nhật thông tin nhân viên trong Firebase
                         databaseReference.child(String.valueOf(selectedNhanVien.getID())).setValue(selectedNhanVien)
@@ -242,7 +247,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                                     nhanvienDetailBinding.btnChinhSua.setVisibility(View.VISIBLE);
 
                                     // Cập nhật giao diện với thông tin mới
-                                    nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
+//                                    nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
 
                                     // Hiển thị thông báo lưu thành công
                                     Toast.makeText(getContext(), "Đã lưu thành công!", Toast.LENGTH_SHORT).show();
@@ -291,9 +296,9 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
     // 2. Xử lý thêm nhân viên
     // Phương thức thiết lập giao diện thêm nhân viên mới
-    private void setupAddNewEmployeeUI() {
+    private void setupThemNhanVienMoiUI() {
         // Vô hiệu hóa ID vì đây là nhân viên mới
-        nhanvienDetailBinding.tvIDNhanVien.setText("ID: Tự động tạo");
+        nhanvienDetailBinding.tvIDNhanVien.setText("ID Tự động tạo");
 
         // Hiển thị các trường nhập cho tên, số điện thoại, email, chức vụ
         nhanvienDetailBinding.etTenNhanVien.setEnabled(true);
@@ -308,26 +313,30 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
         // Hiển thị nút Thêm Nhân Viên và nút Hủy
         nhanvienDetailBinding.btnLuuLai.setText("Thêm Nhân Viên");
+        // Gỡ icon ra khỏi nút và Đặt icon ở vị trí dưới cùng (bottom)
+        nhanvienDetailBinding.btnLuuLai.setCompoundDrawablesWithIntrinsicBounds(null, null, null, getResources().getDrawable(R.drawable.people_add));
+        nhanvienDetailBinding.btnLuuLai.setCompoundDrawablePadding(10); // Khoảng cách giữa icon và văn bản (Giảm dần)
         nhanvienDetailBinding.btnLuuLai.setVisibility(View.VISIBLE);
-        nhanvienDetailBinding.btnHuy.setVisibility(View.VISIBLE);
+        nhanvienDetailBinding.btnHuy.setVisibility(View.INVISIBLE);
+        nhanvienDetailBinding.btnChinhSua.setVisibility(View.INVISIBLE);
 
         // Thiết lập sự kiện thêm nhân viên
-        nhanvienDetailBinding.btnLuuLai.setOnClickListener(v -> addNewEmployee());
+        nhanvienDetailBinding.btnLuuLai.setOnClickListener(v -> themNhaVienMoi());
     }
 
 
     // Phương thức xử lý logic thêm nhân viên mới vào Firebase
-    private void addNewEmployee() {
+    private void themNhaVienMoi() {
         String tenNhanVien = nhanvienDetailBinding.etTenNhanVien.getText().toString();
         String sdt = nhanvienDetailBinding.etSDT.getText().toString();
         String email = nhanvienDetailBinding.etEmail.getText().toString();
-        int chucVu = spinnerChucVu.getSelectedItemPosition();
+        String chucVu = spinnerChucVu.getSelectedItem().toString();
 
         // Tạo ID cho nhân viên mới
-        int newID = databaseReference.push().getKey().hashCode();
+        String newID = String.valueOf(databaseReference.push().getKey().hashCode());
 
         // Tạo đối tượng NhanVien mới
-        NhanVien newNhanVien = new NhanVien(newID, 0, tenNhanVien, chucVu, sdt, email);
+        NhanVien newNhanVien = new NhanVien(newID, "0", tenNhanVien, chucVu, sdt, email);
 
         // Thêm nhân viên mới vào Firebase
         databaseReference.child(String.valueOf(newID)).setValue(newNhanVien)
