@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,7 +39,7 @@ import java.util.List;
 /*import SanPham_Adapter.SanPham_Adapter;
 import SanPham_Model.SanPham_Model;*/
 
-public class ThemSanPham extends AppCompatActivity {
+public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
     SwipeRefreshLayout swipeRefreshLayout;
 
 
@@ -81,7 +80,7 @@ public class ThemSanPham extends AppCompatActivity {
                             uri = data.getData();
                             ivImages.setImageURI(uri);
                         } else {
-                            Toast.makeText(ThemSanPham.this, "Khong chon anh", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Warehouse_ThemSanPhamActivity.this, "Khong chon anh", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -145,7 +144,7 @@ public class ThemSanPham extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference("SanPham").child("SP" + id_).setValue(sanPhamModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(ThemSanPham.this, "Thêm Thành Công", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Warehouse_ThemSanPhamActivity.this, "Thêm Thành Công", Toast.LENGTH_SHORT).show();
             }
         });
     }

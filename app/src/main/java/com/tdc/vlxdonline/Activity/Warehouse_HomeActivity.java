@@ -23,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
+// QuanLySanPham
 public class Warehouse_HomeActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     List<SanPham_Model> list = new ArrayList<>();
@@ -40,6 +40,7 @@ public class Warehouse_HomeActivity extends AppCompatActivity {
         setControl();
         getDate();
         setEvent();
+//        EventNavigationBottom();
 
     }
 
@@ -75,7 +76,7 @@ public class Warehouse_HomeActivity extends AppCompatActivity {
         ivbtnthem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Warehouse_HomeActivity.this, ThemSanPham.class);
+                Intent intent = new Intent(Warehouse_HomeActivity.this, Warehouse_ThemSanPhamActivity.class);
                 startActivity(intent);
             }
         });
@@ -85,4 +86,32 @@ public class Warehouse_HomeActivity extends AppCompatActivity {
         ivbtnthem = findViewById(R.id.ivbtnthem);
         recyclerView = findViewById(R.id.recycleview);
     }
+
+   /* // Bắt sự kiện nhấn Navbar Bottom
+    private void EventNavigationBottom() {
+        warehouseHomeBinding.navWarehouse.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.nav_owner_dashboard) {
+                ReplaceFragment(new Fragment());
+            } else if (itemId == R.id.nav_owner_nhanvien) {
+                ReplaceFragment(new Fragment());
+            } else if (itemId == R.id.nav_owner_khachhang) {
+                ReplaceFragment(new Fragment());
+            } else if (itemId == R.id.nav_owner_donhang) {
+                ReplaceFragment(new Fragment());
+            } else if (itemId == R.id.nav_owner_kho) {
+                ReplaceFragment(new Fragment());
+            }
+
+            return true;
+        });
+    }
+
+    private void ReplaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id."Thay Thế Tên Fragment_.xml vào đây", fragment);
+        fragmentTransaction.commit();
+    }*/
 }

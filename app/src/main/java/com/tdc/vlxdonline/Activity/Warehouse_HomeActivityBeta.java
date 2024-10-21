@@ -78,7 +78,7 @@ public class Warehouse_HomeActivityBeta extends AppCompatActivity {
         ivbtnthem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Warehouse_HomeActivityBeta.this, ThemSanPham.class);
+                Intent intent = new Intent(Warehouse_HomeActivityBeta.this, Warehouse_ThemSanPhamActivity.class);
                 startActivity(intent);
             }
         });
