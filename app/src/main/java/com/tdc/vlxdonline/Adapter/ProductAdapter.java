@@ -55,20 +55,34 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
             }
         }
         holder.binding.tvPriceItem.setText(chuoi);
+        // SetUp lai danh gia truoc khi hien thi theo san pham
+        holder.binding.tvChuaDg.setVisibility(View.VISIBLE);
+        holder.binding.lnSoSao.setVisibility(View.VISIBLE);
+        holder.binding.star1.setImageResource(R.drawable.star_disable);
+        holder.binding.star2.setImageResource(R.drawable.star_disable);
+        holder.binding.star3.setImageResource(R.drawable.star_disable);
+        holder.binding.star4.setImageResource(R.drawable.star_disable);
+        holder.binding.star5.setImageResource(R.drawable.star_disable);
+        // Hien thi danh gia theo so sao
         if (product.getSoSao() > 0) {
-            if (product.getSoSao() < 4.8) {
-                holder.binding.star5.setImageResource(R.drawable.star_disable);
+            holder.binding.tvChuaDg.setVisibility(View.GONE);
+            holder.binding.star1.setImageResource(R.drawable.star);
+            if (product.getSoSao() > 1.7) {
+                holder.binding.star2.setImageResource(R.drawable.star);
             }
-            if (product.getSoSao() < 3.8) {
-                holder.binding.star4.setImageResource(R.drawable.star_disable);
+            if (product.getSoSao() > 2.7) {
+                holder.binding.star3.setImageResource(R.drawable.star);
             }
-            if (product.getSoSao() < 2.8) {
-                holder.binding.star3.setImageResource(R.drawable.star_disable);
+            if (product.getSoSao() > 3.7) {
+                holder.binding.star4.setImageResource(R.drawable.star);
             }
-            if (product.getSoSao() < 1.8) {
-                holder.binding.star2.setImageResource(R.drawable.star_disable);
+            if (product.getSoSao() > 4.7) {
+                holder.binding.star5.setImageResource(R.drawable.star);
             }
+        }else{
+            holder.binding.lnSoSao.setVisibility(View.GONE);
         }
+
         holder.binding.btnBuy.setVisibility(displayButtonBuy);
         final int pos = position;
         holder.position = pos;

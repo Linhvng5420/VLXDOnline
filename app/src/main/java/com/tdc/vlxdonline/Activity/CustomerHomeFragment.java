@@ -25,6 +25,8 @@ import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.FragmentCustomerHomeBinding;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class CustomerHomeFragment extends Fragment {
 
@@ -96,7 +98,7 @@ public class CustomerHomeFragment extends Fragment {
         binding.spXapSep.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                SapXepDanhSach(position);
             }
 
             @Override
@@ -152,6 +154,25 @@ public class CustomerHomeFragment extends Fragment {
         });
         binding.rcProdCustomerHome.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         binding.rcProdCustomerHome.setAdapter(productAdapter);
+    }
+
+    private void SapXepDanhSach(int type){
+        Collections.sort(dataProds, new Comparator<Products>() {
+            @Override
+            public int compare(Products p1, Products p2) {
+                if (type == 1) {
+                    return Double.compare(p1.getSoSao(), p2.getSoSao());
+                } else if (type == 2) {
+                    return Double.compare(p2.getSoSao(), p1.getSoSao());
+                } else if (type == 3) {
+                    return Integer.compare(p1.getGia(), p2.getGia());
+                } else if (type == 4) {
+                    return Integer.compare(p2.getGia(), p1.getGia());
+                }
+                return 0;
+            }
+        });
+        productAdapter.notifyDataSetChanged();
     }
 
     @Override

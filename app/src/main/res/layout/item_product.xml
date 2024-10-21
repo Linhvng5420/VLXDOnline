@@ -33,7 +33,16 @@
             android:textSize="18dp"
             android:text="Tên Sản Phẩm"
             android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tv_chua_dg"
+            android:layout_width="170dp"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:text="Chưa Có Đánh Giá"
+            android:textColor="#FA0"
+            android:textStyle="bold"/>
         <LinearLayout
+            android:id="@+id/ln_so_sao"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:gravity="center">
@@ -41,23 +50,23 @@
                 android:id="@+id/star_1"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/star"/>
+                android:src="@drawable/star_disable"/>
             <ImageView
                 android:id="@+id/star_2"
                 style="@style/ThemeStar"
-                android:src="@drawable/star"/>
+                android:src="@drawable/star_disable"/>
             <ImageView
                 android:id="@+id/star_3"
                 style="@style/ThemeStar"
-                android:src="@drawable/star"/>
+                android:src="@drawable/star_disable"/>
             <ImageView
                 android:id="@+id/star_4"
                 style="@style/ThemeStar"
-                android:src="@drawable/star"/>
+                android:src="@drawable/star_disable"/>
             <ImageView
                 android:id="@+id/star_5"
                 style="@style/ThemeStar"
-                android:src="@drawable/star"/>
+                android:src="@drawable/star_disable"/>
         </LinearLayout>
         <TextView
             android:id="@+id/tvPriceItem"
