@@ -7,13 +7,57 @@
     android:orientation="vertical"
     tools:context=".Activity.Warehouse_HomeActivity">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9"
         android:orientation="vertical">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#C5DFF4"
+            android:orientation="vertical"
+            tools:context=".Activity.Warehouse_HomeActivity">
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="#000000" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="9"
+                    android:drawableLeft="@drawable/baseline_search_24"
+                    android:hint="Tìm kiếm nhân viên" />
+
+                <ImageButton
+                    android:id="@+id/ivbtnthem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:src="@drawable/add_icon" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp" />
+
+        </LinearLayout>
+    </FrameLayout>
 
     <!--  NAVIGATOR BOTTON  -->
     <LinearLayout
