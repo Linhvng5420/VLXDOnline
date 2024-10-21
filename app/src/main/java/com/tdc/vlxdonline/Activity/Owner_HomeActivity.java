@@ -25,7 +25,7 @@ public class Owner_HomeActivity extends AppCompatActivity {
         // Thiết lập nội dung hiển thị của Activity từ layout đã được binding
         setContentView(ownerHomeBinding.getRoot());
         // Thiết lập Fragment mặc định (Hiển thị màn hình mặc định ban đầu của ứng dụng)
-        ReplaceFragment(new Owner_NhanVienFragment());
+//        ReplaceFragment(new Owner_NhanVienFragment());
 
         // TODO: Gọi phương thức bắt sự kiện khi nhấn các nút trên thanh điều hướng (Bottom Navigation Bar)
         EventNavigationBottom();

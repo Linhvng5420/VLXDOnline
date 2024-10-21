@@ -19,8 +19,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="Chi tiết Nhân Viên" />
 
-    <!-- Avatar của Nhân Viên -->
-
     <!-- EditText Tên Nhân Viên (Mặc định: Không Cho Sửa)-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilTenNhanVien"
@@ -140,10 +138,6 @@
             android:hint="Email" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Hình Căn Cước Mặt Trước -->
-
-    <!-- Hình Căn Cước Mặt Sau -->
-
     <!-- Nút Chỉnh Sửa -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnChinhSua"
@@ -161,10 +155,6 @@
         app:tint="#F44336" />
 
     <!-- Nút Xóa -->
-
-    <!-- Nút Lưu Lại (Ẩn) -->
-
-    <!-- Nút Hủy Chỉnh Sửa -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnXoa"
         android:layout_width="wrap_content"
@@ -180,6 +170,7 @@
         app:maxImageSize="40dp"
         app:tint="#FFFFFF" />
 
+    <!-- Nút Lưu Lại (Ẩn) -->
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btnLuuLai"
         android:layout_width="wrap_content"
@@ -202,6 +193,28 @@
         app:maxImageSize="40dp"
         app:tint="#0ABB13" />
 
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/btnThemNV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:contentDescription="Thêm Nhân Viên"
+        android:drawableTint="#16721D"
+        android:src="@drawable/ic_save"
+        android:text="Thêm Nhân Viên"
+        android:textColor="#338337"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:backgroundTint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:maxImageSize="40dp" />
+
+    <!-- Nút Hủy Chỉnh Sửa -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnHuy"
         android:layout_width="wrap_content"

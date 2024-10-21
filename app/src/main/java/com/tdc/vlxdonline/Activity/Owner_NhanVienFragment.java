@@ -62,6 +62,20 @@ public class Owner_NhanVienFragment extends Fragment {
         // Firebase: Gọi phương thức để lấy dữ liệu từ Firebase
         getNhanVienData();
 
+        // Sự kiện khi nhấn nút Thêm Nhân Viên
+        SuKienThemNhanVien();
+
+        // Sự kiện khi nhấn vào một item trong danh sách nhân viên
+        SuKienNhanItemNhanVien();
+
+    }
+
+    // TODO: Them Nhan Vien
+    private void SuKienThemNhanVien() {
+        
+    }
+
+    private void SuKienNhanItemNhanVien() {
         // Thiết lập sự kiện khi nhấn vào một item trong danh sách nhân viên
         nhanVienAdapter.setOnItemClickListener(nhanVien -> {
             // Tạo Bundle để truyền thông tin nhân viên được chọn qua Fragment chi tiết
