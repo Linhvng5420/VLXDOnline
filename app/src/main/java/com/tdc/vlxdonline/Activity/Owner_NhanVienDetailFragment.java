@@ -15,8 +15,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tdc.vlxdonline.Model.NhanVien;
 import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.FragmentOwnerNhanvienDetailBinding;
@@ -146,19 +149,39 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
     // Xử lý Spinner chọn chức vụ
     private void setupSpinner() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.select_dialog_item, chucVuArray);
+        // Tạo Adapter cho Spinner
+        List<String> chucVuList = new ArrayList<>();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, chucVuList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerChucVu.setAdapter(adapter);
 
-        List<String> chucVuList = new ArrayList<>(Arrays.asList("Kho", "Giao Hàng"));
+        // Lấy danh sách chức vụ từ Firebase
+        DatabaseReference chucVuRef = FirebaseDatabase.getInstance().getReference("ChucVu");
+        chucVuRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                chucVuList.clear();  // Xóa danh sách cũ
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String tenChucVu = snapshot.child("Ten").getValue(String.class);  // Lấy tên chức vụ
+                    if (tenChucVu != null) {
+                        chucVuList.add(tenChucVu);  // Thêm tên chức vụ vào danh sách
+                    }
+                }
+                adapter.notifyDataSetChanged();  // Cập nhật adapter với dữ liệu mới
+                // Thiết lập lựa chọn mặc định cho Spinner nếu đang chỉnh sửa nhân viên
+                if (selectedNhanVien != null) {
+                    int position = chucVuList.indexOf(selectedNhanVien.getChucVu());
+                    spinnerChucVu.setSelection(position >= 0 ? position : 0);
+                }
+            }
 
-        // Thiết lập lựa chọn mặc định cho Spinner nếu đang chỉnh sửa nhân viên
-        String chucVuSelected = selectedNhanVien.getChucVu();
-        int position = chucVuList.indexOf(chucVuSelected);
-        if (selectedNhanVien != null) {
-            spinnerChucVu.setSelection(position);
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getContext(), "Lỗi khi lấy dữ liệu chức vụ", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
 
     // Thiết lập sự kiện cho nút Chỉnh Sửa
     private void setupEditButton() {
