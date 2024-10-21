@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.tdc.vlxdonline.Adapter.SanPham_Adapter;
+import com.tdc.vlxdonline.Adapter.SanPham_ViewHolder;
 import com.tdc.vlxdonline.Model.SanPham_Model;
 import com.tdc.vlxdonline.R;
 import com.google.firebase.database.DataSnapshot;
@@ -33,7 +34,6 @@ public class Warehouse_HomeActivity extends AppCompatActivity {
     ImageButton ivbtnthem;
 //   SwipeableRecyclerView recyclerView;
 
-    // SanPham_Model sanPhamModel = new SanPham_Model(edtNhapten.getText(), edtNhapgianhap.getText(), edtNhapgianhap.getText(), edtNhapgianhap.getText(), edtNhapgianhap.getText(), edtNhapgianhap.getText());
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_warehouse_home);
@@ -41,7 +41,6 @@ public class Warehouse_HomeActivity extends AppCompatActivity {
         getDate();
         setEvent();
 //        EventNavigationBottom();
-
     }
 
     private void setEvent() {
@@ -61,8 +60,6 @@ public class Warehouse_HomeActivity extends AppCompatActivity {
                 for (DataSnapshot items : snapshot.getChildren()) {
                     SanPham_Model sanPhamModel = items.getValue(SanPham_Model.class);
                     list.add(sanPhamModel);
-                    // String abc = String.valueOf(items.child("images").getValue(String.class));
-                    //tvTest.setText(String.valueOf(list));
                 }
 
                 adapter.notifyDataSetChanged();
@@ -78,6 +75,16 @@ public class Warehouse_HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Warehouse_HomeActivity.this, Warehouse_ThemSanPhamActivity.class);
                 startActivity(intent);
+            }
+        });
+        // TODO: Xem chi tiet SP
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Warehouse_HomeActivity.this, SanPham_ViewHolder.class);
+//                startActivity(intent);
+//                finish();
             }
         });
     }

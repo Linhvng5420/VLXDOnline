@@ -16,8 +16,12 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
+import com.tdc.vlxdonline.MainActivity;
 import com.tdc.vlxdonline.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,7 +46,6 @@ import SanPham_Model.SanPham_Model;*/
 public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
     SwipeRefreshLayout swipeRefreshLayout;
 
-
     EditText edtNhapten, edtNhapgiaban, edtNhapsoluong, edtDaban;
     Button btnThem, Xoa, Sua;
     ImageView ivImages;
@@ -53,6 +56,8 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
     List<SanPham_Model> list_SP = new ArrayList<>();
     List<String> list_id = new ArrayList<>();
     Integer id_ = 0;
+    ValueEventListener listener;
+    RecyclerView recyclerView;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -64,8 +69,35 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
         setContentView(R.layout.taosanpham_layout);
         setCtronl();
         key_auto();
+        getDate();
         setEvent();
+
         //idAuto();
+    }
+
+    private void getDate() {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        adapter = new SanPham_Adapter(Warehouse_ThemSanPhamActivity.this, list_SP);
+        recyclerView.setAdapter(adapter);
+        reference = FirebaseDatabase.getInstance().getReference("SanPham");
+        listener = reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list_SP.clear();
+                for (DataSnapshot items : snapshot.getChildren()) {
+                    SanPham_Model sanPhamModel = items.getValue(SanPham_Model.class);
+                    list_SP.add(sanPhamModel);
+                }
+                // Notify adapter sau khi có dữ liệu
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+
+        });
     }
 
     private void setEvent() {
@@ -94,6 +126,7 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
                 activityResultLauncher.launch(photoPicker);
             }
         });
+
         btnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +137,32 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
 //                finish();
             }
         });
+
+// Đảm bảo Adapter đã được khởi tạo trước khi thiết lập sự kiện click
+        if (adapter != null) {
+            adapter.setOnItemClickListener(new SanPham_Adapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    // Xử lý sự kiện click vào sản phẩm
+                    if (position != RecyclerView.NO_POSITION) {
+                        SanPham_Model sanPhamModel = list_SP.get(position);
+
+                        // Hiển thị thông tin sản phẩm lên các EditText
+                        edtNhapten.setText(sanPhamModel.getTenSP());
+                        edtNhapgiaban.setText(sanPhamModel.getGiabanSP());
+                        edtNhapsoluong.setText(sanPhamModel.getSoluong());
+                        edtDaban.setText(sanPhamModel.getDaban());
+
+                        // Hiển thị hình ảnh sản phẩm
+                        Glide.with(Warehouse_ThemSanPhamActivity.this)
+                                .load(sanPhamModel.getImages())
+                                .into(ivImages);
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, "Adapter chưa được khởi tạo", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void key_auto() {
@@ -171,5 +230,6 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
         edtDaban = findViewById(R.id.edtDaban);
         ivImages = findViewById(R.id.ivImages);
         btnThem = findViewById(R.id.btnThem);
+        recyclerView = findViewById(R.id.recycleview);
     }
 }

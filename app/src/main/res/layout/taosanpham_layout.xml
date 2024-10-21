@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ThemSanPham.ThemSanPham">
+    tools:context=".Activity.Warehouse_ThemSanPhamActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
 
         <ImageView
             android:id="@+id/ivImages"
@@ -47,6 +48,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="San pham da ban" />
+
+
+
+
         </LinearLayout>
 
     </LinearLayout>
@@ -67,7 +72,38 @@
             android:id="@+id/btnThem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Thêm" />
+
+        <Button
+            android:id="@+id/btnSua"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sửa" />
+
+        <Button
+            android:id="@+id/btnXoa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Xoá" />
     </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_warehouse"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        app:menu="@menu/warehouse_bottom_nav_menu" />
+
 
 </LinearLayout>

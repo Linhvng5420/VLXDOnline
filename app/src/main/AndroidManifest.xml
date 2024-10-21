@@ -22,10 +22,10 @@
             android:name=".Activity.Owner_HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.Warehouse_ThemSanPhamActivity"
+            android:name=".Activity.Customer_HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.Warehouse_HomeActivity"
+            android:name=".Activity.Warehouse_ThemSanPhamActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>

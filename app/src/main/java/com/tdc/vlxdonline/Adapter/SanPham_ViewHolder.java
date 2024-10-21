@@ -18,5 +18,7 @@ public class SanPham_ViewHolder extends RecyclerView.ViewHolder {
         tvTenSP = itemView.findViewById(R.id.tvItemsTen);
         giabanSP = itemView.findViewById(R.id.tvGiaSP);
         ivImages = itemView.findViewById(R.id.ivImages);
+
+
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,15 @@ import java.util.List;
 public class SanPham_Adapter extends RecyclerView.Adapter<SanPham_ViewHolder> {
     private Context context;
     private List<SanPham_Model> list;
+
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public SanPham_Adapter(Context context, List<SanPham_Model> list) {
         this.context = context;
@@ -35,6 +45,15 @@ public class SanPham_Adapter extends RecyclerView.Adapter<SanPham_ViewHolder> {
         Glide.with(context).load(list.get(position).getImages()).into(holder.ivImages);
         holder.tvTenSP.setText(list.get(position).getTenSP());
         holder.giabanSP.setText(list.get(position).giabanSP);
+        // Thiết lập sự kiện click
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(holder.getAdapterPosition()); // Dùng getAdapterPosition() thay vì position
+                }
+            }
+        });
     }
 
     @Override
