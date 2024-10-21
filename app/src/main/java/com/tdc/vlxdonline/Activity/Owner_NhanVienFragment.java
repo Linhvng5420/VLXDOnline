@@ -72,8 +72,23 @@ public class Owner_NhanVienFragment extends Fragment {
 
     // TODO: Them Nhan Vien
     private void SuKienThemNhanVien() {
-        
+        ownerNhanvienBinding.btnThemNhanVien.setOnClickListener(v -> {
+            // Tạo một instance của Owner_NhanVienDetailFragment
+            Owner_NhanVienDetailFragment detailFragment = new Owner_NhanVienDetailFragment();
+
+            // Đưa trạng thái là "Thêm Nhân Viên" vào Bundle
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("isAddingNewEmployee", true); // Gán trạng thái thêm mới
+            detailFragment.setArguments(bundle);
+
+            // Chuyển tới Fragment chi tiết thêm nhân viên
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_owner, detailFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
     }
+
 
     private void SuKienNhanItemNhanVien() {
         // Thiết lập sự kiện khi nhấn vào một item trong danh sách nhân viên
