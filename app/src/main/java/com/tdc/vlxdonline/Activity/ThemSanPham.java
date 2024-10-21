@@ -100,7 +100,7 @@ public class ThemSanPham extends AppCompatActivity {
             public void onClick(View v) {
 //                idAuto();
                 uploadData();
-//                Intent intent = new Intent(MainActivity.this, QL_SanPham.class);
+//                Intent intent = new Intent(MainActivity.this, Warehouse_HomeActivity.class);
 //                startActivity(intent);
 //                finish();
             }

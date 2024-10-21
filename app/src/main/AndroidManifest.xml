@@ -13,7 +13,7 @@
         android:theme="@style/Theme.VLXDOnline"
         tools:targetApi="31">
         <activity
-            android:name=".Activity.Warehouse_HomeActivity"
+            android:name=".Activity.Warehouse_HomeActivityBeta"
             android:exported="false" />
         <activity
             android:name=".Activity.Shipper_HomeActivity"
@@ -22,7 +22,7 @@
             android:name=".Activity.Owner_HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.QL_SanPham"
+            android:name=".Activity.Warehouse_HomeActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>

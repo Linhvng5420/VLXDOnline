@@ -7,47 +7,44 @@ import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.tdc.vlxdonline.Adapter.SanPham_Adapter;
+import com.tdc.vlxdonline.Model.SanPham_Model;
+import com.tdc.vlxdonline.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.tdc.vlxdonline.Adapter.SanPham_Adapter;
-import com.tdc.vlxdonline.Model.SanPham_Model;
-import com.tdc.vlxdonline.R;
-import com.tdc.vlxdonline.databinding.ActivityWarehouseHomeBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Warehouse_HomeActivity extends AppCompatActivity {
-    ActivityWarehouseHomeBinding warehouseHomeBinding;
     RecyclerView recyclerView;
     List<SanPham_Model> list = new ArrayList<>();
     SanPham_Adapter adapter;
     DatabaseReference reference;
     ValueEventListener listener;
     ImageButton ivbtnthem;
+//   SwipeableRecyclerView recyclerView;
 
-    @Override
+    // SanPham_Model sanPhamModel = new SanPham_Model(edtNhapten.getText(), edtNhapgianhap.getText(), edtNhapgianhap.getText(), edtNhapgianhap.getText(), edtNhapgianhap.getText(), edtNhapgianhap.getText());
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        warehouseHomeBinding = ActivityWarehouseHomeBinding.inflate(getLayoutInflater());
-        setContentView(warehouseHomeBinding.getRoot());
-
-        //3. Bắt sự kiện
-        EventNavigationBottom();
+        setContentView(R.layout.activity_warehouse_home);
+        setControl();
         getDate();
         setEvent();
+
     }
 
     private void setEvent() {
+
     }
 
     private void getDate() {
@@ -84,31 +81,8 @@ public class Warehouse_HomeActivity extends AppCompatActivity {
         });
     }
 
-    // Bắt sự kiện nhấn Navbar Bottom
-    private void EventNavigationBottom() {
-        warehouseHomeBinding.navWarehouse.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-
-            if (itemId == R.id.nav_owner_dashboard) {
-                ReplaceFragment(new Fragment());
-            } else if (itemId == R.id.nav_owner_nhanvien) {
-                ReplaceFragment(new Fragment());
-            } else if (itemId == R.id.nav_owner_khachhang) {
-                ReplaceFragment(new Fragment());
-            } else if (itemId == R.id.nav_owner_donhang) {
-                ReplaceFragment(new Fragment());
-            } else if (itemId == R.id.nav_owner_kho) {
-                ReplaceFragment(new Fragment());
-            }
-
-            return true;
-        });
-    }
-
-    private void ReplaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id."Thay Thế Tên Fragment_.xml vào đây", fragment);
-        fragmentTransaction.commit();
+    private void setControl() {
+        ivbtnthem = findViewById(R.id.ivbtnthem);
+        recyclerView = findViewById(R.id.recycleview);
     }
 }

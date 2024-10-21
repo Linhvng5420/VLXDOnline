@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity.Warehouse_HomeActivity">
+    tools:context=".Activity.Warehouse_HomeActivityBeta">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:background="#C5DFF4"
             android:orientation="vertical"
-            tools:context=".Activity.Warehouse_HomeActivity">
+            tools:context=".Activity.Warehouse_HomeActivityBeta">
 
             <LinearLayout
                 android:layout_width="match_parent"
