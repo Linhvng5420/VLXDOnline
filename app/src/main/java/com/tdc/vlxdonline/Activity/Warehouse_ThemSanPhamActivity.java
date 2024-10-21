@@ -46,7 +46,7 @@ import SanPham_Model.SanPham_Model;*/
 public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
     SwipeRefreshLayout swipeRefreshLayout;
 
-    EditText edtNhapten, edtNhapgiaban, edtNhapsoluong, edtDaban;
+    EditText edtNhapten, edtNhapgiaban, edtNhapsoluong, edtDaban,edtMoTa;
     Button btnThem, Xoa, Sua;
     ImageView ivImages;
     Uri uri;
@@ -152,7 +152,7 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
                         edtNhapgiaban.setText(sanPhamModel.getGiabanSP());
                         edtNhapsoluong.setText(sanPhamModel.getSoluong());
                         edtDaban.setText(sanPhamModel.getDaban());
-
+edtMoTa.setText(sanPhamModel.getMoTa());
                         // Hiển thị hình ảnh sản phẩm
                         Glide.with(Warehouse_ThemSanPhamActivity.this)
                                 .load(sanPhamModel.getImages())
@@ -199,6 +199,7 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
         sanPhamModel.setGiabanSP(edtNhapgiaban.getText().toString());
         sanPhamModel.setSoluong(edtNhapsoluong.getText().toString());
         sanPhamModel.setDaban(edtDaban.getText().toString());
+        sanPhamModel.setMoTa(edtMoTa.getText().toString());
         sanPhamModel.setImages(imagesUrl.toString());
         FirebaseDatabase.getInstance().getReference("SanPham").child("SP" + id_).setValue(sanPhamModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -228,6 +229,7 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
         edtNhapgiaban = findViewById(R.id.edtNhapgiaban);
         edtNhapsoluong = findViewById(R.id.edtNhapsoluong);
         edtDaban = findViewById(R.id.edtDaban);
+        edtMoTa = findViewById(R.id.edtMoTa);
         ivImages = findViewById(R.id.ivImages);
         btnThem = findViewById(R.id.btnThem);
         recyclerView = findViewById(R.id.recycleview);

@@ -4,6 +4,37 @@ import android.text.Editable;
 
 public class SanPham_Model {
     public String images, tenSP, giabanSP, soluong, daban;
+public String moTa,donVi,danhMuc;
+
+    public SanPham_Model(String danhMuc, String donVi, String moTa) {
+        this.danhMuc = danhMuc;
+        this.donVi = donVi;
+        this.moTa = moTa;
+    }
+
+    public String getMoTa() {
+        return moTa;
+    }
+
+    public void setMoTa(String moTa) {
+        this.moTa = moTa;
+    }
+
+    public String getDonVi() {
+        return donVi;
+    }
+
+    public void setDonVi(String donVi) {
+        this.donVi = donVi;
+    }
+
+    public String getDanhMuc() {
+        return danhMuc;
+    }
+
+    public void setDanhMuc(String danhMuc) {
+        this.danhMuc = danhMuc;
+    }
 
     public SanPham_Model() {
     }
