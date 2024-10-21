@@ -40,8 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
         binding.btnRg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Đăng Ký Thành Công!", Toast.LENGTH_SHORT).show();
-                onBackPressed();
+                Register();
             }
         });
         binding.spRoleRg.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -55,6 +54,27 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private boolean Register() {
+        String pass = binding.edtPassRg.getText().toString();
+        String rePass = binding.edtRePassRg.getText().toString();
+        String email = binding.edtEmailRg.getText().toString();
+        String sdt = binding.edtSDTRg.getText().toString();
+        String hoten = binding.edtHoTenRg.getText().toString();
+        if (!pass.isEmpty() && !rePass.isEmpty() && !email.isEmpty() && !sdt.isEmpty() && !hoten.isEmpty()) {
+            if(!pass.equals(rePass)){
+                Toast.makeText(this, "Nhập Lại Mật Khẩu Sai!", Toast.LENGTH_SHORT).show();
+                return false;
+            }else{
+                Toast.makeText(getApplicationContext(), "Đăng Ký Thành Công!", Toast.LENGTH_SHORT).show();
+                onBackPressed();
+                return true;
+            }
+        }else{
+            Toast.makeText(this, "Chưa Nhập Đủ Thông Tin!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
     private void KhoiTao() {

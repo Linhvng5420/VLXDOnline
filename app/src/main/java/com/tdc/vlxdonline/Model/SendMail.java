@@ -10,11 +10,11 @@ import java.util.Properties;
 //import javax.mail.internet.MimeMessage;
 
 public class SendMail {
-
-    public static void sendEmail(String toEmail, String subject, String body) {
-        final String username = "cle960272@gmail.com";
-        final String password = "chien122004";
-
+//
+//    public static void sendEmail(String toEmail, String subject, String body) {
+//        final String username = "lecongchien843@gmail.com";
+//        final String password = "chien122004";
+//
 //        Properties props = new Properties();
 //        props.put("mail.smtp.auth", "true");
 //        props.put("mail.smtp.starttls.enable", "true");
@@ -40,5 +40,6 @@ public class SendMail {
 //        } catch (MessagingException e) {
 //            throw new RuntimeException(e);
 //        }
-    }
+//    }
 }
+

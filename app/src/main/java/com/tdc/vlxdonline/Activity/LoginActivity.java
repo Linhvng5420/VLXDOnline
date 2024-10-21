@@ -45,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         binding.btnLg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SendMail.sendEmail(binding.edtEmailLg.getText().toString(), "Check", "Check Send Email");
                 boolean checkLg = Login();
                 if (checkLg) {
                     if (typeUser == 0) {
