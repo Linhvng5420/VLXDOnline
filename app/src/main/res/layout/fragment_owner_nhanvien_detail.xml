@@ -145,6 +145,26 @@
     <!-- Hình Căn Cước Mặt Sau -->
 
     <!-- Nút Chỉnh Sửa -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilCCCD"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilEmail">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etCCCD"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="CCCD"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnChinhSua"
         android:layout_width="wrap_content"
@@ -165,6 +185,7 @@
     <!-- Nút Lưu Lại (Ẩn) -->
 
     <!-- Nút Hủy Chỉnh Sửa -->
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnXoa"
         android:layout_width="wrap_content"
@@ -188,7 +209,6 @@
         android:contentDescription="Lưu Lại"
         android:drawableRight="@drawable/ic_save"
         android:drawableTint="#16721D"
-        android:src="@drawable/ic_save"
         android:text="Lưu Lại"
         android:textColor="#338337"
         android:textSize="22sp"
