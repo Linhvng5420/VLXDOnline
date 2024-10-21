@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.tdc.vlxdonline.Model.Products;
 import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.ItemProductBinding;
@@ -39,7 +40,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
     @Override
     public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
         Products product = data.get(position);
-        holder.binding.imgItem.setImageResource(product.getAnh());
+        Glide.with(context).load(product.getAnh()).into(holder.binding.imgItem);
         holder.binding.tvNameItem.setText(product.getTen());
         StringBuilder chuoi = new StringBuilder(String.valueOf(product.getGia()));
         if (chuoi.length() > 3) {

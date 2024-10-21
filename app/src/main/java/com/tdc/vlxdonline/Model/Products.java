@@ -1,11 +1,11 @@
 package com.tdc.vlxdonline.Model;
 
 public class Products {
-    private String ten, moTa, donVi;
-    private int id, idChu, anh, gia, danhMuc, tonKho, daBan = 0;
+    private String ten, moTa, donVi, anh;
+    private int id, idChu, gia, danhMuc, tonKho, daBan = 0;
     private double soSao = 0;
 
-    public Products(String ten, String donVi, String moTa, int idChu, int id, int anh, int gia, double soSao, int danhMuc, int tonKho, int daBan) {
+    public Products(String ten, String donVi, String moTa, int idChu, int id, String anh, int gia, double soSao, int danhMuc, int tonKho, int daBan) {
         this.ten = ten;
         this.donVi = donVi;
         this.moTa = moTa;
@@ -70,11 +70,11 @@ public class Products {
         this.id = id;
     }
 
-    public int getAnh() {
+    public String getAnh() {
         return anh;
     }
 
-    public void setAnh(int anh) {
+    public void setAnh(String anh) {
         this.anh = anh;
     }
 

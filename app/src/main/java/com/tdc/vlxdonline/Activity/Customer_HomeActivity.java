@@ -57,7 +57,7 @@ public class Customer_HomeActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(customerHomeBinding.frmCustomer.getId());
         if (currentTag == null && currentFragment != null) currentTag = currentFragment.getClass().getName();
-        if (currentTag == null || !currentTag.equals(fragment.getClass().getName())) {
+        if (currentTag == null || !currentTag.equals(fragment.getClass().getName()) || currentTag.equals(ProdDetailCustomerFragment.class.getName())) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(customerHomeBinding.frmCustomer.getId(), fragment);
             fragmentTransaction.addToBackStack(fragment.getClass().getName());

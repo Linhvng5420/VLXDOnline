@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.tdc.vlxdonline.Model.Categorys;
 import com.tdc.vlxdonline.databinding.ItemPhanLoaiBinding;
 
@@ -36,7 +37,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     @Override
     public void onBindViewHolder(@NonNull CategoryHolder holder, int position) {
         Categorys cate = data.get(position);
-        holder.binding.imgItemCa.setImageResource(cate.getAnh());
+        Glide.with(context).load(cate.getAnh()).into(holder.binding.imgItemCa);
         holder.binding.tvNameCa.setText(cate.getTen());
         final int pos = position;
         holder.position = pos;

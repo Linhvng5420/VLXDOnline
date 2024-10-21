@@ -14,6 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.tdc.vlxdonline.Adapter.AdapterCenterDrop;
 import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.ActivityRegisterBinding;
 
@@ -23,7 +24,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     ActivityRegisterBinding binding;
     ArrayList<String> dataType = new ArrayList();
-    ArrayAdapter adap;
+    AdapterCenterDrop adap;
     int type = 0;
 
     @Override
@@ -59,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void KhoiTao() {
         dataType.add("Chủ Cửa Hàng");
         dataType.add("Khách Hàng");
-        adap = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, dataType);
+        adap = new AdapterCenterDrop(this, R.layout.item_center_drop, dataType);
         binding.spRoleRg.setAdapter(adap);
     }
 }

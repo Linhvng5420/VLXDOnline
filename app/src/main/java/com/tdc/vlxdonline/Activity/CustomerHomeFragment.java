@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.SearchView;
 
+import com.tdc.vlxdonline.Adapter.AdapterCenterDrop;
 import com.tdc.vlxdonline.Adapter.CategoryAdapter;
 import com.tdc.vlxdonline.Adapter.ProductAdapter;
 import com.tdc.vlxdonline.Model.Categorys;
@@ -32,9 +34,9 @@ public class CustomerHomeFragment extends Fragment {
     ArrayList<Categorys> dataCategorys = new ArrayList<>();
     CategoryAdapter categoryAdapter;
     ArrayList<String> dataLoc = new ArrayList<>();
-    ArrayAdapter adapterLoc;
+    AdapterCenterDrop adapterLoc;
     ArrayList<String> dataSapXep = new ArrayList<>();
-    ArrayAdapter adapterSX;
+    AdapterCenterDrop adapterSX;
 
 
     @Override
@@ -54,6 +56,7 @@ public class CustomerHomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         KhoiTao();
+        // Su kien search
         binding.svCustomerHome.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -65,19 +68,7 @@ public class CustomerHomeFragment extends Fragment {
                 return false;
             }
         });
-    }
-
-    private void KhoiTao() {
-
-        dataCategorys.add(new Categorys("Cate 1", 1, R.drawable.tc));
-        dataCategorys.add(new Categorys("Cate 2", 2, R.drawable.nav_sanpham));
-        dataCategorys.add(new Categorys("Cate 3", 3, R.drawable.star));
-        dataCategorys.add(new Categorys("Cate 4", 4, R.drawable.search));
-        dataProds.add(new Products("A", "A", "A", 1, 1, R.drawable.tc, 100000, 0.0, 1, 1000, 580));
-        dataProds.add(new Products("B", "B", "B", 1, 2, R.drawable.tc, 200000, 4.0, 1, 1000, 580));
-        dataProds.add(new Products("C", "C", "C", 1, 3, R.drawable.tc, 300000, 5.0, 1, 1000, 580));
-        dataProds.add(new Products("D", "D", "D", 1, 4, R.drawable.tc, 400000, 3.5, 1, 1000, 580));
-
+        // Category Adapter
         categoryAdapter = new CategoryAdapter(getActivity(), dataCategorys);
         categoryAdapter.setOnItemCategoryClickListener(new CategoryAdapter.OnItemCategoryClickListener() {
             @Override
@@ -89,9 +80,60 @@ public class CustomerHomeFragment extends Fragment {
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         binding.rcDanhMuc.setLayoutManager(linearLayoutManager);
         binding.rcDanhMuc.setAdapter(categoryAdapter);
+        // Su kien loc
+        binding.spLoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        // Su kien sap xep
+        binding.spXapSep.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         setHienThiSanPham();
+    }
 
+    private void KhoiTao() {
+
+        dataLoc.add("Lọc Theo");
+        dataLoc.add("Số sao từ 1 - 3");
+        dataLoc.add("Số sao từ 4 - 5");
+        dataLoc.add("Giá nhỏ hơn trung bình");
+        dataLoc.add("Giá lớn hơn trung bình");
+        adapterLoc = new AdapterCenterDrop(getActivity(), R.layout.item_center_drop, dataLoc);
+        binding.spLoc.setAdapter(adapterLoc);
+
+        dataSapXep.add("Sắp Xếp Theo");
+        dataSapXep.add("Số sao Tăng Dần");
+        dataSapXep.add("Số sao Giảm Dần");
+        dataSapXep.add("Giá Tăng Dần");
+        dataSapXep.add("Giá Giảm Dần");
+        adapterSX = new AdapterCenterDrop(getActivity(), R.layout.item_center_drop, dataSapXep);
+        binding.spXapSep.setAdapter(adapterSX);
+
+        dataCategorys.add(new Categorys("Cate 1", 1, "https://th.bing.com/th?id=OIF.0yfM4yF7hYIDB6%2bmwxU4GQ&w=172&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"));
+        dataCategorys.add(new Categorys("Cate 2", 2, "https://th.bing.com/th/id/OIF.lf4QHwb4DMz5wHZ84QYJmQ?w=183&h=183&c=7&r=0&o=5&dpr=1.3&pid=1.7"));
+        dataCategorys.add(new Categorys("Cate 3", 3, "https://th.bing.com/th/id/OIP.UWORqopZEI954B5G-Z4sbgHaHQ?w=169&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"));
+        dataCategorys.add(new Categorys("Cate 4", 4, "https://th.bing.com/th/id/OIP.BO1VNjeGOUGcGRWQNUVCZQHaHa?w=1024&h=1024&rs=1&pid=ImgDetMain"));
+        dataProds.add(new Products("A", "A", "A", 1, 1, "https://th.bing.com/th/id/OIP.UWORqopZEI954B5G-Z4sbgHaHQ?w=169&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7", 100000, 0.0, 1, 1000, 580));
+        dataProds.add(new Products("B", "B", "B", 1, 2, "https://th.bing.com/th/id/OIP.BO1VNjeGOUGcGRWQNUVCZQHaHa?w=1024&h=1024&rs=1&pid=ImgDetMain", 200000, 4.0, 1, 1000, 580));
+        dataProds.add(new Products("C", "C", "C", 1, 3, "https://th.bing.com/th/id/OIP.vyMrfzra1TPcklie3-GA9gHaH9?w=180&h=183&c=7&r=0&o=5&dpr=1.3&pid=1.7", 300000, 5.0, 1, 1000, 580));
+        dataProds.add(new Products("D", "D", "D", 1, 4, "https://th.bing.com/th?id=OIF.EGFQW6dgdgP%2fL6l2yvVChg&rs=1&pid=ImgDetMain", 400000, 3.5, 1, 1000, 580));
     }
 
     private void setHienThiSanPham() {
@@ -100,7 +142,7 @@ public class CustomerHomeFragment extends Fragment {
             @Override
             public void OnItemClick(View view, int position) {
                 Products product = dataProds.get(position);
-                ((Customer_HomeActivity) getActivity()).ReplaceFragment(new ProdDetailCustomerFragment(product.getId()));
+                ((Customer_HomeActivity) getActivity()).ReplaceFragment(new ProdDetailCustomerFragment(product));
             }
 
             @Override

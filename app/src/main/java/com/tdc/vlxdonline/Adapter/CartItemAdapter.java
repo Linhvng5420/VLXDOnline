@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.tdc.vlxdonline
 .Model.CartItem;
 import com.tdc.vlxdonline
@@ -38,7 +39,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     @Override
     public void onBindViewHolder(@NonNull CartItemHolder holder, int position) {
         CartItem item = data.get(position);
-        holder.binding.imgCart.setImageResource(item.getAnh());
+        Glide.with(context).load(item.getAnh()).into(holder.binding.imgCart);
         holder.binding.tvNameCart.setText(item.getTenSP());
         holder.binding.tvDesCart.setText(item.getMoTa());
         holder.binding.tvPrice.setText(item.getGia());

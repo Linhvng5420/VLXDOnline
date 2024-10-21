@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.tdc.vlxdonline.R;
 
 import java.util.ArrayList;
@@ -16,9 +17,14 @@ import java.util.ArrayList;
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder> {
 
     Context context;
-    ArrayList<Integer> data;
+    ArrayList<String> data;
+    OnItemImageClick onItemImageClick;
 
-    public ImageAdapter(Context context, ArrayList<Integer> data) {
+    public void setOnItemImageClick(OnItemImageClick onItemImageClick) {
+        this.onItemImageClick = onItemImageClick;
+    }
+
+    public ImageAdapter(Context context, ArrayList<String> data) {
         this.context = context;
         this.data = data;
     }
@@ -31,14 +37,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        int so = data.get(position);
-        holder.img.setImageResource(so);
-        holder.img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                MainActivity.image.setImageResource(so);
-            }
-        });
+        Glide.with(context).load(data.get(position)).into(holder.img);
+        final int pos = position;
+        holder.position = pos;
     }
 
     @Override
@@ -48,9 +49,22 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView img;
+        int position;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.item_v_img);
+            img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemImageClick != null) {
+                        onItemImageClick.onItemClick(position);
+                    }
+                }
+            });
         }
+    }
+
+    public interface OnItemImageClick{
+        void onItemClick(int position);
     }
 }

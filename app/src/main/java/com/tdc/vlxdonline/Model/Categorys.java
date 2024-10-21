@@ -1,23 +1,23 @@
 package com.tdc.vlxdonline.Model;
 
 public class Categorys {
-    private String ten;
-    private int id, anh;
+    private String ten, anh;
+    private int id;
 
     public Categorys() {
     }
 
-    public Categorys(String ten, int id, int anh) {
+    public Categorys(String ten, int id, String anh) {
         this.ten = ten;
         this.id = id;
         this.anh = anh;
     }
 
-    public int getAnh() {
+    public String getAnh() {
         return anh;
     }
 
-    public void setAnh(int anh) {
+    public void setAnh(String anh) {
         this.anh = anh;
     }
 
