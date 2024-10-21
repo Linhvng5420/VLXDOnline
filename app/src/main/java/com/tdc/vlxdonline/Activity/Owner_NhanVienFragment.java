@@ -25,6 +25,8 @@ import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.FragmentOwnerNhanvienBinding;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,6 +141,10 @@ public class Owner_NhanVienFragment extends Fragment {
                     try {
                         NhanVien nhanVien = snapshot.getValue(NhanVien.class);
                         if (nhanVien != null) {
+                            // Lấy document ID (key) từ Firebase snapshot
+                            String nhanVienId = snapshot.getKey();
+                            nhanVien.setID(nhanVienId);  // Gán ID vào đối tượng NhanVien
+
                             // Thay thế mã chức vụ bằng tên chức vụ
                             String tenChucVu = chucVuMap.get(nhanVien.getChucVu());
                             nhanVien.setChucVu(tenChucVu != null ? tenChucVu : "N/A");  // Nếu không tìm thấy, đặt là "N/A"
@@ -146,7 +152,7 @@ public class Owner_NhanVienFragment extends Fragment {
                             nhanVienAdapter.getNhanVienList().add(nhanVien);  // Thêm nhân viên vào danh sách
                         }
                     } catch (DatabaseException e) {
-                        Log.e("FirebaseError", "Lỗi chuyển đổi dữ liệu: " + e.getMessage());
+                        Log.e("FirebaseError", "Lỗi FireBase: " + e.getMessage());
                     }
                 }
                 nhanVienAdapter.notifyDataSetChanged();  // Cập nhật adapter
@@ -158,7 +164,6 @@ public class Owner_NhanVienFragment extends Fragment {
             }
         });
     }
-
 
 
     private void getChucVuData() {

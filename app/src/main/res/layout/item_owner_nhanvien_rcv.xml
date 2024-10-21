@@ -2,15 +2,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginRight="10dp"
     android:background="@color/white"
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
         android:backgroundTint="@color/cardview_light_background"
         app:cardCornerRadius="10dp">
 
@@ -24,7 +24,9 @@
                 android:id="@+id/tvId"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="20sp"
+                android:autoSizeTextType="uniform"
                 android:gravity="center|start"
                 android:paddingStart="5dp"
                 android:text="ID"
@@ -36,18 +38,21 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
+                android:autoSizeMaxTextSize="20sp"
+                android:autoSizeTextType="uniform"
                 android:gravity="center|start"
                 android:paddingStart="10dp"
                 android:text="Name"
                 android:textAlignment="textStart"
-                android:textColor="#000"
-                android:textSize="20sp" />
+                android:textColor="#000" />
 
             <TextView
                 android:id="@+id/tvChucVu"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.5"
+                android:layout_weight="2"
+                android:autoSizeMaxTextSize="20sp"
+                android:autoSizeTextType="uniform"
                 android:gravity="center|start"
                 android:paddingStart="10dp"
                 android:text="Position"
