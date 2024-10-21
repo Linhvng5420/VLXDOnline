@@ -9,9 +9,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.tdc.vlxdonline.Adapter.ImageAdapter;
@@ -115,13 +118,43 @@ public class ProdDetailCustomerFragment extends Fragment {
         binding.btnGiam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                int so = Integer.parseInt(binding.edtSoLuong.getText().toString());
+                if (so > 1) {
+                    binding.edtSoLuong.setText(String.format("%d", so - 1));
+                }
             }
         });
         binding.btnTang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int so = Integer.parseInt(binding.edtSoLuong.getText().toString());
+                binding.edtSoLuong.setText(String.format("%d", so + 1));
+            }
+        });
+        // Su kien nhap so luong
+        binding.edtSoLuong.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String chuoi = binding.edtSoLuong.getText().toString();
+                if (!chuoi.isEmpty()) {
+                    for (int i = 0; i < chuoi.length(); i++) {
+                        if (chuoi.charAt(i) < '0' || chuoi.charAt(i) > '9') {
+                            binding.edtSoLuong.setText("");
+                            Toast.makeText(getActivity(), "Chỉ được nhập số!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }else{
+                    binding.edtSoLuong.setText("1");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
         // Su kien Add Cart
