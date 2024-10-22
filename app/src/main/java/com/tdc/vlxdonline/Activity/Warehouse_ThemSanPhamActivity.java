@@ -130,6 +130,20 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
 //                finish();
             }
         });
+        btnXoa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Lấy tên sản phẩm từ EditText
+                String tenSP = edtNhapten.getText().toString();
+                if (!tenSP.isEmpty()) {
+                    // Gọi phương thức xóa sản phẩm
+                    deleteProduct(tenSP);
+                } else {
+                    Toast.makeText(Warehouse_ThemSanPhamActivity.this, "Vui lòng chọn sản phẩm để xóa", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        
 
 // Đảm bảo Adapter đã được khởi tạo trước khi thiết lập sự kiện click
         if (adapter != null) {
@@ -187,7 +201,26 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
             }
         });
     }
-
+    private void deleteProduct(String tenSP) {
+        DatabaseReference productRef = FirebaseDatabase.getInstance().getReference("SanPham").child(tenSP);
+        productRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(Warehouse_ThemSanPhamActivity.this, "Xóa sản phẩm thành công", Toast.LENGTH_SHORT).show();
+                    // Xóa dữ liệu trên giao diện người dùng
+                    edtNhapten.setText("");
+                    edtNhapgiaban.setText("");
+                    edtNhapsoluong.setText("");
+                    edtDaban.setText("");
+                    edtMoTa.setText("");
+                    ivImages.setImageResource(0); // Xóa hình ảnh
+                } else {
+                    Toast.makeText(Warehouse_ThemSanPhamActivity.this, "Xóa sản phẩm thất bại", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
     private void setCtronl() {
         edtNhapten = findViewById(R.id.edtNhapTen);
         edtNhapgiaban = findViewById(R.id.edtNhapgiaban);
@@ -196,6 +229,8 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
         edtMoTa = findViewById(R.id.edtMoTa);
         ivImages = findViewById(R.id.ivImages);
         btnThem = findViewById(R.id.btnThem);
+        btnXoa = findViewById(R.id.btnXoa);
+        btnSua = findViewById(R.id.btnSua);
         recyclerView = findViewById(R.id.recycleview);
     }
 }
