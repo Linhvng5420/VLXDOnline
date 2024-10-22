@@ -2,9 +2,9 @@ package com.tdc.vlxdonline.Model;
 
 public class DonHang {
     private int id, idChu, idKhach, tongTien, trangThai, trangThaiTT, idTao, idGiao, phiTraGop;
-    private String tenKhach, sdt, diaChi, ngayTao;
+    private String anh, tenKhach, sdt, diaChi, ngayTao;
 
-    public DonHang(int id, int idChu, int idKhach, int tongTien, int trangThai, int trangThaiTT, int idTao, int idGiao, int phiTraGop, String tenKhach, String sdt, String diaChi, String ngayTao) {
+    public DonHang(String anh, int id, int idChu, int idKhach, int tongTien, int trangThai, int trangThaiTT, int idTao, int idGiao, int phiTraGop, String tenKhach, String sdt, String diaChi, String ngayTao) {
         this.id = id;
         this.idChu = idChu;
         this.idKhach = idKhach;
@@ -18,9 +18,18 @@ public class DonHang {
         this.sdt = sdt;
         this.diaChi = diaChi;
         this.ngayTao = ngayTao;
+        this.anh = anh;
     }
 
     public DonHang() {
+    }
+
+    public String getAnh() {
+        return anh;
+    }
+
+    public void setAnh(String anh) {
+        this.anh = anh;
     }
 
     public int getId() {

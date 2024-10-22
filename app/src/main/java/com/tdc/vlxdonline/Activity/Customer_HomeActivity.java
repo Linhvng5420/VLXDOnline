@@ -5,15 +5,14 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.tdc.vlxdonline.Model.KhachHang;
 import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.ActivityCustomerHomeBinding;
 
@@ -21,6 +20,7 @@ public class Customer_HomeActivity extends AppCompatActivity {
     // Binding
     ActivityCustomerHomeBinding customerHomeBinding;
     private String currentTag = null;
+    public static KhachHang info = new KhachHang();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class Customer_HomeActivity extends AppCompatActivity {
             } else if (itemId == R.id.nav_customer_giohang) {
                 ReplaceFragment(new CartFragment());
             } else if (itemId == R.id.nav_customer_donhang) {
-                ReplaceFragment(new DonHangFragment());
+                ReplaceFragment(new DanhSachDonHangFragment(0));
             } else if (itemId == R.id.nav_customer_taikhoan) {
                 ReplaceFragment(new AccountCustomerFragment());
             }
@@ -112,7 +112,7 @@ public class Customer_HomeActivity extends AppCompatActivity {
             customerHomeBinding.navCustomer.setSelectedItemId(R.id.nav_customer_sanpham);
         } else if (currentTag.equals(CartFragment.class.getName())) {
             customerHomeBinding.navCustomer.setSelectedItemId(R.id.nav_customer_giohang);
-        } else if (currentTag.equals(DonHangFragment.class.getName())) {
+        } else if (currentTag.equals(DanhSachDonHangFragment.class.getName())) {
             customerHomeBinding.navCustomer.setSelectedItemId(R.id.nav_customer_donhang);
         } else if (currentTag.equals(AccountCustomerFragment.class.getName())) {
             customerHomeBinding.navCustomer.setSelectedItemId(R.id.nav_customer_taikhoan);

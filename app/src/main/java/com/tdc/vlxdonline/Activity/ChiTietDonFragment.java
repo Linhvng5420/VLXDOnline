@@ -10,12 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tdc.vlxdonline.Model.DonHang;
 import com.tdc.vlxdonline.R;
-import com.tdc.vlxdonline.databinding.FragmentDonHangBinding;
+import com.tdc.vlxdonline.databinding.FragmentChiTietDonBinding;
 
-public class DonHangFragment extends Fragment {
+public class ChiTietDonFragment extends Fragment {
 
-    FragmentDonHangBinding binding;
+    FragmentChiTietDonBinding binding;
+    private DonHang donHang;
+
+    public ChiTietDonFragment(DonHang donHang) {
+        this.donHang = donHang;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,14 +32,17 @@ public class DonHangFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentDonHangBinding.inflate(inflater, container, false);
+        binding = FragmentChiTietDonBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        KhoiTao();
+    }
 
+    private void KhoiTao() {
     }
 
     @Override
