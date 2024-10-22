@@ -143,7 +143,16 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
                 }
             }
         });
-        
+        btnSua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtNhapten.getText().toString().isEmpty()) {
+                    Toast.makeText(Warehouse_ThemSanPhamActivity.this, "Vui lòng chọn sản phẩm để sửa!", Toast.LENGTH_SHORT).show();
+                } else {
+                    uploadData();  // Gọi phương thức để cập nhật dữ liệu
+                }
+            }
+        });
 
 // Đảm bảo Adapter đã được khởi tạo trước khi thiết lập sự kiện click
         if (adapter != null) {
@@ -200,6 +209,33 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
                 saveDate();
             }
         });
+        // Phương thức để cập nhật dữ liệu sản phẩm
+        String tenSP = edtNhapten.getText().toString();
+        String giabanSP = edtNhapgiaban.getText().toString();
+        String soluong = edtNhapsoluong.getText().toString();
+        String daban = edtDaban.getText().toString();
+        String moTa = edtMoTa.getText().toString();
+
+        SanPham_Model updatedSanPhamModel = new SanPham_Model();
+        updatedSanPhamModel.setTenSP(tenSP);
+        updatedSanPhamModel.setGiabanSP(giabanSP);
+        updatedSanPhamModel.setSoluong(soluong);
+        updatedSanPhamModel.setDaban(daban);
+        updatedSanPhamModel.setMoTa(moTa);
+        updatedSanPhamModel.setImages(imagesUrl);  // Nếu bạn không cần thay đổi ảnh
+
+        // Cập nhật dữ liệu trong Firebase
+        FirebaseDatabase.getInstance().getReference("SanPham").child(tenSP).setValue(updatedSanPhamModel)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(Warehouse_ThemSanPhamActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(Warehouse_ThemSanPhamActivity.this, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
     private void deleteProduct(String tenSP) {
         DatabaseReference productRef = FirebaseDatabase.getInstance().getReference("SanPham").child(tenSP);
