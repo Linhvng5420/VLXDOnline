@@ -4,72 +4,93 @@ import java.io.Serializable;
 
 // Lớp NhanVien implement giao diện Serializable để có thể truyền dữ liệu giữa các Activity hoặc Fragment
 public class NhanVien implements Serializable {
-    private int ID;
-    private int IDChu;
-    private String TenNV;
-    private int ChucVu;
-    private String SDT;
-    private String Email;
+    private String idnv;
+    private String cccd;
+    private String chucvu;
+    private String emailnv;
+    private String emailchu;
+    private String sdt;
+    private String tennv;
 
     // Constructor rỗng (cần thiết cho Firebase)
     public NhanVien() {}
 
-    public NhanVien(int ID, int IDChu, String TenNV, int ChucVu, String SDT, String Email) {
-        this.ID = ID;
-        this.IDChu = IDChu;
-        this.TenNV = TenNV;
-        this.ChucVu = ChucVu;
-        this.SDT = SDT;
-        this.Email = Email;
+    public NhanVien(String idnv, String cccd, String chucvu, String emailnv, String emailchu, String sdt, String tennv) {
+        this.idnv = idnv;
+        this.cccd = cccd;
+        this.chucvu = chucvu;
+        this.emailnv = emailnv;
+        this.emailchu = emailchu;
+        this.sdt = sdt;
+        this.tennv = tennv;
     }
 
-    // Getters and Setters
-
-    public int getID() {
-        return ID;
+    public String getIdnv() {
+        return idnv;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setIdnv(String idnv) {
+        this.idnv = idnv;
     }
 
-    public int getIDChu() {
-        return IDChu;
+    public String getCccd() {
+        return cccd;
     }
 
-    public void setIDChu(int IDChu) {
-        this.IDChu = IDChu;
+    public void setCccd(String cccd) {
+        this.cccd = cccd;
     }
 
-    public String getTenNV() {
-        return TenNV;
+    public String getChucvu() {
+        return chucvu;
     }
 
-    public void setTenNV(String TenNV) {
-        this.TenNV = TenNV;
+    public void setChucvu(String chucvu) {
+        this.chucvu = chucvu;
     }
 
-    public int getChucVu() {
-        return ChucVu;
+    public String getEmailnv() {
+        return emailnv;
     }
 
-    public void setChucVu(int ChucVu) {
-        this.ChucVu = ChucVu;
+    public void setEmailnv(String emailnv) {
+        this.emailnv = emailnv;
     }
 
-    public String getSDT() {
-        return SDT;
+    public String getEmailchu() {
+        return emailchu;
     }
 
-    public void setSDT(String SDT) {
-        this.SDT = SDT;
+    public void setEmailchu(String emailchu) {
+        this.emailchu = emailchu;
     }
 
-    public String getEmail() {
-        return Email;
+    public String getSdt() {
+        return sdt;
     }
 
-    public void setEmail(String Email) {
-        this.Email = Email;
+    public void setSdt(String sdt) {
+        this.sdt = sdt;
+    }
+
+    public String getTennv() {
+        return tennv;
+    }
+
+    public void setTennv(String tennv) {
+        this.tennv = tennv;
+    }
+
+    @Override
+    public String toString() {
+        return "NhanVien{" +
+                "idnv='" + idnv + '\'' +
+                ", cccd='" + cccd + '\'' +
+                ", chucvu='" + chucvu + '\'' +
+                ", emailnv='" + emailnv + '\'' +
+                ", emailchu='" + emailchu + '\'' +
+                ", sdt='" + sdt + '\'' +
+                ", tennv='" + tennv + '\'' +
+                '}';
     }
 }

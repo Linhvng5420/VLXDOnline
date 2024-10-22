@@ -1,6 +1,7 @@
 package com.tdc.vlxdonline.Activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,25 +16,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tdc.vlxdonline.Model.NhanVien;
 import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.FragmentOwnerNhanvienDetailBinding;
 
-public class Owner_NhanVienDetailFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
 
-    // Khai báo đối tượng NhanVien để lưu trữ thông tin nhân viên được chọn
-    private NhanVien selectedNhanVien;
-    // Khai báo đối tượng binding để tương tác với các thành phần trong giao diện (layout fragment_owner_nhanvien_detail.xml)
+public class Owner_NhanVienDetailFragment extends Fragment {
     private FragmentOwnerNhanvienDetailBinding nhanvienDetailBinding;
 
     // Khai báo DatabaseReference để kết nối với Firebase
     private DatabaseReference databaseReference;
+    private NhanVien nhanVien;
+
+    // Lưu ID nhân viên đc truyền từ Fragment trước qua
+    private String selectedIDNhanVien;
 
     // Khai báo Spinner và danh sách chức vụ cho nhân viên
-    private Spinner spinnerChucVu;
-    private String[] chucVuArray = {"Kho", "Giao Hàng"};
+    private Spinner spinnerChucVu = nhanvienDetailBinding.spinnerChucVu;
+    private String[] chucVuArray;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,16 +59,14 @@ public class Owner_NhanVienDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // Lấy Spinner từ View Binding
-        spinnerChucVu = nhanvienDetailBinding.spinnerChucVu;
-
         // Thiết lập Toolbar cho Fragment
         setupToolbar(view);
 
-        // Lấy thông tin từ đối tượng Bundle nếu có
-        retrieveDataFromBundle();
+        // Lấy thông tin IDNV từ Bundle và lấy nhân viên từ firebase
+        nhanIDNhanVienTuBundle();
+//        layNhanVienTuFirebase();
 
+        /*
         // Xử lý Spinner chọn chức vụ
         setupSpinner();
 
@@ -75,49 +80,94 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         setupDeleteButton();
 
         // Thiết lập sự kiện cho nút Hủy
-        setupCancelButton();
+        setupCancelButton();*/
     }
 
-    // Thiết lập Toolbar và điều hướng
-    private void setupToolbar(View view) {
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+    private void layNhanVienTuFirebase() {
+        // Khởi tạo databaseReference và lấy dữ liệu từ Firebase
+        databaseReference = FirebaseDatabase.getInstance().getReference("nhanvien");
 
-        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
+        // Lấy dữ liệu của nhân viên theo ID
+        databaseReference.child(selectedIDNhanVien).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Kiểm tra xem có dữ liệu không
+                if (dataSnapshot.exists()) {
+                    // Chuyển đổi dữ liệu từ DataSnapshot thành đối tượng NhanVien
+                    nhanVien = dataSnapshot.getValue(NhanVien.class);
+                    Log.d("l.e", "Nhân viên: " + nhanVien);
+                } else {
+                    // Xử lý trường hợp không tìm thấy nhân viên
+                    Log.e("l.e", "Nhân viên không tồn tại");
+                }
+            }
 
-        // Xử lý khi nhấn nút quay về trên Toolbar
-        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Xử lý lỗi nếu có
+                Log.e("l.e", "Lỗi: " + databaseError.getMessage());
+            }
+        });
     }
+
 
     // Nhận dữ liệu từ Bundle và hiển thị thông tin
-    private void retrieveDataFromBundle() {
+    private void nhanIDNhanVienTuBundle() {
+        // getArguments là một phương thức của Fragment để truy cập Bundle
         if (getArguments() != null) {
             // Lấy thông tin nhân viên từ Bundle
-            selectedNhanVien = (NhanVien) getArguments().getSerializable("selectedNhanVien");
+            selectedIDNhanVien = getArguments().getSerializable("selectedIDNhanVien").toString();
 
-            // Hiển thị thông tin nhân viên lên giao diện
-            nhanvienDetailBinding.tvIDNhanVien.setText("ID: " + selectedNhanVien.getID());
-            nhanvienDetailBinding.etTenNhanVien.setText(selectedNhanVien.getTenNV());
-            nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
-            nhanvienDetailBinding.etSDT.setText(selectedNhanVien.getSDT());
-            nhanvienDetailBinding.etEmail.setText(selectedNhanVien.getEmail());
-        }
+            // Hiển thị thông tin ID nhân viên lên giao diện
+            nhanvienDetailBinding.tvIDNhanVien.setText("ID: " + selectedIDNhanVien);
+
+            //lấy thông tin nhân viên từ firebase thông qua ID
+
+        } else
+            Log.d("l.e", "nhanIDNhanVienTuBundle: Lỗi truyền bundle từ fragment Nhan viên qua Detail");
     }
+    /*
 
-    // Xử lý Spinner chọn chức vụ
     private void setupSpinner() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.select_dialog_item, chucVuArray);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerChucVu.setAdapter(adapter);
+        // Khởi tạo Firebase DatabaseReference cho nhánh "chucvu"
+        DatabaseReference chucVuReference = FirebaseDatabase.getInstance().getReference("chucvu");
 
-        // Thiết lập lựa chọn mặc định cho Spinner dựa trên chức vụ của nhân viên
-        spinnerChucVu.setSelection(selectedNhanVien.getChucVu()); // 0 cho "Kho" và 1 cho "Giao Hàng"
+        // Lắng nghe sự thay đổi của dữ liệu từ Firebase
+        chucVuReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Tạo danh sách chứa tên các chức vụ
+                List<String> chucVuList = new ArrayList<>();
+
+                // Duyệt qua các chức vụ trong Firebase và thêm vào danh sách
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String chucVu = snapshot.child("ten").getValue(String.class);
+                    chucVuList.add(chucVu);
+                }
+
+                // Chuyển danh sách thành mảng để sử dụng cho Spinner
+                chucVuArray = chucVuList.toArray(new String[0]);
+
+                // Tạo ArrayAdapter cho Spinner
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, chucVuArray);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerChucVu.setAdapter(adapter);
+
+                // Thiết lập lựa chọn mặc định cho Spinner dựa trên chức vụ của nhân viên
+                spinnerChucVu.setSelection(selectedIDNhanVien.getChucVu());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Xử lý lỗi nếu không thể đọc dữ liệu
+                Toast.makeText(getContext(), "Lỗi khi tải dữ liệu chức vụ: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    // Thiết lập sự kiện cho nút Chỉnh Sửa
+*/
+
+    /*// Thiết lập sự kiện cho nút Chỉnh Sửa
     private void setupEditButton() {
         nhanvienDetailBinding.btnChinhSua.setOnClickListener(v -> {
             // Kích hoạt chỉnh sửa các trường thông tin
@@ -148,8 +198,8 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                     .setMessage("Bạn có chắc chắn muốn xóa nhân viên không?")
                     .setPositiveButton("Có", (dialog, which) -> {
                         // Xóa nhân viên khỏi Firebase Database
-                        databaseReference = FirebaseDatabase.getInstance().getReference("nhanVien").child(selectedNhanVien.getID()+"");
-                        
+                        databaseReference = FirebaseDatabase.getInstance().getReference("nhanVien").child(selectedIDNhanVien.getID() + "");
+
                         databaseReference.removeValue()
                                 .addOnSuccessListener(aVoid -> {
                                     // Hiển thị thông báo đã xóa thành công
@@ -177,10 +227,10 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                     .setMessage("Bạn có chắc chắn muốn lưu thay đổi không?")
                     .setPositiveButton("Có", (dialog, which) -> {
                         // Lưu giá trị Chức vụ từ Spinner
-                        selectedNhanVien.setChucVu(spinnerChucVu.getSelectedItemPosition()); // Lưu 0 cho "Kho" và 1 cho "Giao Hàng"
+                        selectedIDNhanVien.setChucVu(spinnerChucVu.getSelectedItemPosition()); // Lưu 0 cho "Kho" và 1 cho "Giao Hàng"
 
                         // Cập nhật thông tin nhân viên trong Firebase
-                        databaseReference.child(String.valueOf(selectedNhanVien.getID())).setValue(selectedNhanVien)
+                        databaseReference.child(String.valueOf(selectedIDNhanVien.getID())).setValue(selectedIDNhanVien)
                                 .addOnSuccessListener(aVoid -> {
                                     // Vô hiệu hóa các trường chỉnh sửa sau khi lưu
                                     nhanvienDetailBinding.etTenNhanVien.setEnabled(false);
@@ -201,7 +251,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                                     nhanvienDetailBinding.btnChinhSua.setVisibility(View.VISIBLE);
 
                                     // Cập nhật giao diện với thông tin mới
-                                    nhanvienDetailBinding.etChucVu.setText(selectedNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
+                                    nhanvienDetailBinding.etChucVu.setText(selectedIDNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
 
                                     // Hiển thị thông báo lưu thành công
                                     Toast.makeText(getContext(), "Đã lưu thành công!", Toast.LENGTH_SHORT).show();
@@ -246,6 +296,20 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                     .setNegativeButton("Không Hủy", null) // Hiển thị hộp thoại
                     .show();
         });
+    }*/
+
+    // Thiết lập Toolbar và điều hướng
+    private void setupToolbar(View view) {
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        // Xử lý khi nhấn nút quay về trên Toolbar
+        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
     }
 }
 

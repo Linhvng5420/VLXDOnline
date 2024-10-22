@@ -6,6 +6,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tdc.vlxdonline.Model.NhanVien;
 import com.tdc.vlxdonline.databinding.ItemOwnerNhanvienRcvBinding;
 
@@ -82,15 +87,35 @@ public class NhanVienAdapter extends RecyclerView.Adapter<NhanVienAdapter.NhanVi
         // Phương thức bind để gán dữ liệu nhân viên vào các view trong item
         public void bind(NhanVien nhanVien) {
             // Hiển thị ID của nhân viên
-            binding.tvId.setText(String.valueOf(nhanVien.getID()));
+            binding.tvId.setText(String.valueOf(nhanVien.getIdnv()));
 
             // Hiển thị tên nhân viên
-            binding.tvTenNV.setText(nhanVien.getTenNV());
+            binding.tvTenNV.setText(nhanVien.getTennv());
 
-            // Hiển thị chức vụ: 0 là Kho, 1 là Giao Hàng
-            String chucVuText = nhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng";
-            binding.tvChucVu.setText(chucVuText); // Gán giá trị chức vụ vào TextView
+            // Hiển thị chức vụ từ Firebase
+            String chucVuId = nhanVien.getChucvu(); // Mã chức vụ
+            DatabaseReference chucVuRef = FirebaseDatabase.getInstance().getReference("chucvu").child(chucVuId);
+
+            // Lấy dữ liệu tên chức vụ từ Firebase
+            chucVuRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Lấy tên chức vụ từ Firebase
+                        String tenChucVu = dataSnapshot.child("ten").getValue(String.class);
+                        binding.tvChucVu.setText(tenChucVu != null ? tenChucVu : "N/A"); // Gán tên chức vụ vào TextView
+                    } else {
+                        binding.tvChucVu.setText("N/A"); // Nếu không tìm thấy chức vụ, hiển thị "N/A"
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    binding.tvChucVu.setText("N/A"); // Xử lý lỗi nếu có
+                }
+            });
         }
+
     }
 }
 
