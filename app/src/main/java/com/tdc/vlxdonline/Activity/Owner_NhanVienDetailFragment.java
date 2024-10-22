@@ -69,17 +69,53 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         chucVuAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerChucVu.setAdapter(chucVuAdapter);
 
-        //Lấy ID nhân viên từ Bundle rồi truy xuất thông tin nhân viên từ firebase
+        // Lấy danh sách chức vụ từ Firebase và cập nhật vào Spinner
+        layTatCaDSChucVuTuFirebase();
+        setEventSpinner();
+
+        // Lấy ID nhân viên từ Bundle rồi truy xuất thông tin nhân viên từ firebase và Hiển thị lên giao diện
+        //Set Spinner Item theo Chức Vụ của nhân viên
         nhanIDNhanVienTuBundle();
 
-        // Lấy danh sách chức vụ từ Firebase và cập nhật vào Spinner
-        layDanhSachChucVuTuFirebase();
-        setEventSpinner();
+        // Bắt sự kiện các Button
+        
     }
 
-    // NHẬN DỮ LIỆU TỪ BUNDLE, TRUY XUẤT FIREBASE VÀ HIỂN THỊ THÔNG TIN
+    // LẤY TẤT CẢ DANH SÁCH CHỨC VỤ TỪ FIREBASE
+    private void layTatCaDSChucVuTuFirebase() {
+        DatabaseReference chucVuRef = FirebaseDatabase.getInstance().getReference("chucvu");
+
+        chucVuRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Xóa dữ liệu cũ trong danh sách để cập nhật lại
+                chucVuList.clear();
+
+                // Lặp qua tất cả các bản ghi chức vụ trong Firebase
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    // Lấy tên chức vụ từ mỗi bản ghi
+                    String tenChucVu = snapshot.child("ten").getValue(String.class);
+                    if (tenChucVu != null) {
+                        chucVuList.add(tenChucVu);
+                        Log.d("l.e", "layTatCaDSChucVuTuFirebase: " + tenChucVu);
+                    }
+                }
+
+                // Cập nhật dữ liệu cho Spinner
+                chucVuAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Xử lý lỗi nếu có
+                Log.d("Firebase", "Lỗi khi lấy danh sách chức vụ: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    // NHẬN DỮ LIỆU TỪ BUNDLE, TRUY XUẤT FIREBASE VÀ HIỂN THỊ THÔNG TIN LÊN GIAO DIỆN
     private void nhanIDNhanVienTuBundle() {
-        //getArguments() trả về Bundle chứa thông tin được truyền từ Fragment trước
+        // getArguments() trả về Bundle chứa thông tin được truyền từ Fragment trước
         if (getArguments() != null) // Kiểm tra xem Bundle có tồn tại hay không
         {
             // Lấy thông tin nhân viên từ Bundle
@@ -104,10 +140,13 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
                         if (nhanVien != null) {
                             nhanvienDetailBinding.etTenNhanVien.setText(nhanVien.getTennv());
-                            truyXuatChucVuTuFireBase(nhanVien.getChucvu());
                             nhanvienDetailBinding.etSDT.setText(nhanVien.getSdt());
                             nhanvienDetailBinding.etEmail.setText(nhanVien.getEmailnv());
                             nhanvienDetailBinding.etCCCD.setText(nhanVien.getCccd());
+
+                            // Lấy tên chức vụ và gán nó vào Spinner
+                            truyXuatChucVuTuFireBase(nhanVien.getChucvu());
+
                         } else {
                             Log.d("l.e", "Nhân viên không tồn tại trong cơ sở dữ liệu.");
                         }
@@ -137,10 +176,22 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     String tenChucVu = dataSnapshot.child("ten").getValue(String.class);
-                    nhanvienDetailBinding.etChucVu.setText(tenChucVu != null ? tenChucVu : "N/A"); // Gán tên chức vụ vào TextView
-                    Log.d("l.e", "chức vụ với ID: " + chucVuId + "CV: " + tenChucVu);
+                    nhanvienDetailBinding.etChucVu.setText(tenChucVu);
+                    nhanVien.setChucvu(tenChucVu);
+                    Log.d("l.e", "truyXuatChucVuTuFireBase ID = " + chucVuId + ", Tên Chức Vụ = " + tenChucVu + ", nhanVien.getChucvu = " + nhanVien.getChucvu());
+
+                    // 2. gán item spinner theo chức vụ nhân viên
+                    // Tìm vị trí của giá trị 'chucVu' trong danh sách Spinner
+                    int position = chucVuAdapter.getPosition(tenChucVu);
+                    if (position != -1) {  // Nếu tìm thấy chucVu trong danh sách
+                        spinnerChucVu.setSelection(position); // Đặt item tương ứng được chọn
+                    } else {
+                        nhanvienDetailBinding.etChucVu.setText("Không tìm thấy chức vụ: " + tenChucVu);
+                        spinnerChucVu.setSelection(0); //nếu ko thấy thì để mặc định là 0 - kho khi sửa.
+                        Log.d("Spinner", "Không tìm thấy chức vụ: " + tenChucVu + " trong danh sách Spinner.");
+                    }
                 } else {
-                    nhanvienDetailBinding.etChucVu.setText("N/A"); // Gán tên chức vụ vào TextView
+                    nhanvienDetailBinding.etChucVu.setText("Chức Vụ \"" + chucVuId + "\" Không Tồn Tại Trong Hệ Thống");
                     Log.d("l.e", "Không tìm thấy chức vụ với ID: " + chucVuId);
                 }
             }
@@ -148,37 +199,6 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 nhanvienDetailBinding.etChucVu.setText("N/A"); // Xử lý lỗi nếu có
-            }
-        });
-    }
-
-    // LẤY DANH SÁCH CHỨC VỤ TỪ FIREBASE
-    private void layDanhSachChucVuTuFirebase() {
-        DatabaseReference chucVuRef = FirebaseDatabase.getInstance().getReference("chucvu");
-
-        chucVuRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Xóa dữ liệu cũ trong danh sách để cập nhật lại
-                chucVuList.clear();
-
-                // Lặp qua tất cả các bản ghi chức vụ trong Firebase
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    // Lấy tên chức vụ từ mỗi bản ghi
-                    String tenChucVu = snapshot.child("ten").getValue(String.class);
-                    if (tenChucVu != null) {
-                        chucVuList.add(tenChucVu); // Thêm tên chức vụ vào danh sách
-                    }
-                }
-
-                // Cập nhật dữ liệu cho Spinner
-                chucVuAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Xử lý lỗi nếu có
-                Log.d("Firebase", "Lỗi khi lấy danh sách chức vụ: " + databaseError.getMessage());
             }
         });
     }
