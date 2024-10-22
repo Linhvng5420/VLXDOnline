@@ -66,7 +66,7 @@ public class Owner_NhanVienFragment extends Fragment {
         // Firebase: Khởi tạo databaseReference và lấy dữ liệu từ Firebase
         databaseReference = FirebaseDatabase.getInstance().getReference("nhanvien");
 
-          databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Xóa danh sách cũ trước khi thêm dữ liệu mới

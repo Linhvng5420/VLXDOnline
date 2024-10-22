@@ -42,7 +42,6 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:hint="Tên Nhân Viên"
-            android:text="Tên Nhân Viên - Text"
             android:visibility="visible" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -65,7 +64,6 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:hint="Chức Vụ"
-            android:text="Chức Vụ"
             android:visibility="visible" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -126,7 +124,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_marginTop="-5dp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -159,9 +156,10 @@
             android:id="@+id/etCCCD"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:enabled="false"
             android:hint="CCCD"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:inputType="number"
+            android:maxLength="10" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
