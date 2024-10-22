@@ -78,7 +78,18 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         nhanIDNhanVienTuBundle();
 
         // Bắt sự kiện các Button
-        
+        /*
+        // Thiết lập sự kiện cho nút Chỉnh Sửa
+        setupEditButton();
+
+        // Thiết lập sự kiện cho nút Lưu Lại
+        setupSaveButton();
+
+        // Thiết lập sự kiện cho nút Xóa
+        setupDeleteButton();
+
+        // Thiết lập sự kiện cho nút Hủy
+        setupCancelButton();*/
     }
 
     // LẤY TẤT CẢ DANH SÁCH CHỨC VỤ TỪ FIREBASE
