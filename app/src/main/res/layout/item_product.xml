@@ -19,13 +19,13 @@
             android:layout_marginTop="5dp"
             app:cardCornerRadius="8dp">
             <ImageView
-                android:id="@+id/imgItem"
+                android:id="@+id/ivImages"
                 android:layout_width="160dp"
                 android:layout_height="160dp"
                 android:src="@drawable/search"/>
         </androidx.cardview.widget.CardView>
         <TextView
-            android:id="@+id/tvNameItem"
+            android:id="@+id/tvTenSP"
             android:layout_width="170dp"
             android:layout_height="25dp"
             android:paddingHorizontal="5dp"
@@ -60,7 +60,7 @@
                 android:src="@drawable/star"/>
         </LinearLayout>
         <TextView
-            android:id="@+id/tvPriceItem"
+            android:id="@+id/tvGiaSP"
             android:layout_width="170dp"
             android:layout_height="25dp"
             android:paddingHorizontal="5dp"
