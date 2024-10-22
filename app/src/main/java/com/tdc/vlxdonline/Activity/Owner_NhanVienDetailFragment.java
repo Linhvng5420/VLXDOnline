@@ -5,13 +5,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -25,9 +23,6 @@ import com.tdc.vlxdonline.Model.NhanVien;
 import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.FragmentOwnerNhanvienDetailBinding;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Owner_NhanVienDetailFragment extends Fragment {
     private FragmentOwnerNhanvienDetailBinding nhanvienDetailBinding;
 
@@ -39,7 +34,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
     private String selectedIDNhanVien;
 
     // Khai báo Spinner và danh sách chức vụ cho nhân viên
-    private Spinner spinnerChucVu = nhanvienDetailBinding.spinnerChucVu;
+    private Spinner spinnerChucVu;
     private String[] chucVuArray;
 
     @Override
@@ -61,6 +56,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // Thiết lập Toolbar cho Fragment
         setupToolbar(view);
+        Spinner spinnerChucVu = nhanvienDetailBinding.spinnerChucVu;
 
         // Lấy thông tin IDNV từ Bundle và lấy nhân viên từ firebase
         nhanIDNhanVienTuBundle();
@@ -119,13 +115,48 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             selectedIDNhanVien = getArguments().getSerializable("selectedIDNhanVien").toString();
 
             // Hiển thị thông tin ID nhân viên lên giao diện
-            nhanvienDetailBinding.tvIDNhanVien.setText("ID: " + selectedIDNhanVien);
+            Toast.makeText(getContext(), "ID Nhân Viên: " + selectedIDNhanVien, Toast.LENGTH_SHORT).show();
+            Log.d("l.e", "nhanIDNhanVienTuBundle: " + selectedIDNhanVien.toString());
+            nhanvienDetailBinding.tvIDNhanVien.setText("ID: " + selectedIDNhanVien.toUpperCase());
 
-            //lấy thông tin nhân viên từ firebase thông qua ID
+            // Lấy thông tin nhân viên từ firebase thông qua ID
+            databaseReference = FirebaseDatabase.getInstance().getReference("nhanvien");
 
-        } else
+            databaseReference.child(selectedIDNhanVien).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Lấy thông tin nhân viên từ firebase và ánh xạ vào đối tượng NhanVien
+                        nhanVien = dataSnapshot.getValue(NhanVien.class);
+                        Log.d("l.e", "Firebase: " + nhanVien.toString());
+
+                        if (nhanVien != null) {
+                            nhanvienDetailBinding.etTenNhanVien.setText(nhanVien.getTennv());
+                            nhanvienDetailBinding.etChucVu.setText(nhanVien.getChucvu());
+                            nhanvienDetailBinding.etSDT.setText(nhanVien.getSdt());
+                            nhanvienDetailBinding.etEmail.setText(nhanVien.getEmailnv());
+                            nhanvienDetailBinding.etCCCD.setText(nhanVien.getCccd());
+                        } else {
+                            Log.d("l.e", "Nhân viên không tồn tại trong cơ sở dữ liệu.");
+                        }
+                    } else {
+                        Log.d("l.e", "Không tìm thấy nhân viên với ID: " + selectedIDNhanVien);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.d("l.e", "Lỗi truy xuất thông tin nhân viên từ firebase: " + databaseError.getMessage());
+                }
+            });
+
+        } else {
             Log.d("l.e", "nhanIDNhanVienTuBundle: Lỗi truyền bundle từ fragment Nhan viên qua Detail");
+        }
     }
+
+
+
     /*
 
     private void setupSpinner() {
