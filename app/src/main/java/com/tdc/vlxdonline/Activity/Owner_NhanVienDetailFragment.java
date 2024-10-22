@@ -128,11 +128,12 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                     if (dataSnapshot.exists()) {
                         // Lấy thông tin nhân viên từ firebase và ánh xạ vào đối tượng NhanVien
                         nhanVien = dataSnapshot.getValue(NhanVien.class);
+                        nhanVien.setIdnv(dataSnapshot.getKey());
                         Log.d("l.e", "Firebase: " + nhanVien.toString());
 
                         if (nhanVien != null) {
                             nhanvienDetailBinding.etTenNhanVien.setText(nhanVien.getTennv());
-                            nhanvienDetailBinding.etChucVu.setText(nhanVien.getChucvu());
+                            tenChucVuTuFireBase(nhanVien.getChucvu());
                             nhanvienDetailBinding.etSDT.setText(nhanVien.getSdt());
                             nhanvienDetailBinding.etEmail.setText(nhanVien.getEmailnv());
                             nhanvienDetailBinding.etCCCD.setText(nhanVien.getCccd());
@@ -155,7 +156,30 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         }
     }
 
+    // Hiển thị chức vụ từ Firebase
+    private void tenChucVuTuFireBase(String chucVuId) {
+        DatabaseReference chucVuRef = FirebaseDatabase.getInstance().getReference("chucvu").child(chucVuId);
 
+        // Lấy dữ liệu tên chức vụ từ Firebase
+        chucVuRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String tenChucVu = dataSnapshot.child("ten").getValue(String.class);
+                    nhanvienDetailBinding.etChucVu.setText(tenChucVu != null ? tenChucVu : "N/A"); // Gán tên chức vụ vào TextView
+                    Log.d("l.e", "chức vụ với ID: " + chucVuId + "CV: " + tenChucVu);
+                } else {
+                    nhanvienDetailBinding.etChucVu.setText("N/A"); // Gán tên chức vụ vào TextView
+                    Log.d("l.e", "Không tìm thấy chức vụ với ID: " + chucVuId);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                nhanvienDetailBinding.etChucVu.setText("N/A"); // Xử lý lỗi nếu có
+            }
+        });
+    }
 
     /*
 
