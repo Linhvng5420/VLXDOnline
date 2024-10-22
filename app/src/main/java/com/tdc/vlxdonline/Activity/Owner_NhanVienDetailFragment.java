@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -78,18 +79,10 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         nhanIDNhanVienTuBundle();
 
         // Bắt sự kiện các Button
-        /*
-        // Thiết lập sự kiện cho nút Chỉnh Sửa
         setupEditButton();
-
-        // Thiết lập sự kiện cho nút Lưu Lại
-        setupSaveButton();
-
-        // Thiết lập sự kiện cho nút Xóa
+        //setupSaveButton();
         setupDeleteButton();
-
-        // Thiết lập sự kiện cho nút Hủy
-        setupCancelButton();*/
+        setupCancelButton();
     }
 
     // LẤY TẤT CẢ DANH SÁCH CHỨC VỤ TỪ FIREBASE
@@ -231,6 +224,87 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             }
         });
 
+    }
+
+    // THIẾT LẬP SỰ KIỆN CHO CÁC NÚT
+    private void setupEditButton() {
+        nhanvienDetailBinding.btnChinhSua.setOnClickListener(v -> {
+            // Kích hoạt chỉnh sửa cho các trường thông tin
+            nhanvienDetailBinding.etTenNhanVien.setEnabled(true);
+            nhanvienDetailBinding.etSDT.setEnabled(true);
+            nhanvienDetailBinding.etEmail.setEnabled(true);
+            nhanvienDetailBinding.etCCCD.setEnabled(true);
+
+            // Hiển thị Spinner chọn chức vụ
+            nhanvienDetailBinding.tilChucVu.setVisibility(View.INVISIBLE);
+            nhanvienDetailBinding.etChucVu.setVisibility(View.INVISIBLE);
+            nhanvienDetailBinding.spinnerChucVu.setVisibility(View.VISIBLE);
+            nhanvienDetailBinding.tvChucVu.setVisibility(View.VISIBLE);
+
+            // Hiển thị nút Lưu Lại, Xóa, Hủy. Ẩn nút Chỉnh Sửa
+            nhanvienDetailBinding.btnLuuLai.setVisibility(View.VISIBLE);
+            nhanvienDetailBinding.btnXoa.setVisibility(View.VISIBLE);
+            nhanvienDetailBinding.btnHuy.setVisibility(View.VISIBLE);
+            nhanvienDetailBinding.btnChinhSua.setVisibility(View.INVISIBLE);
+        });
+    }
+    private void setupCancelButton() {
+        nhanvienDetailBinding.btnHuy.setOnClickListener(v -> {
+            // Tạo hộp thoại xác nhận
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Xác Nhận")
+                    .setMessage("Bạn có chắc chắn muốn hủy thay đổi không?")
+                    .setPositiveButton("Hủy", (dialog, which) -> {
+
+                        // Vô hiệu hóa các trường chỉnh sửa sau khi hủy
+                        nhanvienDetailBinding.etTenNhanVien.setEnabled(false);
+                        nhanvienDetailBinding.etSDT.setEnabled(false);
+                        nhanvienDetailBinding.etEmail.setEnabled(false);
+                        nhanvienDetailBinding.etCCCD.setEnabled(false);
+
+                        // Ẩn Spinner và hiển thị TextView cho chức vụ
+                        nhanvienDetailBinding.tilChucVu.setVisibility(View.VISIBLE);
+                        nhanvienDetailBinding.etChucVu.setVisibility(View.VISIBLE);
+                        nhanvienDetailBinding.spinnerChucVu.setVisibility(View.INVISIBLE);
+                        nhanvienDetailBinding.tvChucVu.setVisibility(View.INVISIBLE);
+
+                        // Ẩn nút Lưu Lại, Xóa, Hủy và Hiển thị nút Sửa sau khi Hủy
+                        nhanvienDetailBinding.btnLuuLai.setVisibility(View.INVISIBLE);
+                        nhanvienDetailBinding.btnHuy.setVisibility(View.VISIBLE);
+                        nhanvienDetailBinding.btnXoa.setVisibility(View.INVISIBLE);
+                        nhanvienDetailBinding.btnHuy.setVisibility(View.INVISIBLE);
+                        nhanvienDetailBinding.btnChinhSua.setVisibility(View.VISIBLE);
+                    })
+                    .setNegativeButton("Không Hủy", null) // Hiển thị hộp thoại
+                    .show();
+        });
+    }
+    private void setupDeleteButton() {
+        nhanvienDetailBinding.btnXoa.setOnClickListener(view -> {
+            // Tạo hộp thoại xác nhận
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Xác Nhận")
+                    .setMessage("Bạn có chắc chắn muốn xóa nhân viên không?")
+                    .setPositiveButton("Có", (dialog, which) -> {
+                        // Xóa nhân viên khỏi Firebase có document = selectedIDNhanVien
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("nhanvien").child(selectedIDNhanVien);
+
+                        databaseReference.removeValue()
+                                .addOnSuccessListener(aVoid -> {
+                                    // Hiển thị thông báo đã xóa thành công
+                                    Toast.makeText(getContext(), "Đã xóa nhân viên!", Toast.LENGTH_SHORT).show();
+
+                                    // Quay lại màn hình quản lý nhân viên sau khi xóa
+                                    getParentFragmentManager().popBackStack();
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Hiển thị thông báo lỗi nếu không xóa được
+                                    Toast.makeText(getContext(), "Lỗi khi xóa nhân viên: ", Toast.LENGTH_SHORT).show();
+                                });
+                    })
+                    .setNegativeButton("Không", null) // Không làm gì khi người dùng nhấn "Không"
+                    .show();
+        });
     }
 
     // CUỐI: THIẾT LẬP TOOLBAR VÀ ĐIỀU HƯỚNG
