@@ -44,18 +44,15 @@ import java.util.List;
 import SanPham_Model.SanPham_Model;*/
 
 public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
-    SwipeRefreshLayout swipeRefreshLayout;
 
-    EditText edtNhapten, edtNhapgiaban, edtNhapsoluong, edtDaban,edtMoTa;
-    Button btnThem, Xoa, Sua;
+    EditText edtNhapten, edtNhapgiaban, edtNhapsoluong, edtDaban, edtMoTa;
+    Button btnThem, btnXoa, btnSua;
     ImageView ivImages;
     Uri uri;
     String imagesUrl;
     SanPham_Adapter adapter;
     SanPham_Model sanPhamModel = new SanPham_Model();
     List<SanPham_Model> list_SP = new ArrayList<>();
-    List<String> list_id = new ArrayList<>();
-    Integer id_ = 0;
     ValueEventListener listener;
     RecyclerView recyclerView;
 
@@ -68,11 +65,8 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.taosanpham_layout);
         setCtronl();
-        key_auto();
         getDate();
         setEvent();
-
-        //idAuto();
     }
 
     private void getDate() {
@@ -130,7 +124,6 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
         btnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                idAuto();
                 uploadData();
 //                Intent intent = new Intent(MainActivity.this, Warehouse_HomeActivity.class);
 //                startActivity(intent);
@@ -152,7 +145,7 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
                         edtNhapgiaban.setText(sanPhamModel.getGiabanSP());
                         edtNhapsoluong.setText(sanPhamModel.getSoluong());
                         edtDaban.setText(sanPhamModel.getDaban());
-edtMoTa.setText(sanPhamModel.getMoTa());
+                        edtMoTa.setText(sanPhamModel.getMoTa());
                         // Hiển thị hình ảnh sản phẩm
                         Glide.with(Warehouse_ThemSanPhamActivity.this)
                                 .load(sanPhamModel.getImages())
@@ -165,35 +158,6 @@ edtMoTa.setText(sanPhamModel.getMoTa());
         }
     }
 
-    public void key_auto() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("SanPham");
-        {
-            reference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    list_id.clear();
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        String key = dataSnapshot.getKey();
-                        if (key.isEmpty()) {
-                            list_id.add("0");
-                        } else {
-                            list_id.add(key);
-                        }
-                    }
-                    int size = list_id.size() + 1;
-                    id_ = Integer.valueOf(size);
-
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
-    }
-
     private void saveDate() {
         sanPhamModel.setTenSP(edtNhapten.getText().toString());
         sanPhamModel.setGiabanSP(edtNhapgiaban.getText().toString());
@@ -201,7 +165,7 @@ edtMoTa.setText(sanPhamModel.getMoTa());
         sanPhamModel.setDaban(edtDaban.getText().toString());
         sanPhamModel.setMoTa(edtMoTa.getText().toString());
         sanPhamModel.setImages(imagesUrl.toString());
-        FirebaseDatabase.getInstance().getReference("SanPham").child("SP" + id_).setValue(sanPhamModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+        FirebaseDatabase.getInstance().getReference("SanPham").child(sanPhamModel.getTenSP()).setValue(sanPhamModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(Warehouse_ThemSanPhamActivity.this, "Thêm Thành Công", Toast.LENGTH_SHORT).show();
