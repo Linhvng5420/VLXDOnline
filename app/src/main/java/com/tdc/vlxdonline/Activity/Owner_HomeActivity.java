@@ -14,7 +14,6 @@ import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.ActivityOwnerHomeBinding;
 
 public class Owner_HomeActivity extends AppCompatActivity {
-    // Khai báo biến sử dụng cho View Binding để tương tác với các thành phần UI trong layout
     ActivityOwnerHomeBinding ownerHomeBinding;
 
     @Override
