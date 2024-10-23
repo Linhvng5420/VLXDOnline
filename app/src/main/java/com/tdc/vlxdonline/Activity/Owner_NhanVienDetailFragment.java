@@ -261,7 +261,6 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             // Kích hoạt chỉnh sửa cho các trường thông tin
             nhanvienDetailBinding.etTenNhanVien.setEnabled(true);
             nhanvienDetailBinding.etSDT.setEnabled(true);
-            nhanvienDetailBinding.etEmail.setEnabled(true);
             nhanvienDetailBinding.etCCCD.setEnabled(true);
 
             // Hiển thị Spinner chọn chức vụ
@@ -289,7 +288,6 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                         // Vô hiệu hóa các trường chỉnh sửa sau khi hủy
                         nhanvienDetailBinding.etTenNhanVien.setEnabled(false);
                         nhanvienDetailBinding.etSDT.setEnabled(false);
-                        nhanvienDetailBinding.etEmail.setEnabled(false);
                         nhanvienDetailBinding.etCCCD.setEnabled(false);
 
                         // Ẩn Spinner và hiển thị TextView cho chức vụ
@@ -351,13 +349,22 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
                         docIDChucVuBangTen(tenChucVuMoi);
 
-                        /*// Cập nhật thông tin nhân viên trong Firebase
-                        databaseReference.child(String.valueOf(selectedIDNhanVien.getID())).setValue(selectedIDNhanVien)
+                        nhanVien.setTennv(nhanvienDetailBinding.etTenNhanVien.getText().toString());
+                        nhanVien.setSdt(nhanvienDetailBinding.etSDT.getText().toString());
+                        nhanVien.setCccd(nhanvienDetailBinding.etCCCD.getText().toString());
+
+                        // Cập nhật thông tin nhân viên trong Firebase (Realtime Database)
+                        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("nhanvien");
+
+                        // Cập nhật document dựa trên ID của nhân viên
+                        dbRef.child(nhanVien.getIdnv()).setValue(nhanVien)
                                 .addOnSuccessListener(aVoid -> {
+                                    // Xử lý thành công
+                                    Toast.makeText(getContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+
                                     // Vô hiệu hóa các trường chỉnh sửa sau khi lưu
                                     nhanvienDetailBinding.etTenNhanVien.setEnabled(false);
                                     nhanvienDetailBinding.etSDT.setEnabled(false);
-                                    nhanvienDetailBinding.etEmail.setEnabled(false);
 
                                     // Ẩn Spinner và hiển thị TextView cho chức vụ
                                     nhanvienDetailBinding.tilChucVu.setVisibility(View.VISIBLE);
@@ -371,19 +378,14 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                                     nhanvienDetailBinding.btnXoa.setVisibility(View.INVISIBLE);
                                     nhanvienDetailBinding.btnHuy.setVisibility(View.INVISIBLE);
                                     nhanvienDetailBinding.btnChinhSua.setVisibility(View.VISIBLE);
-
-                                    // Cập nhật giao diện với thông tin mới
-                                    nhanvienDetailBinding.etChucVu.setText(selectedIDNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
-
-                                    // Hiển thị thông báo lưu thành công
-                                    Toast.makeText(getContext(), "Đã lưu thành công!", Toast.LENGTH_SHORT).show();
                                 })
                                 .addOnFailureListener(e -> {
-                                    // Hiển thị thông báo lỗi nếu không lưu được
-                                    Toast.makeText(getContext(), "Lỗi khi lưu thông tin: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                });*/
+                                    // Xử lý lỗi
+                                    Toast.makeText(getContext(), "Cập nhật thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+
                     })
-                    .setNegativeButton("Không", null) // Hiển thị hộp thoại
+                    .setNegativeButton("Không", null)
                     .show();
         });
     }
