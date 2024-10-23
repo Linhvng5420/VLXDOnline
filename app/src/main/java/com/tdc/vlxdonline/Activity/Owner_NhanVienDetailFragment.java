@@ -390,6 +390,45 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         });
     }
 
+    // CUỐI: BẮT ĐIỀU KIỆN DỮ LIỆU ĐẦU VÀO
+    private boolean batDieuKienDuLieuDauVao() {
+        // kiểm tra có ký tự số trong tên nhân viên
+        String tenNhanVien = nhanvienDetailBinding.etTenNhanVien.getText().toString();
+        for (int i = 0; i < tenNhanVien.length(); i++) {
+            if (Character.isDigit(tenNhanVien.charAt(i))) {
+                nhanvienDetailBinding.etTenNhanVien.setError("Vui lòng không nhập số vào tên nhân viên");
+                return false;
+            }
+        }
+
+        if (nhanvienDetailBinding.etTenNhanVien.getText().toString().isEmpty()) {
+            nhanvienDetailBinding.etTenNhanVien.setError("Vui lòng nhập đủ họ tên nhân viên");
+            return false;
+        }
+
+        if (nhanvienDetailBinding.etSDT.getText().toString().isEmpty() || nhanvienDetailBinding.etSDT.getText().toString().length() != 10) {
+            nhanvienDetailBinding.etSDT.setError("Vui lòng nhập số điện thoại 10 số");
+            return false;
+        }
+
+        if (nhanvienDetailBinding.etEmail.getText().toString().isEmpty() || !nhanvienDetailBinding.etEmail.getText().toString().contains("@") || !nhanvienDetailBinding.etEmail.getText().toString().contains(".")) {
+            nhanvienDetailBinding.etEmail.setError("Vui lòng nhập đúng email");
+            return false;
+        }
+
+        if (nhanvienDetailBinding.etCCCD.getText().toString().isEmpty() || nhanvienDetailBinding.etCCCD.getText().toString().length() != 10) {
+            nhanvienDetailBinding.etCCCD.setError("Vui lòng nhập CCCD (10 số)");
+            return false;
+        }
+
+//        if (addBinding.spinnerChucVu.getSelectedItemPosition() == 0) {
+//            Toast.makeText(getContext(), "Vui lòng chọn chức vụ", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+
+        return true;
+    }
+
     // CUỐI: THIẾT LẬP TOOLBAR VÀ ĐIỀU HƯỚNG
     private void setupToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar);

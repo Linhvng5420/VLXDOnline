@@ -139,6 +139,9 @@ public class Owner_NhanVienAddFragment extends Fragment {
 
     private void setupSaveButton() {
         addBinding.btnThemNhanVien.setOnClickListener(v -> {
+            // Bắt điều kiện dữ liệu đầu vào
+            if (!batDieuKienDuLieuDauVao()) return;
+
             // Hộp thoại xác nhận
             new AlertDialog.Builder(getContext())
                     .setTitle("Xác nhận")
@@ -150,6 +153,7 @@ public class Owner_NhanVienAddFragment extends Fragment {
 
                         docIDChucVuBangTen(tenChucVuMoi);
 
+
                         nhanVien.setTennv(addBinding.etTenNhanVien.getText().toString());
                         nhanVien.setSdt(addBinding.etSDT.getText().toString());
                         nhanVien.setEmailnv(addBinding.etEmail.getText().toString());
@@ -159,20 +163,18 @@ public class Owner_NhanVienAddFragment extends Fragment {
                         // Tạo mã nhân viên mới bằng timestamp
                         long timestamp = System.currentTimeMillis();
                         String maNhanVien = "nv" + timestamp;
-
-                        // Đặt mã nhân viên cho đối tượng NhanVien
                         nhanVien.setIdnv(maNhanVien);
-                        // Lưu nhân viên vào Firebase
+
+                        // Lưu nhân viên vào Firebase với key
                         databaseReference = FirebaseDatabase.getInstance().getReference("nhanvien");
 
-                        databaseReference.child(maNhanVien).setValue(nhanVien)
+                        databaseReference.child(maNhanVien).setValue(nhanVien) //Thêm nv mới vào firebase với Key(document)=idnv, các value còn lại tự thêm.
                                 .addOnSuccessListener(aVoid -> {
                                     Toast.makeText(getContext(), "Thêm nhân viên thành công", Toast.LENGTH_SHORT).show();
                                 })
                                 .addOnFailureListener(e -> {
                                     Toast.makeText(getContext(), "Thêm nhân viên thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 });
-
 
                         // Thêm nhân viên vào Firebase với mã ngẫu nhiên (Dài và xấu)
 //                        databaseReference.push().setValue(nhanVien);
@@ -209,6 +211,50 @@ public class Owner_NhanVienAddFragment extends Fragment {
             }
         } else
             Log.d("l.e", "docIDChucVuBangTen: listChucVuFireBase NULL, tên cv: " + tenChucVu);
+    }
+
+    // CUỐI: BẮT ĐIỀU KIỆN DỮ LIỆU ĐẦU VÀO
+    private boolean batDieuKienDuLieuDauVao() {
+        // kiểm tra có ký tự số trong tên nhân viên
+        String tenNhanVien = addBinding.etTenNhanVien.getText().toString();
+        for (int i = 0; i < tenNhanVien.length(); i++) {
+            if (Character.isDigit(tenNhanVien.charAt(i))) {
+                addBinding.etTenNhanVien.setError("Vui lòng không nhập số vào tên nhân viên");
+                return false;
+            }
+        }
+
+        if (addBinding.etTenNhanVien.getText().toString().isEmpty()) {
+            addBinding.etTenNhanVien.setError("Vui lòng nhập đủ họ tên nhân viên");
+            return false;
+        }
+
+        if (addBinding.etSDT.getText().toString().isEmpty() || addBinding.etSDT.getText().toString().length() != 10) {
+            addBinding.etSDT.setError("Vui lòng nhập số điện thoại 10 số");
+            return false;
+        }
+
+        if (addBinding.etEmail.getText().toString().isEmpty() || !addBinding.etEmail.getText().toString().contains("@") || !addBinding.etEmail.getText().toString().contains(".")) {
+            addBinding.etEmail.setError("Vui lòng nhập đúng email");
+            return false;
+        }
+
+        if (addBinding.etCCCD.getText().toString().isEmpty() || addBinding.etCCCD.getText().toString().length() != 10) {
+            addBinding.etCCCD.setError("Vui lòng nhập CCCD (10 số)");
+            return false;
+        }
+
+        if (addBinding.etPass.getText().toString().isEmpty() || addBinding.etPass.getText().toString().length() < 6) {
+            addBinding.etPass.setError("Vui lòng nhập mật khẩu (từ 6 ký tự)");
+            return false;
+        }
+
+//        if (addBinding.spinnerChucVu.getSelectedItemPosition() == 0) {
+//            Toast.makeText(getContext(), "Vui lòng chọn chức vụ", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+
+        return true;
     }
 
     // CUỐI: THIẾT LẬP TOOLBAR VÀ ĐIỀU HƯỚNG

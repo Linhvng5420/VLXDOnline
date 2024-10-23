@@ -42,6 +42,7 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:hint="Tên Nhân Viên"
+            android:maxLength="40"
             android:textColor="@color/black"
             android:visibility="visible" />
 
@@ -117,7 +118,7 @@
             android:enabled="false"
             android:hint="Số điện thoại"
             android:inputType="number|numberSigned"
-            android:maxLength="12"
+            android:maxLength="10"
             android:textColor="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -139,6 +140,8 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:hint="Email Nhân Viên Đăng Nhập"
+            android:inputType="text|textEmailAddress"
+            android:maxLength="40"
             android:textColor="#F80000" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -163,7 +166,7 @@
             android:layout_height="match_parent"
             android:enabled="false"
             android:hint="CCCD"
-            android:inputType="number"
+            android:inputType="number|numberSigned"
             android:maxLength="10"
             android:textColor="@color/black" />
 
