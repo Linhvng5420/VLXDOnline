@@ -1,10 +1,10 @@
 package com.tdc.vlxdonline.Model;
 
 public class TypeUser {
-    private int id;
+    private String id;
     private String ten;
 
-    public TypeUser(int id, String ten) {
+    public TypeUser(String id, String ten) {
         this.id = id;
         this.ten = ten;
     }
@@ -12,11 +12,11 @@ public class TypeUser {
     public TypeUser() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

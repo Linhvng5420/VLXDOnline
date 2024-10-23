@@ -1,10 +1,10 @@
 package com.tdc.vlxdonline.Model;
 
 public class ChucVu {
-    private int id;
+    private String id;
     private String ten;
 
-    public ChucVu(int id, String ten) {
+    public ChucVu(String id, String ten) {
         this.id = id;
         this.ten = ten;
     }
@@ -12,11 +12,11 @@ public class ChucVu {
     public ChucVu() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

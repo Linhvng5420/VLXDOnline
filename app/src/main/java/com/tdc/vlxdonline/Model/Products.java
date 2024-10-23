@@ -2,10 +2,10 @@ package com.tdc.vlxdonline.Model;
 
 public class Products {
     private String ten, moTa, donVi, anh;
-    private int id, idChu, gia, danhMuc, tonKho, daBan = 0;
-    private double soSao = 0;
+    private String id, idChu, gia, danhMuc, tonKho, daBan = "0";
+    private String soSao = "0";
 
-    public Products(String ten, String donVi, String moTa, int idChu, int id, String anh, int gia, double soSao, int danhMuc, int tonKho, int daBan) {
+    public Products(String ten, String donVi, String moTa, String idChu, String id, String anh, String gia, String soSao, String danhMuc, String tonKho, String daBan) {
         this.ten = ten;
         this.donVi = donVi;
         this.moTa = moTa;
@@ -22,19 +22,19 @@ public class Products {
     public Products() {
     }
 
-    public int getIdChu() {
+    public String getIdChu() {
         return idChu;
     }
 
-    public void setIdChu(int idChu) {
+    public void setIdChu(String idChu) {
         this.idChu = idChu;
     }
 
-    public double getSoSao() {
+    public String getSoSao() {
         return soSao;
     }
 
-    public void setSoSao(double soSao) {
+    public void setSoSao(String soSao) {
         this.soSao = soSao;
     }
 
@@ -62,11 +62,11 @@ public class Products {
         this.moTa = moTa;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -78,35 +78,35 @@ public class Products {
         this.anh = anh;
     }
 
-    public int getGia() {
+    public String getGia() {
         return gia;
     }
 
-    public void setGia(int gia) {
+    public void setGia(String gia) {
         this.gia = gia;
     }
 
-    public int getDanhMuc() {
+    public String getDanhMuc() {
         return danhMuc;
     }
 
-    public void setDanhMuc(int danhMuc) {
+    public void setDanhMuc(String danhMuc) {
         this.danhMuc = danhMuc;
     }
 
-    public int getTonKho() {
+    public String getTonKho() {
         return tonKho;
     }
 
-    public void setTonKho(int tonKho) {
+    public void setTonKho(String tonKho) {
         this.tonKho = tonKho;
     }
 
-    public int getDaBan() {
+    public String getDaBan() {
         return daBan;
     }
 
-    public void setDaBan(int daBan) {
+    public void setDaBan(String daBan) {
         this.daBan = daBan;
     }
 }

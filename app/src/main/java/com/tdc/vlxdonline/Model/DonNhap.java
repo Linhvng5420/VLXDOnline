@@ -1,10 +1,10 @@
 package com.tdc.vlxdonline.Model;
 
 public class DonNhap {
-    private int id, idChu, idTao, tongTien;
+    private String id, idChu, idTao, tongTien;
     private String ngayTao;
 
-    public DonNhap(int id, int idChu, int idTao, int tongTien, String ngayTao) {
+    public DonNhap(String id, String idChu, String idTao, String tongTien, String ngayTao) {
         this.id = id;
         this.idChu = idChu;
         this.idTao = idTao;
@@ -15,35 +15,35 @@ public class DonNhap {
     public DonNhap() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getIdChu() {
+    public String getIdChu() {
         return idChu;
     }
 
-    public void setIdChu(int idChu) {
+    public void setIdChu(String idChu) {
         this.idChu = idChu;
     }
 
-    public int getIdTao() {
+    public String getIdTao() {
         return idTao;
     }
 
-    public void setIdTao(int idTao) {
+    public void setIdTao(String idTao) {
         this.idTao = idTao;
     }
 
-    public int getTongTien() {
+    public String getTongTien() {
         return tongTien;
     }
 
-    public void setTongTien(int tongTien) {
+    public void setTongTien(String tongTien) {
         this.tongTien = tongTien;
     }
 

@@ -20,7 +20,6 @@ public class Customer_HomeActivity extends AppCompatActivity {
     // Binding
     ActivityCustomerHomeBinding customerHomeBinding;
     private String currentTag = null;
-    public static KhachHang info = new KhachHang();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

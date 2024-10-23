@@ -1,14 +1,14 @@
 package com.tdc.vlxdonline.Model;
 
 public class ThongTinChu{
-    private int ID;
+    private String ID;
     private String ten, SDT, email;
     private String diaChi, STK;
 
     public ThongTinChu() {
     }
 
-    public ThongTinChu(int ID, String ten, String SDT, String email, String diaChi, String STK) {
+    public ThongTinChu(String ID, String ten, String SDT, String email, String diaChi, String STK) {
         this.ID = ID;
         this.ten = ten;
         this.SDT = SDT;
@@ -17,11 +17,11 @@ public class ThongTinChu{
         this.STK = STK;
     }
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 

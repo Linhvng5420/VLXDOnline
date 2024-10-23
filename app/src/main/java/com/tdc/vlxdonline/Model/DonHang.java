@@ -1,10 +1,10 @@
 package com.tdc.vlxdonline.Model;
 
 public class DonHang {
-    private int id, idChu, idKhach, tongTien, trangThai, trangThaiTT, idTao, idGiao, phiTraGop;
+    private String id, idChu, idKhach, tongTien, trangThai, trangThaiTT, idTao, idGiao, phiTraGop;
     private String anh, tenKhach, sdt, diaChi, ngayTao;
 
-    public DonHang(String anh, int id, int idChu, int idKhach, int tongTien, int trangThai, int trangThaiTT, int idTao, int idGiao, int phiTraGop, String tenKhach, String sdt, String diaChi, String ngayTao) {
+    public DonHang(String anh, String id, String idChu, String idKhach, String tongTien, String trangThai, String trangThaiTT, String idTao, String idGiao, String phiTraGop, String tenKhach, String sdt, String diaChi, String ngayTao) {
         this.id = id;
         this.idChu = idChu;
         this.idKhach = idKhach;
@@ -32,75 +32,75 @@ public class DonHang {
         this.anh = anh;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getIdChu() {
+    public String getIdChu() {
         return idChu;
     }
 
-    public void setIdChu(int idChu) {
+    public void setIdChu(String idChu) {
         this.idChu = idChu;
     }
 
-    public int getIdKhach() {
+    public String getIdKhach() {
         return idKhach;
     }
 
-    public void setIdKhach(int idKhach) {
+    public void setIdKhach(String idKhach) {
         this.idKhach = idKhach;
     }
 
-    public int getTongTien() {
+    public String getTongTien() {
         return tongTien;
     }
 
-    public void setTongTien(int tongTien) {
+    public void setTongTien(String tongTien) {
         this.tongTien = tongTien;
     }
 
-    public int getTrangThai() {
+    public String getTrangThai() {
         return trangThai;
     }
 
-    public void setTrangThai(int trangThai) {
+    public void setTrangThai(String trangThai) {
         this.trangThai = trangThai;
     }
 
-    public int getTrangThaiTT() {
+    public String getTrangThaiTT() {
         return trangThaiTT;
     }
 
-    public void setTrangThaiTT(int trangThaiTT) {
+    public void setTrangThaiTT(String trangThaiTT) {
         this.trangThaiTT = trangThaiTT;
     }
 
-    public int getIdTao() {
+    public String getIdTao() {
         return idTao;
     }
 
-    public void setIdTao(int idTao) {
+    public void setIdTao(String idTao) {
         this.idTao = idTao;
     }
 
-    public int getIdGiao() {
+    public String getIdGiao() {
         return idGiao;
     }
 
-    public void setIdGiao(int idGiao) {
+    public void setIdGiao(String idGiao) {
         this.idGiao = idGiao;
     }
 
-    public int getPhiTraGop() {
+    public String getPhiTraGop() {
         return phiTraGop;
     }
 
-    public void setPhiTraGop(int phiTraGop) {
+    public void setPhiTraGop(String phiTraGop) {
         this.phiTraGop = phiTraGop;
     }
 

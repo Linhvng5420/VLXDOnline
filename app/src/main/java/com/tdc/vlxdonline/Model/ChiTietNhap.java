@@ -1,10 +1,10 @@
 package com.tdc.vlxdonline.Model;
 
 public class ChiTietNhap {
-    private int idDon, idSanPham, soLuong, gia;
+    private String idDon, idSanPham, soLuong, gia;
     private String ten, anh;
 
-    public ChiTietNhap(int idDon, int idSanPham, int soLuong, int gia, String ten, String anh) {
+    public ChiTietNhap(String idDon, String idSanPham, String soLuong, String gia, String ten, String anh) {
         this.idDon = idDon;
         this.idSanPham = idSanPham;
         this.soLuong = soLuong;
@@ -16,35 +16,35 @@ public class ChiTietNhap {
     public ChiTietNhap() {
     }
 
-    public int getIdDon() {
+    public String getIdDon() {
         return idDon;
     }
 
-    public void setIdDon(int idDon) {
+    public void setIdDon(String idDon) {
         this.idDon = idDon;
     }
 
-    public int getIdSanPham() {
+    public String getIdSanPham() {
         return idSanPham;
     }
 
-    public void setIdSanPham(int idSanPham) {
+    public void setIdSanPham(String idSanPham) {
         this.idSanPham = idSanPham;
     }
 
-    public int getSoLuong() {
+    public String getSoLuong() {
         return soLuong;
     }
 
-    public void setSoLuong(int soLuong) {
+    public void setSoLuong(String soLuong) {
         this.soLuong = soLuong;
     }
 
-    public int getGia() {
+    public String getGia() {
         return gia;
     }
 
-    public void setGia(int gia) {
+    public void setGia(String gia) {
         this.gia = gia;
     }
 

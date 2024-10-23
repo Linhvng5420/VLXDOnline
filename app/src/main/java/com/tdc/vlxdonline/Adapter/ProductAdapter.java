@@ -42,7 +42,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
         Products product = data.get(position);
         Glide.with(context).load(product.getAnh()).into(holder.binding.imgItem);
         holder.binding.tvNameItem.setText(product.getTen());
-        StringBuilder chuoi = new StringBuilder(String.valueOf(product.getGia()));
+        StringBuilder chuoi = new StringBuilder(product.getGia());
         if (chuoi.length() > 3) {
             int dem = 0;
             int doDai = chuoi.length() - 1;
@@ -64,19 +64,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
         holder.binding.star4.setImageResource(R.drawable.star_disable);
         holder.binding.star5.setImageResource(R.drawable.star_disable);
         // Hien thi danh gia theo so sao
-        if (product.getSoSao() > 0) {
+        double sao = Double.parseDouble(product.getSoSao());
+        if (sao > 0) {
             holder.binding.tvChuaDg.setVisibility(View.GONE);
             holder.binding.star1.setImageResource(R.drawable.star);
-            if (product.getSoSao() > 1.7) {
+            if (sao > 1.7) {
                 holder.binding.star2.setImageResource(R.drawable.star);
             }
-            if (product.getSoSao() > 2.7) {
+            if (sao > 2.7) {
                 holder.binding.star3.setImageResource(R.drawable.star);
             }
-            if (product.getSoSao() > 3.7) {
+            if (sao > 3.7) {
                 holder.binding.star4.setImageResource(R.drawable.star);
             }
-            if (product.getSoSao() > 4.7) {
+            if (sao > 4.7) {
                 holder.binding.star5.setImageResource(R.drawable.star);
             }
         }else{

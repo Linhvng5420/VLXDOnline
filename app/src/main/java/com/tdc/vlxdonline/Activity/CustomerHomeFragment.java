@@ -128,14 +128,14 @@ public class CustomerHomeFragment extends Fragment {
         adapterSX = new AdapterCenterDrop(getActivity(), R.layout.item_center_drop, dataSapXep);
         binding.spXapSep.setAdapter(adapterSX);
 
-        dataCategorys.add(new Categorys("Cate 1", 1, "https://th.bing.com/th?id=OIF.0yfM4yF7hYIDB6%2bmwxU4GQ&w=172&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"));
-        dataCategorys.add(new Categorys("Cate 2", 2, "https://th.bing.com/th/id/OIF.lf4QHwb4DMz5wHZ84QYJmQ?w=183&h=183&c=7&r=0&o=5&dpr=1.3&pid=1.7"));
-        dataCategorys.add(new Categorys("Cate 3", 3, "https://th.bing.com/th/id/OIP.UWORqopZEI954B5G-Z4sbgHaHQ?w=169&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"));
-        dataCategorys.add(new Categorys("Cate 4", 4, "https://th.bing.com/th/id/OIP.BO1VNjeGOUGcGRWQNUVCZQHaHa?w=1024&h=1024&rs=1&pid=ImgDetMain"));
-        dataProds.add(new Products("A", "A", "A", 1, 1, "https://th.bing.com/th/id/OIP.UWORqopZEI954B5G-Z4sbgHaHQ?w=169&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7", 100000, 0.0, 1, 1000, 580));
-        dataProds.add(new Products("B", "B", "B", 1, 2, "https://th.bing.com/th/id/OIP.BO1VNjeGOUGcGRWQNUVCZQHaHa?w=1024&h=1024&rs=1&pid=ImgDetMain", 200000, 4.0, 1, 1000, 580));
-        dataProds.add(new Products("C", "C", "C", 1, 3, "https://th.bing.com/th/id/OIP.vyMrfzra1TPcklie3-GA9gHaH9?w=180&h=183&c=7&r=0&o=5&dpr=1.3&pid=1.7", 300000, 5.0, 1, 1000, 580));
-        dataProds.add(new Products("D", "D", "D", 1, 4, "https://th.bing.com/th?id=OIF.EGFQW6dgdgP%2fL6l2yvVChg&rs=1&pid=ImgDetMain", 400000, 3.5, 1, 1000, 580));
+        dataCategorys.add(new Categorys("Cate 1", "1", "https://th.bing.com/th?id=OIF.0yfM4yF7hYIDB6%2bmwxU4GQ&w=172&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"));
+        dataCategorys.add(new Categorys("Cate 2", "2", "https://th.bing.com/th/id/OIF.lf4QHwb4DMz5wHZ84QYJmQ?w=183&h=183&c=7&r=0&o=5&dpr=1.3&pid=1.7"));
+        dataCategorys.add(new Categorys("Cate 3", "3", "https://th.bing.com/th/id/OIP.UWORqopZEI954B5G-Z4sbgHaHQ?w=169&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"));
+        dataCategorys.add(new Categorys("Cate 4", "4", "https://th.bing.com/th/id/OIP.BO1VNjeGOUGcGRWQNUVCZQHaHa?w=1024&h=1024&rs=1&pid=ImgDetMain"));
+        dataProds.add(new Products("A", "A", "A", "1", "1", "https://th.bing.com/th/id/OIP.UWORqopZEI954B5G-Z4sbgHaHQ?w=169&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7", "100000", "0.0", "1", "1000", "580"));
+        dataProds.add(new Products("B", "B", "B", "1", "2", "https://th.bing.com/th/id/OIP.BO1VNjeGOUGcGRWQNUVCZQHaHa?w=1024&h=1024&rs=1&pid=ImgDetMain", "200000", "4.0", "1", "1000", "580"));
+        dataProds.add(new Products("C", "C", "C", "1", "3", "https://th.bing.com/th/id/OIP.vyMrfzra1TPcklie3-GA9gHaH9?w=180&h=183&c=7&r=0&o=5&dpr=1.3&pid=1.7", "300000", "5.0", "1", "1000", "580"));
+        dataProds.add(new Products("D", "D", "D", "1", "4", "https://th.bing.com/th?id=OIF.EGFQW6dgdgP%2fL6l2yvVChg&rs=1&pid=ImgDetMain", "400000", "3.5", "1", "1000", "580"));
     }
 
     private void setHienThiSanPham() {
@@ -160,14 +160,18 @@ public class CustomerHomeFragment extends Fragment {
         Collections.sort(dataProds, new Comparator<Products>() {
             @Override
             public int compare(Products p1, Products p2) {
+                int gia1 = Integer.parseInt(p1.getGia());
+                int gia2 = Integer.parseInt(p2.getGia());
+                double sao1 = Double.parseDouble(p1.getSoSao());
+                double sao2 = Double.parseDouble(p2.getSoSao());
                 if (type == 1) {
-                    return Double.compare(p1.getSoSao(), p2.getSoSao());
+                    return Double.compare(sao1, sao2);
                 } else if (type == 2) {
-                    return Double.compare(p2.getSoSao(), p1.getSoSao());
+                    return Double.compare(sao2, sao1);
                 } else if (type == 3) {
-                    return Integer.compare(p1.getGia(), p2.getGia());
+                    return Integer.compare(gia1, gia2);
                 } else if (type == 4) {
-                    return Integer.compare(p2.getGia(), p1.getGia());
+                    return Integer.compare(gia2, gia1);
                 }
                 return 0;
             }

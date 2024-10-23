@@ -1,11 +1,11 @@
 package com.tdc.vlxdonline.Model;
 
 public class CartItem {
-    private int idKhach, idSanPham, gia, soLuong;
+    private String idKhach, idSanPham, gia, soLuong;
     private String tenSP, moTa, anh;
     private boolean selected = false;
 
-    public CartItem(int idKhach, int idSanPham, String anh, int gia, int soLuong, String tenSP, String moTa, boolean selected) {
+    public CartItem(String idKhach, String idSanPham, String anh, String gia, String soLuong, String tenSP, String moTa, boolean selected) {
         this.idKhach = idKhach;
         this.idSanPham = idSanPham;
         this.anh = anh;
@@ -35,19 +35,19 @@ public class CartItem {
     public CartItem() {
     }
 
-    public int getIdKhach() {
+    public String getIdKhach() {
         return idKhach;
     }
 
-    public void setIdKhach(int idKhach) {
+    public void setIdKhach(String idKhach) {
         this.idKhach = idKhach;
     }
 
-    public int getIdSanPham() {
+    public String getIdSanPham() {
         return idSanPham;
     }
 
-    public void setIdSanPham(int idSanPham) {
+    public void setIdSanPham(String idSanPham) {
         this.idSanPham = idSanPham;
     }
 
@@ -59,19 +59,19 @@ public class CartItem {
         this.anh = anh;
     }
 
-    public int getGia() {
+    public String getGia() {
         return gia;
     }
 
-    public void setGia(int gia) {
+    public void setGia(String gia) {
         this.gia = gia;
     }
 
-    public int getSoLuong() {
+    public String getSoLuong() {
         return soLuong;
     }
 
-    public void setSoLuong(int soLuong) {
+    public void setSoLuong(String soLuong) {
         this.soLuong = soLuong;
     }
 

@@ -61,7 +61,7 @@ public class DanhSachDonHangFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 DonHang donHang = data.get(position);
-                if (donHang.getPhiTraGop() > 0) {
+                if (Integer.parseInt(donHang.getPhiTraGop()) > 0) {
 
                 }else{
                     ((Customer_HomeActivity) getActivity()).ReplaceFragment(new ChiTietDonFragment(donHang));

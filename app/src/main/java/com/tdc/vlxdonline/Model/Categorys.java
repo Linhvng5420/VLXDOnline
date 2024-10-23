@@ -2,12 +2,12 @@ package com.tdc.vlxdonline.Model;
 
 public class Categorys {
     private String ten, anh;
-    private int id;
+    private String id;
 
     public Categorys() {
     }
 
-    public Categorys(String ten, int id, String anh) {
+    public Categorys(String ten, String id, String anh) {
         this.ten = ten;
         this.id = id;
         this.anh = anh;
@@ -21,11 +21,11 @@ public class Categorys {
         this.anh = anh;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

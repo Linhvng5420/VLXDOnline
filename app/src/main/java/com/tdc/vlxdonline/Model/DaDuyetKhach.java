@@ -1,9 +1,9 @@
 package com.tdc.vlxdonline.Model;
 
 public class DaDuyetKhach {
-    private int idKhach, iDChu, trangThai;
+    private String idKhach, iDChu, trangThai;
 
-    public DaDuyetKhach(int idKhach, int iDChu, int trangThai) {
+    public DaDuyetKhach(String idKhach, String iDChu, String trangThai) {
         this.idKhach = idKhach;
         this.iDChu = iDChu;
         this.trangThai = trangThai;
@@ -12,27 +12,27 @@ public class DaDuyetKhach {
     public DaDuyetKhach() {
     }
 
-    public int getIdKhach() {
+    public String getIdKhach() {
         return idKhach;
     }
 
-    public void setIdKhach(int idKhach) {
+    public void setIdKhach(String idKhach) {
         this.idKhach = idKhach;
     }
 
-    public int getiDChu() {
+    public String getiDChu() {
         return iDChu;
     }
 
-    public void setiDChu(int iDChu) {
+    public void setiDChu(String iDChu) {
         this.iDChu = iDChu;
     }
 
-    public int getTrangThai() {
+    public String getTrangThai() {
         return trangThai;
     }
 
-    public void setTrangThai(int trangThai) {
+    public void setTrangThai(String trangThai) {
         this.trangThai = trangThai;
     }
 }
