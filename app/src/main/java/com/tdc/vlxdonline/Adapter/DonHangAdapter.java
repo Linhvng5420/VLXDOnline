@@ -1,4 +1,4 @@
-package com.example.myapplication.Adapter;
+package com.tdc.vlxdonline.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -67,6 +67,7 @@ public class DonHangAdapter extends RecyclerView.Adapter<DonHangAdapter.UserView
     public class UserViewHolder extends RecyclerView.ViewHolder{
         private ImageView imgDonHang;
         private TextView tvName;
+
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -7,15 +7,15 @@
     android:orientation="vertical"
     tools:context=".Activity.Warehouse_HomeActivity">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/frm_warehouse"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9"
         android:orientation="vertical">
+    </FrameLayout>
 
-    </LinearLayout>
-
-    <!--  NAVIGATOR BOTTON  -->
+<!--      NAVIGATOR BOTTON  -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

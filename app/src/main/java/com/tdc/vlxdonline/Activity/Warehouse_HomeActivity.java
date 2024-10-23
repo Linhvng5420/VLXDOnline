@@ -23,8 +23,8 @@ public class Warehouse_HomeActivity extends AppCompatActivity {
         warehouseHomeBinding = ActivityWarehouseHomeBinding.inflate(getLayoutInflater());
         setContentView(warehouseHomeBinding.getRoot());
 
-        // Bắt sự kiện
         EventNavigationBottom();
+
 
         // Sử dụng OnBackPressedDispatcher để tùy chỉnh hành vi khi nhấn nút back
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -47,26 +47,25 @@ public class Warehouse_HomeActivity extends AppCompatActivity {
         warehouseHomeBinding.navWarehouse.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
 
-            if (itemId == R.id.nav_owner_dashboard) {
+            if (itemId == R.id.nav_warehouse_kho) {
+                ReplaceFragment(new GiaoDienKho_Fragment());
+            } else if (itemId == R.id.nav_warehouse_daxuat) {
                 ReplaceFragment(new Fragment());
-            } else if (itemId == R.id.nav_owner_nhanvien) {
+            } else if (itemId == R.id.nav_warehouse_taikhoan) {
                 ReplaceFragment(new Fragment());
-            } else if (itemId == R.id.nav_owner_khachhang) {
-                ReplaceFragment(new Fragment());
-            } else if (itemId == R.id.nav_owner_donhang) {
-                ReplaceFragment(new Fragment());
-            } else if (itemId == R.id.nav_owner_kho) {
-                ReplaceFragment(new Fragment());
+            } else if (itemId == R.id.nav_warehouse_donhang) {
+             //   ReplaceFragment(new ThongTinNhanHang_Fragment());
+                ReplaceFragment(new TaoDonNhapHangFragment());
             }
 
             return true;
         });
     }
 
-    private void ReplaceFragment(Fragment fragment) {
+    public void ReplaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id."Thay Thế Tên Fragment_.xml vào đây", fragment);
+        fragmentTransaction.replace(warehouseHomeBinding.frmWarehouse.getId(), fragment).addToBackStack(null);
         fragmentTransaction.commit();
     }
 

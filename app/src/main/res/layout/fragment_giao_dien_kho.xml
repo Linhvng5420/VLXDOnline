@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".Activity.Customer_HomeActivity">
+    tools:context=".Activity.Warehouse_HomeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,6 +31,7 @@
             app:cardElevation="10dp">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_sanphamkho"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_img_item" />
@@ -43,17 +44,17 @@
     </LinearLayout>
 
     <!--  NAVIGATOR BOTTON  -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:orientation="horizontal">-->
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/nav_customer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:menu="@menu/customer_bottom_nav_menu" />
-    </LinearLayout>
+<!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--            android:id="@+id/nav_customer"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="bottom"-->
+<!--            app:menu="@menu/customer_bottom_nav_menu" />-->
+<!--    </LinearLayout>-->
 </LinearLayout>

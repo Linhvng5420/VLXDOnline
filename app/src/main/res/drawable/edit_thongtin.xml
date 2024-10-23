@@ -3,6 +3,6 @@
 
     <solid android:color="#FFFFFF"/> <!-- Màu nền trắng -->
     <padding android:top="10dp" android:bottom="10dp" android:left="10dp"/>
-    <corners android:radius="30dp" />
+    <corners android:radius="0dp" />
     <stroke android:width="2dp"/>
 </shape>
