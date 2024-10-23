@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -63,6 +65,9 @@ public class Owner_NhanVienAddFragment extends Fragment {
         //Thiết lập Toolbar cho Fragment
         setupToolbar(view);
 
+        // Khởi tạo đối tượng nhân viên dùng chung và duy nhất trong toàn bộ Fragment
+        nhanVien = new NhanVien();
+
         // Khởi tạo Spinner và Adapter
         chucVuAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, listChucVuSpinner);
         chucVuAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -71,6 +76,9 @@ public class Owner_NhanVienAddFragment extends Fragment {
         // Lấy danh sách chức vụ từ Firebase và cập nhật vào Spinner
         layTatCaDSChucVuTuFirebase();
         setEventSpinner();
+
+        // Bắt sự kiện các Button
+        setupSaveButton();
     }
 
     // LẤY TẤT CẢ DANH SÁCH CHỨC VỤ TỪ FIREBASE THEO THỜI GIAN THỰC
@@ -127,7 +135,80 @@ public class Owner_NhanVienAddFragment extends Fragment {
                 // Xử lý khi không có gì được chọn
             }
         });
+    }
 
+    private void setupSaveButton() {
+        addBinding.btnThemNhanVien.setOnClickListener(v -> {
+            // Hộp thoại xác nhận
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Xác nhận")
+                    .setMessage("Bạn có muốn thêm nhân viên này?")
+                    .setPositiveButton("Có", (dialog, which) -> {
+                        // Lưu giá trị Chức vụ từ Spinner
+                        String tenChucVuMoi = addBinding.spinnerChucVu.getSelectedItem().toString();
+                        Log.d("l.e", "setupSaveButton: tenChucVuMoi Spinner = " + tenChucVuMoi);
+
+                        docIDChucVuBangTen(tenChucVuMoi);
+
+                        nhanVien.setTennv(addBinding.etTenNhanVien.getText().toString());
+                        nhanVien.setSdt(addBinding.etSDT.getText().toString());
+                        nhanVien.setEmailnv(addBinding.etEmail.getText().toString());
+                        nhanVien.setEmailchu("Test@m.c");
+                        nhanVien.setCccd(addBinding.etCCCD.getText().toString());
+
+                        // Tạo mã nhân viên mới bằng timestamp
+                        long timestamp = System.currentTimeMillis();
+                        String maNhanVien = "nv" + timestamp;
+
+                        // Đặt mã nhân viên cho đối tượng NhanVien
+                        nhanVien.setIdnv(maNhanVien);
+                        // Lưu nhân viên vào Firebase
+                        databaseReference = FirebaseDatabase.getInstance().getReference("nhanvien");
+
+                        databaseReference.child(maNhanVien).setValue(nhanVien)
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(getContext(), "Thêm nhân viên thành công", Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(getContext(), "Thêm nhân viên thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+
+
+                        // Thêm nhân viên vào Firebase với mã ngẫu nhiên (Dài và xấu)
+//                        databaseReference.push().setValue(nhanVien);
+                    })
+                    .setNegativeButton("Không", null)
+                    .show();
+        });
+    }
+
+    // TÌM VÀ ĐỌC ID CHỨC VỤ TRONG listChucVuFireBase BẰNG TÊN CHỨC VỤ TRUYỀN VÀO
+    private void docIDChucVuBangTen(String tenChucVu) {
+        if (tenChucVu == null || tenChucVu.isEmpty()) {
+            Log.d("l.e", "docIDChucVuBangTen: Item Spinner.");
+            return;
+        }
+        Log.d("l.e", "listChucVuFireBase: " + listChucVuFireBase.toString());
+
+        // Tìm ID chức vụ có tên trùng khớp trong danh sách
+        if (listChucVuFireBase != null) {
+            String idChucVu = null;
+            for (ChucVu chucVu : listChucVuFireBase) {
+                if (chucVu.getTenChucVu().equals(tenChucVu)) {
+                    idChucVu = chucVu.getIdChucVu();
+                    Log.d("l.e", "docIDChucVuBangTen: Tìm ID chức vụ có tên trùng khớp trong danh sách, ID = " + idChucVu + ", Tên = " + tenChucVu);
+                    break;
+                }
+            }
+
+            if (idChucVu != null) {
+                nhanVien.setChucvu(idChucVu);
+                Log.d("l.e", "docDuLieuChucVu: ID = " + idChucVu + ", Tên = " + tenChucVu + ", nhanVien.getChucvu() = " + nhanVien.getChucvu());
+            } else {
+                Log.d("l.e", "Không tìm thấy chức vụ với tên: " + tenChucVu);
+            }
+        } else
+            Log.d("l.e", "docIDChucVuBangTen: listChucVuFireBase NULL, tên cv: " + tenChucVu);
     }
 
     // CUỐI: THIẾT LẬP TOOLBAR VÀ ĐIỀU HƯỚNG
