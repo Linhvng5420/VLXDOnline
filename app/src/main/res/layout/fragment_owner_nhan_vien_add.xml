@@ -7,20 +7,6 @@
     tools:context=".Activity.Owner_NhanVienAddFragment">
 
     <!-- Thanh Toolbar -->
-    <TextView
-        android:id="@+id/tvIDNhanVien"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/bg_item_lg"
-        android:padding="20dp"
-        android:text="TextView"
-        android:textColor="#18991D"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -40,13 +26,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="32dp"
         android:layout_marginRight="10dp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvIDNhanVien">
+        tools:layout_editor_absoluteY="203dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etTenNhanVien"

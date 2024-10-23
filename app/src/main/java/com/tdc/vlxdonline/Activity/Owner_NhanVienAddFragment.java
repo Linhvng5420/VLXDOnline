@@ -18,6 +18,7 @@ public class Owner_NhanVienAddFragment extends Fragment {
 
     }
 
+    //TODO: THỰC HIỆN KHAI BÁO, KHỞI TẠO VÀ XỬ LÝ LOGIC TẠI ĐÂY
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
