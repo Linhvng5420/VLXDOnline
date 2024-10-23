@@ -11,14 +11,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.tdc.vlxdonline.Model.Categorys;
-import com.tdc.vlxdonline.Model.DonVi;
-import com.tdc.vlxdonline.Model.SendMail;
 import com.tdc.vlxdonline.Model.TypeUser;
 import com.tdc.vlxdonline.Model.Users;
 import com.tdc.vlxdonline.databinding.ActivityLoginBinding;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
@@ -50,15 +46,6 @@ public class LoginActivity extends AppCompatActivity {
                 if (checkLg) {
                     if (typeUser == 0) {
                         Intent intent = new Intent(LoginActivity.this, Owner_HomeActivity.class);
-                        startActivity(intent);
-                    } else if (typeUser == 1) {
-                        Intent intent = new Intent(LoginActivity.this, Customer_HomeActivity.class);
-                        startActivity(intent);
-                    } else if (typeEmployee == 0) {
-                        Intent intent = new Intent(LoginActivity.this, Warehouse_HomeActivity.class);
-                        startActivity(intent);
-                    } else if (typeEmployee == 1) {
-                        Intent intent = new Intent(LoginActivity.this, Shipper_HomeActivity.class);
                         startActivity(intent);
                     }
                 }else{
@@ -129,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
         adapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, dataTypeUser);
         binding.spRoleLg.setAdapter(adapter);
 
-        dataUsers.add(new Users("abc", "123", "0"));
+        dataUsers.add(new Users("a", "a", "0"));
         dataUsers.add(new Users("bcd", "234", "1"));
         dataUsers.add(new Users("def", "345", "2"));
     }
