@@ -83,7 +83,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
         // Bắt sự kiện các Button
         setupEditButton();
-        //setupSaveButton();
+        setupSaveButton();
         setupDeleteButton();
         setupCancelButton();
     }
@@ -158,7 +158,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                             nhanvienDetailBinding.etCCCD.setText(nhanVien.getCccd());
 
                             // Lấy tên chức vụ và gán nó vào Spinner
-                            docDuLieuChucVu(nhanVien.getChucvu());
+                            docTenChucVuBangID(nhanVien.getChucvu());
 
                         } else {
                             Log.d("l.e", "Nhân viên không tồn tại trong cơ sở dữ liệu.");
@@ -179,7 +179,8 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         }
     }
 
-    private void docDuLieuChucVu(String chucVuId) {
+    // TÌM VÀ ĐỌC TÊN CHỨC VỤ TRONG listChucVuFireBase BẰNG ID CHỨC VỤ TRUYỀN VÀO
+    private void docTenChucVuBangID(String chucVuId) {
         if (chucVuId == null || chucVuId.isEmpty()) {
             // Nếu chucVuId null hoặc rỗng, hiển thị thông báo lỗi
             nhanvienDetailBinding.etChucVu.setText("Lỗi Database, Mất Field Chức Vụ");
@@ -206,6 +207,33 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             }
         } else
             Log.d("l.e", "docDuLieuChucVu: listChucVuFireBase NULL, idcv: " + chucVuId);
+    }
+
+    // TÌM VÀ ĐỌC ID CHỨC VỤ TRONG listChucVuFireBase BẰNG TÊN CHỨC VỤ TRUYỀN VÀO
+    private void docIDChucVuBangTen(String tenChucVu) {
+        if (tenChucVu == null || tenChucVu.isEmpty()) {
+            Log.d("l.e", "docIDChucVuBangTen: Item Spinner.");
+            return;
+        }
+
+        // Tìm ID chức vụ có tên trùng khớp trong danh sách
+        if (listChucVuFireBase != null) {
+            String idChucVu = null;
+            for (ChucVu chucVu : listChucVuFireBase) {
+                if (chucVu.getTenChucVu().equals(tenChucVu)) {
+                    idChucVu = chucVu.getIdChucVu();
+                    break;
+                }
+            }
+
+            if (idChucVu != null) {
+                nhanVien.setChucvu(idChucVu);
+                Log.d("l.e", "docDuLieuChucVu: ID = " + idChucVu + ", Tên = " + tenChucVu + ", nhanVien.getChucvu() = " + nhanVien.getChucvu());
+            } else {
+                Log.d("l.e", "Không tìm thấy chức vụ với tên: " + tenChucVu);
+            }
+        } else
+            Log.d("l.e", "docIDChucVuBangTen: listChucVuFireBase NULL, tên cv: " + tenChucVu);
     }
 
     // BẮT SỰ KIỆN SPINNER
@@ -306,6 +334,56 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                                 });
                     })
                     .setNegativeButton("Không", null) // Không làm gì khi người dùng nhấn "Không"
+                    .show();
+        });
+    }
+
+    private void setupSaveButton() {
+        nhanvienDetailBinding.btnLuuLai.setOnClickListener(v -> {
+            // Tạo hộp thoại xác nhận
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Xác Nhận")
+                    .setMessage("Bạn có chắc chắn muốn lưu thay đổi không?")
+                    .setPositiveButton("Có", (dialog, which) -> {
+                        // Lưu giá trị Chức vụ từ Spinner
+                        String tenChucVuMoi = nhanvienDetailBinding.spinnerChucVu.getSelectedItem().toString();
+                        Log.d("l.e", "setupSaveButton: tenChucVuMoi Spinner = " + tenChucVuMoi);
+
+                        docIDChucVuBangTen(tenChucVuMoi);
+
+                        /*// Cập nhật thông tin nhân viên trong Firebase
+                        databaseReference.child(String.valueOf(selectedIDNhanVien.getID())).setValue(selectedIDNhanVien)
+                                .addOnSuccessListener(aVoid -> {
+                                    // Vô hiệu hóa các trường chỉnh sửa sau khi lưu
+                                    nhanvienDetailBinding.etTenNhanVien.setEnabled(false);
+                                    nhanvienDetailBinding.etSDT.setEnabled(false);
+                                    nhanvienDetailBinding.etEmail.setEnabled(false);
+
+                                    // Ẩn Spinner và hiển thị TextView cho chức vụ
+                                    nhanvienDetailBinding.tilChucVu.setVisibility(View.VISIBLE);
+                                    nhanvienDetailBinding.etChucVu.setVisibility(View.VISIBLE);
+                                    nhanvienDetailBinding.spinnerChucVu.setVisibility(View.INVISIBLE);
+                                    nhanvienDetailBinding.tvChucVu.setVisibility(View.INVISIBLE);
+
+                                    // Ẩn nút Lưu Lại, Xóa, Hủy và Hiển thị nút Sửa sau khi lưu
+                                    nhanvienDetailBinding.btnLuuLai.setVisibility(View.INVISIBLE);
+                                    nhanvienDetailBinding.btnHuy.setVisibility(View.VISIBLE);
+                                    nhanvienDetailBinding.btnXoa.setVisibility(View.INVISIBLE);
+                                    nhanvienDetailBinding.btnHuy.setVisibility(View.INVISIBLE);
+                                    nhanvienDetailBinding.btnChinhSua.setVisibility(View.VISIBLE);
+
+                                    // Cập nhật giao diện với thông tin mới
+                                    nhanvienDetailBinding.etChucVu.setText(selectedIDNhanVien.getChucVu() == 0 ? "Kho" : "Giao Hàng");
+
+                                    // Hiển thị thông báo lưu thành công
+                                    Toast.makeText(getContext(), "Đã lưu thành công!", Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Hiển thị thông báo lỗi nếu không lưu được
+                                    Toast.makeText(getContext(), "Lỗi khi lưu thông tin: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });*/
+                    })
+                    .setNegativeButton("Không", null) // Hiển thị hộp thoại
                     .show();
         });
     }
