@@ -170,8 +170,14 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         }
     }
 
-    // TRUY XUẤT CHỨC VỤ CỦA NHÂN VIÊN TỪ FIREBASE BẰNG ID
     private void truyXuatChucVuTuFireBase(String chucVuId) {
+        if (chucVuId == null || chucVuId.isEmpty()) {
+            // Nếu chucVuId null hoặc rỗng, hiển thị thông báo lỗi
+            nhanvienDetailBinding.etChucVu.setText("Lỗi Database, Mất Field Chức Vụ");
+            Log.d("l.e", "chucVuId null hoặc rỗng.");
+            return; // Dừng hàm tại đây để tránh gọi Firebase với chucVuId null
+        }
+
         DatabaseReference chucVuRef = FirebaseDatabase.getInstance().getReference("chucvu").child(chucVuId);
 
         // Lấy dữ liệu tên chức vụ từ Firebase
@@ -184,14 +190,13 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                     nhanVien.setChucvu(tenChucVu);
                     Log.d("l.e", "truyXuatChucVuTuFireBase ID = " + chucVuId + ", Tên Chức Vụ = " + tenChucVu + ", nhanVien.getChucvu = " + nhanVien.getChucvu());
 
-                    // 2. gán item spinner theo chức vụ nhân viên
-                    // Tìm vị trí của giá trị 'chucVu' trong danh sách Spinner
+                    // Gán item spinner theo chức vụ nhân viên
                     int position = chucVuAdapter.getPosition(tenChucVu);
-                    if (position != -1) {  // Nếu tìm thấy chucVu trong danh sách
+                    if (position != -1) {
                         spinnerChucVu.setSelection(position); // Đặt item tương ứng được chọn
                     } else {
                         nhanvienDetailBinding.etChucVu.setText("Không tìm thấy chức vụ: " + tenChucVu);
-                        spinnerChucVu.setSelection(0); //nếu ko thấy thì để mặc định là 0 - kho khi sửa.
+                        spinnerChucVu.setSelection(0); // Nếu không thấy thì để mặc định là 0
                         Log.d("Spinner", "Không tìm thấy chức vụ: " + tenChucVu + " trong danh sách Spinner.");
                     }
                 } else {
@@ -206,6 +211,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             }
         });
     }
+
 
     // BẮT SỰ KIỆN SPINNER
     private void setEventSpinner() {
