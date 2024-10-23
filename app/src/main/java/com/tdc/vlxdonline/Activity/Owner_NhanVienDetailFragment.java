@@ -39,12 +39,13 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
     //ID nhân viên đc truyền từ Fragment trước qua
     private String selectedIDNhanVien;
+    //Danh sách chức vụ từ Firebase
     private List<ChucVu> listChucVuFireBase = new ArrayList<>();
 
     //Spinner và list item chức vụ
     private Spinner spinnerChucVu;
     private ArrayAdapter<String> chucVuAdapter;
-    private ArrayList<String> chucVuList = new ArrayList<>();
+    private ArrayList<String> listChucVuSpinner = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,10 +69,9 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         setupToolbar(view);
 
         // Khởi tạo Spinner và Adapter
-        spinnerChucVu = view.findViewById(R.id.spinnerChucVu);
-        chucVuAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, chucVuList);
+        chucVuAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, listChucVuSpinner);
         chucVuAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerChucVu.setAdapter(chucVuAdapter);
+        nhanvienDetailBinding.spinnerChucVu.setAdapter(chucVuAdapter);
 
         // Lấy danh sách chức vụ từ Firebase và cập nhật vào Spinner
         layTatCaDSChucVuTuFirebase();
@@ -96,7 +96,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Xóa danh sách tên chức vụ trước khi thêm dữ liệu mới
-                chucVuList.clear();
+                listChucVuSpinner.clear();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     ChucVu chucVu = new ChucVu();
@@ -109,7 +109,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
                     // Tạo chuỗi theo định dạng "id - tên" và thêm vào danh sách
                     String displayText = tenChucVu;
-                    chucVuList.add(displayText);
+                    listChucVuSpinner.add(displayText);
 
                     // Thông báo cho adapter cập nhật dữ liệu cho Spinner
                     chucVuAdapter.notifyDataSetChanged();
@@ -238,11 +238,11 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
     // BẮT SỰ KIỆN SPINNER
     private void setEventSpinner() {
-        spinnerChucVu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        nhanvienDetailBinding.spinnerChucVu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // Lấy tên chức vụ được chọn
-                String selectedChucVu = chucVuList.get(position);
+                String selectedChucVu = listChucVuSpinner.get(position);
                 // Xử lý sau khi người dùng chọn chức vụ
                 Log.d("Spinner", "Chức vụ được chọn: " + selectedChucVu);
             }
