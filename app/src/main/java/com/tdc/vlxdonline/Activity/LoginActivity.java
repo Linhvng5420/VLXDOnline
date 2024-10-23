@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class LoginActivity extends AppCompatActivity {
 
     ActivityLoginBinding binding;
-    public static int typeUser, typeEmployee;
+    public static int typeUser, typeEmployee = -1;
     public static String idUser = "";
     ArrayList<TypeUser> dataTypeUser = new ArrayList<>();
     ArrayList<Users> dataUsers = new ArrayList<>();
@@ -54,10 +54,10 @@ public class LoginActivity extends AppCompatActivity {
                     } else if (typeUser == 1) {
                         Intent intent = new Intent(LoginActivity.this, Customer_HomeActivity.class);
                         startActivity(intent);
-                    } else if (typeUser == 2 && typeEmployee == 0) {
+                    } else if (typeEmployee == 0) {
                         Intent intent = new Intent(LoginActivity.this, Warehouse_HomeActivity.class);
                         startActivity(intent);
-                    } else if (typeUser == 2 && typeEmployee == 1) {
+                    } else if (typeEmployee == 1) {
                         Intent intent = new Intent(LoginActivity.this, Shipper_HomeActivity.class);
                         startActivity(intent);
                     }

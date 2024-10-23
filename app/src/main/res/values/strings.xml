@@ -4,4 +4,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="thoat"><font color="#000">Thoát</font></string>
     <string name="quay_lai"><font color="#000">Quay Lại</font></string>
+    <string name="cho_xac_nhan">Chờ Xác Minh</string>
+    <string name="cho_nhan_don">Chờ Nhận Giao Hàng</string>
+    <string name="dang_van_chuyen">Đang Vận Chuyển</string>
+    <string name="cho_nhan_hang">Chờ Nhận Hàng</string>
+    <string name="da_hoan_thanh">Đã Hoàn Thành</string>
+    <string name="chua_thanh_toan">Chưa Thanh Toán</string>
+    <string name="tra_gop">Đang Trả Góp</string>
 </resources>

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.tdc.vlxdonline.Model.DonHang;
+import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.ItemDonHangBinding;
 
 import java.util.ArrayList;
@@ -50,25 +51,25 @@ public class DonHangAdapter extends RecyclerView.Adapter<DonHangAdapter.DonHangH
         int trangThaiTT = Integer.parseInt(donHang.getTrangThaiTT());
         if (trangThai == 0) {
             holder.binding.tvTrangThaiVc.setBackgroundColor(Color.rgb(255, 0, 0));
-            holder.binding.tvTrangThaiVc.setText("Chờ Xác Minh");
+            holder.binding.tvTrangThaiVc.setText(R.string.cho_xac_nhan);
         }else if (trangThai == 1) {
             holder.binding.tvTrangThaiVc.setBackgroundColor(Color.rgb(0, 0, 255));
-            holder.binding.tvTrangThaiVc.setText("Chờ Nhận Giao Hàng");
+            holder.binding.tvTrangThaiVc.setText(R.string.cho_nhan_don);
         }else if (trangThai == 2) {
             holder.binding.tvTrangThaiVc.setBackgroundColor(Color.rgb(0, 255, 255));
-            holder.binding.tvTrangThaiVc.setText("Đang Vận Chuyển");
+            holder.binding.tvTrangThaiVc.setText(R.string.dang_van_chuyen);
         }else if (trangThai == 3) {
             holder.binding.tvTrangThaiVc.setBackgroundColor(Color.rgb(255, 255, 0));
-            holder.binding.tvTrangThaiVc.setText("Chờ Nhận Hàng");
+            holder.binding.tvTrangThaiVc.setText(R.string.cho_nhan_hang);
         }else if (trangThai == 4) {
             holder.binding.tvTrangThaiVc.setBackgroundColor(Color.rgb(255, 0, 0));
             if (trangThaiTT == 0) {
-                holder.binding.tvTrangThaiVc.setText("Chưa Thanh Toán");
+                holder.binding.tvTrangThaiVc.setText(R.string.chua_thanh_toan);
             } else if (trangThaiTT == 1) {
-                holder.binding.tvTrangThaiVc.setText("Đang Trả Góp");
+                holder.binding.tvTrangThaiVc.setText(R.string.tra_gop);
             } else if (trangThaiTT == 2) {
                 holder.binding.tvTrangThaiVc.setBackgroundColor(Color.rgb(0, 255, 0));
-                holder.binding.tvTrangThaiVc.setText("Đã Hoàn Thành");
+                holder.binding.tvTrangThaiVc.setText(R.string.da_hoan_thanh);
             }
         }
 
