@@ -43,6 +43,9 @@ public class ChiTietDonFragment extends Fragment {
     }
 
     private void KhoiTao() {
+        binding.tvTenNguoiNhan.setText(donHang.getTenKhach());
+        binding.tvSdtNguoiNhan.setText(donHang.getSdt());
+        binding.tvDiaChiNhan.setText(donHang.getDiaChi());
     }
 
     @Override

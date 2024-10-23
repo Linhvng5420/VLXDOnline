@@ -63,8 +63,7 @@
             android:id="@+id/rc_prod_customer_home"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="10dp"
-            android:background="@drawable/bg_img_detail"/>
+            android:layout_marginHorizontal="10dp"/>
     </LinearLayout>
 
 </FrameLayout>

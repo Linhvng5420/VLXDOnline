@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
     ActivityLoginBinding binding;
     public static int typeUser, typeEmployee;
+    public static String idUser = "";
     ArrayList<TypeUser> dataTypeUser = new ArrayList<>();
     ArrayList<Users> dataUsers = new ArrayList<>();
     ArrayAdapter adapter;
