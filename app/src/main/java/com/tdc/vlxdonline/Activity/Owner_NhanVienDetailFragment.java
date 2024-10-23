@@ -86,13 +86,16 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         setupCancelButton();
     }
 
-    // LẤY TẤT CẢ DANH SÁCH CHỨC VỤ TỪ FIREBASE
+    // LẤY TẤT CẢ DANH SÁCH CHỨC VỤ TỪ FIREBASE THEO THỜI GIAN THỰC
     private void layTatCaDSChucVuTuFirebase() {
         DatabaseReference chucVuRef = FirebaseDatabase.getInstance().getReference("chucvu");
 
         chucVuRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Xóa danh sách tên chức vụ trước khi thêm dữ liệu mới
+                chucVuList.clear();
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     ChucVu chucVu = new ChucVu();
                     String idChucVu = snapshot.getKey();
@@ -101,8 +104,15 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                     chucVu.setIdChucVu(idChucVu);
                     chucVu.setTenChucVu(tenChucVu);
 
-                    // Log hoặc cập nhật danh sách để hiển thị dữ liệu mới
+                    // Tạo chuỗi theo định dạng "id - tên" và thêm vào danh sách
+                    String displayText = idChucVu + " - " + tenChucVu;
+                    chucVuList.add(displayText);
+
+                    // Thông báo cho adapter cập nhật dữ liệu cho Spinner
+                    chucVuAdapter.notifyDataSetChanged();
+
                     Log.d("l.e", "layTatCaDSChucVuTuFirebase: " + chucVu.toString());
+                    Log.d("l.e", "layTatCaDSChucVuTuFirebase: Display: " + chucVu.toString());
                 }
             }
 
@@ -112,8 +122,6 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             }
         });
     }
-
-
 
     // NHẬN DỮ LIỆU TỪ BUNDLE, TRUY XUẤT FIREBASE VÀ HIỂN THỊ THÔNG TIN LÊN GIAO DIỆN
     private void nhanIDNhanVienTuBundle() {
@@ -195,7 +203,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                     } else {
                         nhanvienDetailBinding.etChucVu.setText("Không tìm thấy chức vụ: " + tenChucVu);
                         spinnerChucVu.setSelection(0); // Nếu không thấy thì để mặc định là 0
-                        Log.d("Spinner", "Không tìm thấy chức vụ: " + tenChucVu + " trong danh sách Spinner.");
+                        Log.d("Spinner", "truyXuatChucVuTuFireBase: Không tìm thấy chức vụ: " + tenChucVu + " trong danh sách Spinner.");
                     }
                 } else {
                     nhanvienDetailBinding.etChucVu.setText("Chức Vụ \"" + chucVuId + "\" Không Tồn Tại Trong Hệ Thống");
