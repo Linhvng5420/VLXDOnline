@@ -11,6 +11,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tdc.vlxdonline.Model.TypeUser;
 import com.tdc.vlxdonline.Model.Users;
 import com.tdc.vlxdonline.databinding.ActivityLoginBinding;
@@ -37,23 +42,73 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setEvents() {
-        KhoiTao();
         // Login
         binding.btnLg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean checkLg = Login();
-                if (checkLg) {
-                    if (typeUser == 0) {
-                        Intent intent = new Intent(LoginActivity.this, Owner_HomeActivity.class);
-                        startActivity(intent);
-                    }
-                }else{
-                    Toast.makeText(LoginActivity.this, "Sai Thông Tin Đăng Nhập!", Toast.LENGTH_SHORT).show();
+                String email = binding.edtEmailLg.getText().toString();
+                String pass = binding.edtPassLg.getText().toString();
+
+                // Kiểm tra rỗng
+                if (email.isEmpty() || pass.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+
+                // Truy vấn Firebase
+                DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("account");
+                dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        boolean isValid = false;
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            String dbEmail = snapshot.child("email").getValue(String.class);
+                            String dbPass = snapshot.child("pass").getValue(String.class);
+                            String dbType = snapshot.child("type").getValue(String.class);
+
+                            // Kiểm tra email và mật khẩu
+                            if (dbEmail.equals(email) && dbPass.equals(pass)) {
+                                isValid = true;
+                                switch (dbType) {
+                                    case "chu":
+                                        typeUser = 0;
+                                        break;
+                                    case "nv":
+                                        typeUser = 1;
+                                        break;
+                                    case "kh":
+                                        typeUser = 2;
+                                        break;
+                                }
+                                // Lưu idUser cho người dùng đã đăng nhập
+                                idUser = dbEmail;
+                                break;
+                            }
+                        }
+
+                        if (isValid) {
+                            // Chuyển đến màn hình chủ
+                            if (typeUser == 0) {
+                                Intent intent = new Intent(LoginActivity.this, Owner_HomeActivity.class);
+                                Toast.makeText(LoginActivity.this, "Hello [ User: " + idUser + " ]", Toast.LENGTH_LONG).show();
+                                startActivity(intent);
+                            }
+                        } else {
+                            // Thông báo lỗi đăng nhập
+                            Toast.makeText(LoginActivity.this, "Sai thông tin đăng nhập!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(LoginActivity.this, "Có lỗi xảy ra!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
+
         // Sign Up
+        /*
         binding.tvSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,17 +116,20 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        // Dis pass
+        */
+
+        // Show-Hide pass
         binding.cbDisPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (binding.cbDisPass.isChecked()) {
                     binding.edtPassLg.setInputType(InputType.TYPE_CLASS_TEXT);
-                }else{
+                } else {
                     binding.edtPassLg.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
             }
         });
+
         // Choose role
         binding.spRoleLg.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -84,40 +142,5 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    private boolean Login(){
-        Users user = null;
-        for (int i = 0; i < dataUsers.size(); i++) {
-            if (dataUsers.get(i).getEmail().equals(binding.edtEmailLg.getText().toString())) {
-                user = dataUsers.get(i);
-            }
-        }
-        if (user != null) {
-            if (Integer.parseInt(user.getType_user()) != typeUser) {
-                return false;
-            }else if (user.getEmail().equals(binding.edtEmailLg.getText().toString())
-                    && user.getPass().equals(binding.edtPassLg.getText().toString())) {
-                emailUser = user.getEmail();
-                if (typeUser == 2) {
-                    typeEmployee = 0;
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void KhoiTao() {
-        dataTypeUser.add(new TypeUser("0", "Chủ Cửa Hàng"));
-        dataTypeUser.add(new TypeUser("1", "Khách Hàng"));
-        dataTypeUser.add(new TypeUser("2", "Nhân Viên"));
-
-        adapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, dataTypeUser);
-        binding.spRoleLg.setAdapter(adapter);
-
-        dataUsers.add(new Users("a", "a", "0"));
-        dataUsers.add(new Users("bcd", "234", "1"));
-        dataUsers.add(new Users("def", "345", "2"));
     }
 }
