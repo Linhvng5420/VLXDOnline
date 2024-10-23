@@ -62,12 +62,17 @@ public class LoginActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         boolean isValid = false;
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            String dbEmail = snapshot.child("email").getValue(String.class);
-                            String dbPass = snapshot.child("pass").getValue(String.class);
-                            String dbType = snapshot.child("type").getValue(String.class);
+                            // Kiểm tra và chuyển đổi kiểu dữ liệu từ Firebase
+                            Object emailObj = snapshot.child("email").getValue();
+                            Object passObj = snapshot.child("pass").getValue();
+                            Object typeObj = snapshot.child("type").getValue();
+
+                            String dbEmail = emailObj != null ? emailObj.toString() : null;
+                            String dbPass = passObj != null ? passObj.toString() : null;
+                            String dbType = typeObj != null ? typeObj.toString() : null;
 
                             // Kiểm tra email và mật khẩu
-                            if (dbEmail.equals(email) && dbPass.equals(pass)) {
+                            if (dbEmail != null && dbEmail.equals(email) && dbPass != null && dbPass.equals(pass)) {
                                 isValid = true;
                                 switch (dbType) {
                                     case "chu":

@@ -93,7 +93,11 @@ public class Owner_NhanVienFragment extends Fragment {
                         nhanVien.setIdnv(snapshot.getKey());
 
                         // Lọc theo email chu
-                        if (emailUser != null && nhanVien.getEmailchu().equals(emailUser)) {
+                        // Nếu emailUser là admin, thêm tất cả nhân viên mà không kiểm tra điều kiện khác
+                        if ("admin@tdc.com".equals(emailUser)) {
+                            nhanVienAdapter.getNhanVienList().add(nhanVien);
+                        } else if (emailUser != null && nhanVien.getEmailchu().equals(emailUser)) {
+                            // Điều kiện email chủ thông thường
                             nhanVienAdapter.getNhanVienList().add(nhanVien);
                         } else {
                             Log.d("l.e",
