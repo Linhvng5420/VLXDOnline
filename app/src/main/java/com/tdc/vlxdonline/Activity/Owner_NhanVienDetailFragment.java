@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.tdc.vlxdonline.Model.ChucVu;
 import com.tdc.vlxdonline.Model.NhanVien;
 import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.FragmentOwnerNhanvienDetailBinding;
@@ -92,30 +93,27 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         chucVuRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Xóa dữ liệu cũ trong danh sách để cập nhật lại
-                chucVuList.clear();
-
-                // Lặp qua tất cả các bản ghi chức vụ trong Firebase
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    // Lấy tên chức vụ từ mỗi bản ghi
+                    ChucVu chucVu = new ChucVu();
+                    String idChucVu = snapshot.getKey();
                     String tenChucVu = snapshot.child("ten").getValue(String.class);
-                    if (tenChucVu != null) {
-                        chucVuList.add(tenChucVu);
-                        Log.d("l.e", "layTatCaDSChucVuTuFirebase: " + tenChucVu);
-                    }
-                }
 
-                // Cập nhật dữ liệu cho Spinner
-                chucVuAdapter.notifyDataSetChanged();
+                    chucVu.setIdChucVu(idChucVu);
+                    chucVu.setTenChucVu(tenChucVu);
+
+                    // Log hoặc cập nhật danh sách để hiển thị dữ liệu mới
+                    Log.d("l.e", "layTatCaDSChucVuTuFirebase: " + chucVu.toString());
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Xử lý lỗi nếu có
-                Log.d("Firebase", "Lỗi khi lấy danh sách chức vụ: " + databaseError.getMessage());
+                Log.e("l.e", "Lỗi khi lấy dữ liệu chức vụ", databaseError.toException());
             }
         });
     }
+
+
 
     // NHẬN DỮ LIỆU TỪ BUNDLE, TRUY XUẤT FIREBASE VÀ HIỂN THỊ THÔNG TIN LÊN GIAO DIỆN
     private void nhanIDNhanVienTuBundle() {

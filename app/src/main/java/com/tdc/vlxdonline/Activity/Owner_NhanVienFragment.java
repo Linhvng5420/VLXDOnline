@@ -82,7 +82,7 @@ public class Owner_NhanVienFragment extends Fragment {
 
                         // Thêm nhân viên vào danh sách
                         nhanVienAdapter.getNhanVienList().add(nhanVien);
-                        Log.d("l.e", " " + nhanVien.toString());
+//                        Log.d("l.e", " " + nhanVien.toString());
                     }
                 }
 
