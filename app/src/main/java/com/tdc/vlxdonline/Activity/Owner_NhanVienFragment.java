@@ -1,6 +1,7 @@
 package com.tdc.vlxdonline.Activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,9 @@ public class Owner_NhanVienFragment extends Fragment {
 
     // FIREBASE: Khai báo DatabaseReference
     private DatabaseReference databaseReference;
+
+    // Login Data
+    String emailLoginChu = LoginActivity.emailUser;
 
     @Nullable
     @Override
@@ -82,9 +86,16 @@ public class Owner_NhanVienFragment extends Fragment {
                         // Set idnv là document ID
                         nhanVien.setIdnv(snapshot.getKey());
 
-                        // Thêm nhân viên vào danh sách
-                        nhanVienAdapter.getNhanVienList().add(nhanVien);
-//                        Log.d("l.e", " " + nhanVien.toString());
+                        if (emailLoginChu != null && nhanVien.getEmailchu().equals(emailLoginChu)) {
+                            // Thêm nhân viên vào danh sách
+                            nhanVienAdapter.getNhanVienList().add(nhanVien);
+//                            Log.d("l.e", " " + nhanVien.toString());
+
+                        } else {
+                            Log.d("l.e",
+                                    "getNhanVienData: emailLoginChu = " + emailLoginChu
+                                            + ", nhanVien.getEmailchu() = " + nhanVien.getEmailchu());
+                        }
                     }
                 }
 
