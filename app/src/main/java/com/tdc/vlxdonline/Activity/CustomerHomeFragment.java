@@ -39,7 +39,7 @@ public class CustomerHomeFragment extends Fragment {
     AdapterCenterDrop adapterLoc;
     ArrayList<String> dataSapXep = new ArrayList<>();
     AdapterCenterDrop adapterSX;
-
+    private int category = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,8 @@ public class CustomerHomeFragment extends Fragment {
         categoryAdapter.setOnItemCategoryClickListener(new CategoryAdapter.OnItemCategoryClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
-
+                category = Integer.parseInt(dataCategorys.get(position).getId());
+                setHienThiSanPham();
             }
         });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -86,7 +87,7 @@ public class CustomerHomeFragment extends Fragment {
         binding.spLoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                setHienThiSanPham();
             }
 
             @Override
@@ -107,7 +108,6 @@ public class CustomerHomeFragment extends Fragment {
             }
         });
 
-        setHienThiSanPham();
     }
 
     private void KhoiTao() {
@@ -136,6 +136,8 @@ public class CustomerHomeFragment extends Fragment {
         dataProds.add(new Products("B", "B", "B", "1", "2", "https://th.bing.com/th/id/OIP.BO1VNjeGOUGcGRWQNUVCZQHaHa?w=1024&h=1024&rs=1&pid=ImgDetMain", "200000", "4.0", "1", "1000", "580"));
         dataProds.add(new Products("C", "C", "C", "1", "3", "https://th.bing.com/th/id/OIP.vyMrfzra1TPcklie3-GA9gHaH9?w=180&h=183&c=7&r=0&o=5&dpr=1.3&pid=1.7", "300000", "5.0", "1", "1000", "580"));
         dataProds.add(new Products("D", "D", "D", "1", "4", "https://th.bing.com/th?id=OIF.EGFQW6dgdgP%2fL6l2yvVChg&rs=1&pid=ImgDetMain", "400000", "3.5", "1", "1000", "580"));
+
+        setHienThiSanPham();
     }
 
     private void setHienThiSanPham() {

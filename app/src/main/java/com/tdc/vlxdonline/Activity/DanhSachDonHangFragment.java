@@ -28,6 +28,8 @@ public class DanhSachDonHangFragment extends Fragment {
     ArrayList<DonHang> tempData = new ArrayList<>();
     DonHangAdapter adapter;
     private int type;
+    private String tuKhoa = "";
+    private int trangThaiLoc = 0;
 
     public DanhSachDonHangFragment(int type) {
         this.type = type;
@@ -53,6 +55,11 @@ public class DanhSachDonHangFragment extends Fragment {
         if (LoginActivity.typeUser == 2 && LoginActivity.typeEmployee == 1) {
             binding.btnDaHoanThanh.setVisibility(View.GONE);
             binding.btnChuaHoanThanh.setVisibility(View.GONE);
+            if (type == 0) {
+                trangThaiLoc = -1;
+            } else if (type == 2) {
+                trangThaiLoc = 1;
+            }
         }
         KhoiTao();
         adapter = new DonHangAdapter(getActivity(), data);
@@ -77,6 +84,8 @@ public class DanhSachDonHangFragment extends Fragment {
         binding.svDonHang.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                tuKhoa = query;
+                KhoiTao();
                 return false;
             }
 
@@ -92,6 +101,8 @@ public class DanhSachDonHangFragment extends Fragment {
                 binding.btnDaHoanThanh.setBackgroundColor(Color.WHITE);
                 Drawable draw = getActivity().getDrawable(R.drawable.bg_img_detail);
                 binding.btnChuaHoanThanh.setBackground(draw);
+                trangThaiLoc = 1;
+                KhoiTao();
             }
         });
         // Event chọn chưa hoàn thành
@@ -101,24 +112,30 @@ public class DanhSachDonHangFragment extends Fragment {
                 binding.btnChuaHoanThanh.setBackgroundColor(Color.WHITE);
                 Drawable draw = getActivity().getDrawable(R.drawable.bg_img_detail);
                 binding.btnDaHoanThanh.setBackground(draw);
+                trangThaiLoc = 0;
+                KhoiTao();
             }
         });
     }
 
     private void KhoiTao() {
-        if (LoginActivity.typeUser == 0) {
+        if (tuKhoa.isEmpty()) {
+            if (trangThaiLoc == 0 || trangThaiLoc == 1 || trangThaiLoc == -1) {
+                if (LoginActivity.typeUser == 0) {
 
-        } else if (LoginActivity.typeUser == 1) {
+                } else if (LoginActivity.typeUser == 1) {
 
-        } else if (LoginActivity.typeUser == 2 && LoginActivity.typeEmployee == 0) {
+                } else if (LoginActivity.typeUser == 2 && LoginActivity.typeEmployee == 0) {
 
-        } else if (LoginActivity.typeUser == 2 && LoginActivity.typeEmployee == 1) {
-            if (type == 0) {
+                } else if (LoginActivity.typeUser == 2 && LoginActivity.typeEmployee == 1) {
+                    if (type == 0) {
 
-            } else if (type == 1) {
+                    } else if (type == 1) {
 
-            } else if (type == 2) {
+                    } else if (type == 2) {
 
+                    }
+                }
             }
         }
     }
