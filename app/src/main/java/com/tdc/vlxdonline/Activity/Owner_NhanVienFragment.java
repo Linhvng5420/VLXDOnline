@@ -1,7 +1,6 @@
 package com.tdc.vlxdonline.Activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +59,9 @@ public class Owner_NhanVienFragment extends Fragment {
 
         //nhấn vào recycleview nhân viên
         nhanVaoItemNhanVien();
+
+        // nhấn nút thêm nhân viên
+        nhanNutThemNhanVien();
     }
 
     private void getNhanVienData() {
@@ -97,17 +99,17 @@ public class Owner_NhanVienFragment extends Fragment {
         });
     }
 
-    // Thiết lập sự kiện khi nhấn vào một item trong danh sách nhân viên
+    // BẮT SỰ KIỆN THIẾT LẬP SỰ KIỆN KHI NHẤN VÀO MỘT ITEM TRONG DANH SÁCH NHÂN VIÊN
     private void nhanVaoItemNhanVien() {
         nhanVienAdapter.setOnItemClickListener(nhanVien -> {
             // Tạo Bundle để truyền thông tin nhân viên được chọn qua Fragment Detail
             Bundle bundleIDNhanVien = new Bundle();
             bundleIDNhanVien.putSerializable("selectedIDNhanVien", nhanVien.getIdnv()); // Đưa dữ liệu ID nhân viên vào Bundle
 
-            // Tạo một instance của Owner_NhanVienDetailFragment
+            // Tạo một instance, nó giúp chúng ta chuyển đổi dữ liệu từ Fragment này sang Fragment khác
             Owner_NhanVienDetailFragment nhanVienDetailFragment = new Owner_NhanVienDetailFragment();
 
-            // Gán Bundle (chứa thông tin id nhân viên) vào Fragment chi tiết
+            // Gán Bundle (chứa thông tin id nhân viên) vào cho Fragment chi tiết
             nhanVienDetailFragment.setArguments(bundleIDNhanVien);
 
             // Thực hiện chuyển đổi sang Fragment chi tiết, thay thế Fragment hiện tại
@@ -115,6 +117,20 @@ public class Owner_NhanVienFragment extends Fragment {
                     .replace(R.id.fragment_owner, nhanVienDetailFragment) // Thay thế fragment_owner hiện tại bằng fragment chi tiết
                     .addToBackStack(null) // Cho phép quay lại màn hình trước khi nhấn nút Back
                     .commit(); // Thực hiện chuyển đổi
+        });
+    }
+
+    // BẮT SỰ KIỆN NHẤN VÀO NÚT THÊM NHÂN VIÊN
+    private void nhanNutThemNhanVien() {
+        ownerNhanvienBinding.btnThemNhanVien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // chuyển sang fragment thêm nhân viên
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_owner, new Owner_NhanVienAddFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
         });
     }
 
