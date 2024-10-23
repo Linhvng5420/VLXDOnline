@@ -92,10 +92,15 @@ public class NhanVienAdapter extends RecyclerView.Adapter<NhanVienAdapter.NhanVi
             // Hiển thị tên nhân viên
             binding.tvTenNV.setText(nhanVien.getTennv());
 
-            // Hiển thị chức vụ từ Firebase
-            String chucVuId = nhanVien.getChucvu(); // Mã chức vụ
-            chucVuTuFireBase(chucVuId);
+            // Hiển thị chức vụ từ Firebase nếu chucVuId không null
+            String chucVuId = nhanVien.getChucvu();
+            if (chucVuId != null && !chucVuId.isEmpty()) {
+                chucVuTuFireBase(chucVuId);
+            } else {
+                binding.tvChucVu.setText("N/A"); // Hiển thị "N/A" nếu chucVuId là null hoặc rỗng
+            }
         }
+
 
         // Hiển thị chức vụ từ Firebase
         private void chucVuTuFireBase(String chucVuId) {
