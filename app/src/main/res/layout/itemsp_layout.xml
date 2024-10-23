@@ -12,14 +12,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="5dp"
+            app:cardCornerRadius="8dp"
+            android:layout_gravity="center">
         <ImageView
             android:id="@+id/ivImages"
-            android:layout_width="match_parent"
-            android:layout_height="185dp"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:background="@drawable/ic_launcher_background"
-            android:scaleType="centerCrop" />
-
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"/>
+        </androidx.cardview.widget.CardView>
         <TextView
             android:id="@+id/tvItemsTen"
             android:layout_width="match_parent"
@@ -27,14 +34,13 @@
             android:gravity="center"
             android:padding="2dp"
             android:textSize="15dp" />
-
         <TextView
             android:id="@+id/tvGiaSP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="2dp"
+            android:textColor="#F00"
             android:textSize="15dp" />
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>

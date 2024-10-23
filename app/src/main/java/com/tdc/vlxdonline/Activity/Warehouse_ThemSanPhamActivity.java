@@ -44,18 +44,15 @@ import java.util.List;
 import SanPham_Model.SanPham_Model;*/
 
 public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
-    SwipeRefreshLayout swipeRefreshLayout;
 
-    EditText edtNhapten, edtNhapgiaban, edtNhapsoluong, edtDaban,edtMoTa;
-    Button btnThem, Xoa, Sua;
+    EditText edtNhapten, edtNhapgiaban, edtNhapsoluong, edtDaban, edtMoTa;
+    Button btnThem, btnXoa, btnSua;
     ImageView ivImages;
     Uri uri;
     String imagesUrl;
     SanPham_Adapter adapter;
     SanPham_Model sanPhamModel = new SanPham_Model();
     List<SanPham_Model> list_SP = new ArrayList<>();
-    List<String> list_id = new ArrayList<>();
-    Integer id_ = 0;
     ValueEventListener listener;
     RecyclerView recyclerView;
 
@@ -68,11 +65,8 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.taosanpham_layout);
         setCtronl();
-        key_auto();
         getDate();
         setEvent();
-
-        //idAuto();
     }
 
     private void getDate() {
@@ -130,11 +124,33 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
         btnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                idAuto();
                 uploadData();
 //                Intent intent = new Intent(MainActivity.this, Warehouse_HomeActivity.class);
 //                startActivity(intent);
 //                finish();
+            }
+        });
+        btnXoa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Lấy tên sản phẩm từ EditText
+                String tenSP = edtNhapten.getText().toString();
+                if (!tenSP.isEmpty()) {
+                    // Gọi phương thức xóa sản phẩm
+                    deleteProduct(tenSP);
+                } else {
+                    Toast.makeText(Warehouse_ThemSanPhamActivity.this, "Vui lòng chọn sản phẩm để xóa", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        btnSua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtNhapten.getText().toString().isEmpty()) {
+                    Toast.makeText(Warehouse_ThemSanPhamActivity.this, "Vui lòng chọn sản phẩm để sửa!", Toast.LENGTH_SHORT).show();
+                } else {
+                    uploadData();  // Gọi phương thức để cập nhật dữ liệu
+                }
             }
         });
 
@@ -152,7 +168,7 @@ public class Warehouse_ThemSanPhamActivity extends AppCompatActivity {
                         edtNhapgiaban.setText(sanPhamModel.getGiabanSP());
                         edtNhapsoluong.setText(sanPhamModel.getSoluong());
                         edtDaban.setText(sanPhamModel.getDaban());
-edtMoTa.setText(sanPhamModel.getMoTa());
+                        edtMoTa.setText(sanPhamModel.getMoTa());
                         // Hiển thị hình ảnh sản phẩm
                         Glide.with(Warehouse_ThemSanPhamActivity.this)
                                 .load(sanPhamModel.getImages())
@@ -165,35 +181,6 @@ edtMoTa.setText(sanPhamModel.getMoTa());
         }
     }
 
-    public void key_auto() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("SanPham");
-        {
-            reference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    list_id.clear();
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        String key = dataSnapshot.getKey();
-                        if (key.isEmpty()) {
-                            list_id.add("0");
-                        } else {
-                            list_id.add(key);
-                        }
-                    }
-                    int size = list_id.size() + 1;
-                    id_ = Integer.valueOf(size);
-
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
-    }
-
     private void saveDate() {
         sanPhamModel.setTenSP(edtNhapten.getText().toString());
         sanPhamModel.setGiabanSP(edtNhapgiaban.getText().toString());
@@ -201,7 +188,7 @@ edtMoTa.setText(sanPhamModel.getMoTa());
         sanPhamModel.setDaban(edtDaban.getText().toString());
         sanPhamModel.setMoTa(edtMoTa.getText().toString());
         sanPhamModel.setImages(imagesUrl.toString());
-        FirebaseDatabase.getInstance().getReference("SanPham").child("SP" + id_).setValue(sanPhamModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+        FirebaseDatabase.getInstance().getReference("SanPham").child(sanPhamModel.getTenSP()).setValue(sanPhamModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(Warehouse_ThemSanPhamActivity.this, "Thêm Thành Công", Toast.LENGTH_SHORT).show();
@@ -222,8 +209,54 @@ edtMoTa.setText(sanPhamModel.getMoTa());
                 saveDate();
             }
         });
-    }
+        // Phương thức để cập nhật dữ liệu sản phẩm
+        String tenSP = edtNhapten.getText().toString();
+        String giabanSP = edtNhapgiaban.getText().toString();
+        String soluong = edtNhapsoluong.getText().toString();
+        String daban = edtDaban.getText().toString();
+        String moTa = edtMoTa.getText().toString();
 
+        SanPham_Model updatedSanPhamModel = new SanPham_Model();
+        updatedSanPhamModel.setTenSP(tenSP);
+        updatedSanPhamModel.setGiabanSP(giabanSP);
+        updatedSanPhamModel.setSoluong(soluong);
+        updatedSanPhamModel.setDaban(daban);
+        updatedSanPhamModel.setMoTa(moTa);
+        updatedSanPhamModel.setImages(imagesUrl);  // Nếu bạn không cần thay đổi ảnh
+
+        // Cập nhật dữ liệu trong Firebase
+        FirebaseDatabase.getInstance().getReference("SanPham").child(tenSP).setValue(updatedSanPhamModel)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(Warehouse_ThemSanPhamActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(Warehouse_ThemSanPhamActivity.this, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+    private void deleteProduct(String tenSP) {
+        DatabaseReference productRef = FirebaseDatabase.getInstance().getReference("SanPham").child(tenSP);
+        productRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(Warehouse_ThemSanPhamActivity.this, "Xóa sản phẩm thành công", Toast.LENGTH_SHORT).show();
+                    // Xóa dữ liệu trên giao diện người dùng
+                    edtNhapten.setText("");
+                    edtNhapgiaban.setText("");
+                    edtNhapsoluong.setText("");
+                    edtDaban.setText("");
+                    edtMoTa.setText("");
+                    ivImages.setImageResource(0); // Xóa hình ảnh
+                } else {
+                    Toast.makeText(Warehouse_ThemSanPhamActivity.this, "Xóa sản phẩm thất bại", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
     private void setCtronl() {
         edtNhapten = findViewById(R.id.edtNhapTen);
         edtNhapgiaban = findViewById(R.id.edtNhapgiaban);
@@ -232,6 +265,8 @@ edtMoTa.setText(sanPhamModel.getMoTa());
         edtMoTa = findViewById(R.id.edtMoTa);
         ivImages = findViewById(R.id.ivImages);
         btnThem = findViewById(R.id.btnThem);
+        btnXoa = findViewById(R.id.btnXoa);
+        btnSua = findViewById(R.id.btnSua);
         recyclerView = findViewById(R.id.recycleview);
     }
 }
