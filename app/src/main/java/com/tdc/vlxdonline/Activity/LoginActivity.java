@@ -89,8 +89,10 @@ public class LoginActivity extends AppCompatActivity {
                         if (isValid) {
                             // Chuyển đến màn hình chủ
                             if (typeUser == 0) {
-                                Intent intent = new Intent(LoginActivity.this, Owner_HomeActivity.class);
                                 Toast.makeText(LoginActivity.this, "Hello [ User: " + idUser + " ]", Toast.LENGTH_LONG).show();
+
+                                Intent intent = new Intent(LoginActivity.this, Owner_HomeActivity.class);
+                                intent.putExtra("emailUser", idUser); // Truyền emailUser qua Intent
                                 startActivity(intent);
                             }
                         } else {

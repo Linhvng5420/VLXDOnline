@@ -2,6 +2,7 @@ package com.tdc.vlxdonline.Activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
@@ -15,6 +16,7 @@ import com.tdc.vlxdonline.databinding.ActivityOwnerHomeBinding;
 
 public class Owner_HomeActivity extends AppCompatActivity {
     ActivityOwnerHomeBinding ownerHomeBinding;
+    String emailUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,9 @@ public class Owner_HomeActivity extends AppCompatActivity {
         setContentView(ownerHomeBinding.getRoot());
         // Thiết lập Fragment mặc định (Hiển thị màn hình mặc định ban đầu của ứng dụng)
 //        ReplaceFragment(new Owner_NhanVienFragment());
+
+        emailUser = getIntent().getStringExtra("emailUser");
+        Log.d("l.e", "onCreate: emailUser = " + emailUser);
 
         // TODO: Gọi phương thức bắt sự kiện khi nhấn các nút trên thanh điều hướng (Bottom Navigation Bar)
         EventNavigationBottom();
@@ -56,7 +61,13 @@ public class Owner_HomeActivity extends AppCompatActivity {
             if (itemId == R.id.nav_owner_dashboard) {
                 ReplaceFragment(new Fragment());
             } else if (itemId == R.id.nav_owner_nhanvien) {
-                ReplaceFragment(new Owner_NhanVienFragment());
+                // Khởi tạo Fragment và truyền emailUser
+                Owner_NhanVienFragment ownerNhanVienFragment = new Owner_NhanVienFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("emailUser", emailUser);
+                ownerNhanVienFragment.setArguments(bundle);
+                // Thay thế fragment
+                ReplaceFragment(ownerNhanVienFragment);
             } else if (itemId == R.id.nav_owner_khachhang) {
                 ReplaceFragment(new Fragment());
             } else if (itemId == R.id.nav_owner_donhang) {

@@ -35,7 +35,7 @@ public class Owner_NhanVienFragment extends Fragment {
     private DatabaseReference databaseReference;
 
     // Login Data
-    String emailLoginChu = LoginActivity.emailUser;
+    String emailUser = null;
 
     @Nullable
     @Override
@@ -50,6 +50,12 @@ public class Owner_NhanVienFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Nhận emailUser từ Bundle
+        if (getArguments() != null) {
+            emailUser = getArguments().getString("emailUser");
+            Log.d("l.e", "onViewCreated: emailUser = " + emailUser);
+        } else Log.d("l.e", "Nhận emailUser từ Bundle: getArguments() = null");
 
         //RecycleView: Thiết lập layout cho RecyclerView, sử dụng LinearLayoutManager để hiển thị danh sách theo chiều dọc
         ownerNhanvienBinding.ownerRcvNhanVien.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -86,14 +92,12 @@ public class Owner_NhanVienFragment extends Fragment {
                         // Set idnv là document ID
                         nhanVien.setIdnv(snapshot.getKey());
 
-                        if (emailLoginChu != null && nhanVien.getEmailchu().equals(emailLoginChu)) {
-                            // Thêm nhân viên vào danh sách
+                        // Lọc theo email chu
+                        if (emailUser != null && nhanVien.getEmailchu().equals(emailUser)) {
                             nhanVienAdapter.getNhanVienList().add(nhanVien);
-//                            Log.d("l.e", " " + nhanVien.toString());
-
                         } else {
                             Log.d("l.e",
-                                    "getNhanVienData: emailLoginChu = " + emailLoginChu
+                                    "getNhanVienData: emailLoginChu = " + emailUser
                                             + ", nhanVien.getEmailchu() = " + nhanVien.getEmailchu());
                         }
                     }
