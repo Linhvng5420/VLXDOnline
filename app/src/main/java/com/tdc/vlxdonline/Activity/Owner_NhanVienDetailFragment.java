@@ -28,6 +28,7 @@ import com.tdc.vlxdonline.R;
 import com.tdc.vlxdonline.databinding.FragmentOwnerNhanvienDetailBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Owner_NhanVienDetailFragment extends Fragment {
     private FragmentOwnerNhanvienDetailBinding nhanvienDetailBinding;
@@ -38,6 +39,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
     //ID nhân viên đc truyền từ Fragment trước qua
     private String selectedIDNhanVien;
+    private List<ChucVu> listChucVuFireBase = new ArrayList<>();
 
     //Spinner và list item chức vụ
     private Spinner spinnerChucVu;
@@ -103,9 +105,10 @@ public class Owner_NhanVienDetailFragment extends Fragment {
 
                     chucVu.setIdChucVu(idChucVu);
                     chucVu.setTenChucVu(tenChucVu);
+                    listChucVuFireBase.add(chucVu);
 
                     // Tạo chuỗi theo định dạng "id - tên" và thêm vào danh sách
-                    String displayText = idChucVu + " - " + tenChucVu;
+                    String displayText = tenChucVu;
                     chucVuList.add(displayText);
 
                     // Thông báo cho adapter cập nhật dữ liệu cho Spinner
@@ -155,7 +158,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                             nhanvienDetailBinding.etCCCD.setText(nhanVien.getCccd());
 
                             // Lấy tên chức vụ và gán nó vào Spinner
-                            truyXuatChucVuTuFireBase(nhanVien.getChucvu());
+                            docDuLieuChucVu(nhanVien.getChucvu());
 
                         } else {
                             Log.d("l.e", "Nhân viên không tồn tại trong cơ sở dữ liệu.");
@@ -176,48 +179,34 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         }
     }
 
-    private void truyXuatChucVuTuFireBase(String chucVuId) {
+    private void docDuLieuChucVu(String chucVuId) {
         if (chucVuId == null || chucVuId.isEmpty()) {
             // Nếu chucVuId null hoặc rỗng, hiển thị thông báo lỗi
             nhanvienDetailBinding.etChucVu.setText("Lỗi Database, Mất Field Chức Vụ");
-            Log.d("l.e", "chucVuId null hoặc rỗng.");
+            Log.d("l.e", "Lỗi Database, Mất Field Chức Vụ.");
             return; // Dừng hàm tại đây để tránh gọi Firebase với chucVuId null
         }
 
-        DatabaseReference chucVuRef = FirebaseDatabase.getInstance().getReference("chucvu").child(chucVuId);
-
-        // Lấy dữ liệu tên chức vụ từ Firebase
-        chucVuRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    String tenChucVu = dataSnapshot.child("ten").getValue(String.class);
-                    nhanvienDetailBinding.etChucVu.setText(tenChucVu);
-                    nhanVien.setChucvu(tenChucVu);
-                    Log.d("l.e", "truyXuatChucVuTuFireBase ID = " + chucVuId + ", Tên Chức Vụ = " + tenChucVu + ", nhanVien.getChucvu = " + nhanVien.getChucvu());
-
-                    // Gán item spinner theo chức vụ nhân viên
-                    int position = chucVuAdapter.getPosition(tenChucVu);
-                    if (position != -1) {
-                        spinnerChucVu.setSelection(position); // Đặt item tương ứng được chọn
-                    } else {
-                        nhanvienDetailBinding.etChucVu.setText("Không tìm thấy chức vụ: " + tenChucVu);
-                        spinnerChucVu.setSelection(0); // Nếu không thấy thì để mặc định là 0
-                        Log.d("Spinner", "truyXuatChucVuTuFireBase: Không tìm thấy chức vụ: " + tenChucVu + " trong danh sách Spinner.");
-                    }
-                } else {
-                    nhanvienDetailBinding.etChucVu.setText("Chức Vụ \"" + chucVuId + "\" Không Tồn Tại Trong Hệ Thống");
-                    Log.d("l.e", "Không tìm thấy chức vụ với ID: " + chucVuId);
+        // Tìm chức vụ có ID trùng khớp trong danh sách
+        if (listChucVuFireBase != null) {
+            String tenChucVu = null;
+            for (ChucVu chucVu : listChucVuFireBase) {
+                if (chucVu.getIdChucVu().equals(chucVuId)) {
+                    tenChucVu = chucVu.getTenChucVu();
+                    break;
                 }
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                nhanvienDetailBinding.etChucVu.setText("N/A"); // Xử lý lỗi nếu có
+            if (tenChucVu != null) {
+                nhanvienDetailBinding.etChucVu.setText(tenChucVu);
+                Log.d("l.e", "docDuLieuChucVu: " + chucVuId + " - " + tenChucVu);
+            } else {
+                nhanvienDetailBinding.etChucVu.setText("Không tìm thấy chức vụ");
+                Log.d("l.e", "Không tìm thấy chức vụ với ID: " + chucVuId);
             }
-        });
+        } else
+            Log.d("l.e", "docDuLieuChucVu: listChucVuFireBase NULL, idcv: " + chucVuId);
     }
-
 
     // BẮT SỰ KIỆN SPINNER
     private void setEventSpinner() {
@@ -260,6 +249,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             nhanvienDetailBinding.btnChinhSua.setVisibility(View.INVISIBLE);
         });
     }
+
     private void setupCancelButton() {
         nhanvienDetailBinding.btnHuy.setOnClickListener(v -> {
             // Tạo hộp thoại xác nhận
@@ -291,6 +281,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                     .show();
         });
     }
+
     private void setupDeleteButton() {
         nhanvienDetailBinding.btnXoa.setOnClickListener(view -> {
             // Tạo hộp thoại xác nhận
