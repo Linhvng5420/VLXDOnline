@@ -99,6 +99,7 @@ public class Owner_NhanVienFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Xóa danh sách cũ trước khi thêm dữ liệu mới
                 nhanVienAdapter.getNhanVienList().clear();
+                originalList.clear(); // Xóa danh sách gốc để thêm dữ liệu mới
 
                 // Lặp qua tất cả các DataSnapshot con để lấy thông tin nhân viên
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -112,13 +113,11 @@ public class Owner_NhanVienFragment extends Fragment {
                         // Nếu emailUser là admin, thêm tất cả nhân viên mà không kiểm tra điều kiện khác
                         if ("admin@tdc.com".equals(emailUser)) {
                             nhanVienAdapter.getNhanVienList().add(nhanVien);
+                            originalList.add(nhanVien); // Lưu vào danh sách gốc
                         } else if (emailUser != null && nhanVien.getEmailchu().equals(emailUser)) {
                             // Điều kiện email chủ thông thường
                             nhanVienAdapter.getNhanVienList().add(nhanVien);
-                        } else {
-                            Log.d("l.e",
-                                    "getNhanVienData: emailLoginChu = " + emailUser
-                                            + ", nhanVien.getEmailchu() = " + nhanVien.getEmailchu());
+                            originalList.add(nhanVien); // Lưu vào danh sách gốc
                         }
                     }
                 }
@@ -136,6 +135,7 @@ public class Owner_NhanVienFragment extends Fragment {
             }
         });
     }
+
 
     // BẮT SỰ KIỆN THIẾT LẬP SỰ KIỆN KHI NHẤN VÀO MỘT ITEM TRONG DANH SÁCH NHÂN VIÊN
     private void nhanVaoItemNhanVien() {
@@ -177,7 +177,7 @@ public class Owner_NhanVienFragment extends Fragment {
         ownerNhanvienBinding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Xử lý việc tìm kiếm ngay khi người dùng nhập từ khóa, không cần đợi submit.
+                // Không cần xử lý khi submit, chỉ thực hiện tìm kiếm ngay khi người dùng nhập
                 return false;
             }
 

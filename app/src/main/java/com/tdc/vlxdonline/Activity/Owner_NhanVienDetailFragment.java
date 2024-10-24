@@ -204,7 +204,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                 nhanvienDetailBinding.etChucVu.setText(tenChucVu);
                 Log.d("l.e", "docDuLieuChucVu: Lấy được chức vụ với ID = " + chucVuId + ", Tên = " + tenChucVu + ", luuLaiTenChucVu = " + luuLaiTenChucVu);
             } else {
-                nhanvienDetailBinding.etChucVu.setText("Chức vụ có Mã \"" + chucVuId + "\" không tồn tại trong CSDL.");
+                nhanvienDetailBinding.etChucVu.setText("Chức vụ Mã \"" + chucVuId + "\" không có trong CSDL.");
                 Log.d("l.e", "Không tìm thấy chức vụ với ID: " + chucVuId);
             }
         } else
