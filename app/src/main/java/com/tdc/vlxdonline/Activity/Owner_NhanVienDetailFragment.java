@@ -138,7 +138,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             // Hiển thị thông tin ID nhân viên lên giao diện
             Toast.makeText(getContext(), "ID Nhân Viên: " + selectedIDNhanVien, Toast.LENGTH_SHORT).show();
             Log.d("l.e", "nhanIDNhanVienTuBundle: " + selectedIDNhanVien.toString());
-            nhanvienDetailBinding.tvIDNhanVien.setText("ID: " + selectedIDNhanVien.toUpperCase());
+            nhanvienDetailBinding.tvIDNhanVien.setText(selectedIDNhanVien);
 
             // Lấy thông tin nhân viên từ firebase thông qua ID
             databaseReference = FirebaseDatabase.getInstance().getReference("nhanvien");
@@ -204,8 +204,8 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                 nhanvienDetailBinding.etChucVu.setText(tenChucVu);
                 Log.d("l.e", "docDuLieuChucVu: Lấy được chức vụ với ID = " + chucVuId + ", Tên = " + tenChucVu + ", luuLaiTenChucVu = " + luuLaiTenChucVu);
             } else {
-                nhanvienDetailBinding.etChucVu.setText("Mã chức vụ \"" + chucVuId + "\" trong CSDL.");
-                        Log.d("l.e", "Không tìm thấy chức vụ với ID: " + chucVuId);
+                nhanvienDetailBinding.etChucVu.setText("Chức vụ có Mã \"" + chucVuId + "\" không tồn tại trong CSDL.");
+                Log.d("l.e", "Không tìm thấy chức vụ với ID: " + chucVuId);
             }
         } else
             Log.d("l.e", "docDuLieuChucVu: listChucVuFireBase NULL, idcv: " + chucVuId);
