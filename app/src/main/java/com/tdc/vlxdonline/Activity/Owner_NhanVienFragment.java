@@ -1,9 +1,11 @@
 package com.tdc.vlxdonline.Activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -70,6 +72,12 @@ public class Owner_NhanVienFragment extends Fragment {
 
         // Thiết lập tìm kiếm
         timKiemNhanVien();
+        // Lắng nghe sự kiện nhấn ra ngoài thanh tìm kiếm để tắt con trỏ và ẩn bàn phím
+        ownerNhanvienBinding.getRoot().setOnTouchListener((v, event) -> {
+            hideKeyboard(v); // Ẩn bàn phím
+            ownerNhanvienBinding.searchView.clearFocus(); // Xóa focus để tắt con trỏ trong SearchView
+            return false;
+        });
     }
 
     private void getNhanVienData() {
@@ -142,6 +150,7 @@ public class Owner_NhanVienFragment extends Fragment {
         });
     }
 
+    // CHỨC NĂNG TÌM KIẾM NHÂN VIÊN
     private void timKiemNhanVien() {
         ownerNhanvienBinding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -162,6 +171,13 @@ public class Owner_NhanVienFragment extends Fragment {
                 return true;
             }
         });
+
+        // Tắt con trỏ khi SearchView bị mất focus
+        ownerNhanvienBinding.searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                ownerNhanvienBinding.searchView.clearFocus(); // Xóa focus khi mất focus
+            }
+        });
     }
 
     private void filterNhanVien(String query) {
@@ -177,6 +193,11 @@ public class Owner_NhanVienFragment extends Fragment {
 
         // Cập nhật danh sách đã lọc vào adapter
         nhanVienAdapter.updateList(filteredList);
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
