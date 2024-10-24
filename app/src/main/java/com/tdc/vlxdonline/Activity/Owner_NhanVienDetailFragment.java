@@ -305,6 +305,8 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                         nhanvienDetailBinding.btnXoa.setVisibility(View.INVISIBLE);
                         nhanvienDetailBinding.btnHuy.setVisibility(View.INVISIBLE);
                         nhanvienDetailBinding.btnChinhSua.setVisibility(View.VISIBLE);
+
+                        nhanIDNhanVienTuBundle();
                     })
                     .setNegativeButton("Không Hủy", null) // Hiển thị hộp thoại
                     .show();
