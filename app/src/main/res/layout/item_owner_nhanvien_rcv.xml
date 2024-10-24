@@ -1,22 +1,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="60dp"
     android:background="@color/white"
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp"
-        android:backgroundTint="@color/cardview_light_background"
-        app:cardCornerRadius="12dp">
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/cardview_light_background">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
             android:orientation="horizontal">
 
             <TextView
@@ -24,14 +22,13 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:autoSizeMaxTextSize="20sp"
+                android:autoSizeMaxTextSize="22sp"
                 android:autoSizeTextType="uniform"
-                android:background="#64DD17"
                 android:gravity="center|start"
-                android:paddingLeft="10dp"
+                android:paddingLeft="5dp"
                 android:paddingRight="5dp"
-                android:text="ID"
-                android:textSize="20sp"
+                android:text="NV465151131331"
+                android:textColor="#10572D"
                 android:textStyle="bold" />
 
             <TextView
@@ -39,14 +36,12 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:autoSizeMaxTextSize="20sp"
+                android:autoSizeMaxTextSize="22sp"
                 android:autoSizeTextType="uniform"
-                android:background="#00C853"
                 android:gravity="center|start"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="Tên Nhân Viên"
-                android:textAlignment="textStart"
                 android:textColor="#000"
                 android:textStyle="bold" />
 
@@ -54,15 +49,13 @@
                 android:id="@+id/tvChucVu"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:autoSizeMaxTextSize="20sp"
+                android:layout_weight="0.5"
+                android:autoSizeMaxTextSize="22sp"
                 android:autoSizeTextType="uniform"
-                android:background="#64DD17"
-                android:gravity="center|start"
+                android:gravity="center"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="Chức Vụ"
-                android:textAlignment="textStart"
                 android:textColor="#000"
                 android:textStyle="bold" />
         </LinearLayout>
