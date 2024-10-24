@@ -104,6 +104,9 @@ public class Owner_NhanVienFragment extends Fragment {
                     }
                 }
 
+                // Sắp xếp danh sách theo mã NV
+                nhanVienAdapter.sortNhanVienList();
+
                 // Thông báo cho adapter cập nhật dữ liệu
                 nhanVienAdapter.notifyDataSetChanged();
             }

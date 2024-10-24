@@ -14,6 +14,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.tdc.vlxdonline.Model.NhanVien;
 import com.tdc.vlxdonline.databinding.ItemOwnerNhanvienRcvBinding;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class NhanVienAdapter extends RecyclerView.Adapter<NhanVienAdapter.NhanVienViewHolder> {
@@ -101,7 +103,6 @@ public class NhanVienAdapter extends RecyclerView.Adapter<NhanVienAdapter.NhanVi
             }
         }
 
-
         // Hiển thị chức vụ từ Firebase
         private void chucVuTuFireBase(String chucVuId) {
             DatabaseReference chucVuRef = FirebaseDatabase.getInstance().getReference("chucvu").child(chucVuId);
@@ -128,11 +129,26 @@ public class NhanVienAdapter extends RecyclerView.Adapter<NhanVienAdapter.NhanVi
 
     }
 
-    // Hàm này dùng để cập nhật danh sách khi thực hiện tìm kiếm
+    // Hàm cập nhật danh sách khi thực hiện tìm kiếm
     public void updateList(List<NhanVien> filteredList) {
         this.nhanVienList = filteredList;
         notifyDataSetChanged(); // Thông báo cho adapter biết dữ liệu đã thay đổi
     }
+
+    // Thêm phương thức sắp xếp danh sách nhân viên theo mã NV
+    public void sortNhanVienList() {
+        Collections.sort(nhanVienList, new Comparator<NhanVien>() {
+            @Override
+            public int compare(NhanVien nv1, NhanVien nv2) {
+                // Lấy phần số của mã NV và so sánh
+                String id1 = nv1.getIdnv().replaceAll("[^0-9]", ""); // Lấy số từ mã NV1
+                String id2 = nv2.getIdnv().replaceAll("[^0-9]", ""); // Lấy số từ mã NV2
+
+                // So sánh các số sử dụng Long để tránh lỗi số quá lớn
+                return Long.compare(Long.parseLong(id1), Long.parseLong(id2));
+            }
+        });
+
+        notifyDataSetChanged(); // Cập nhật lại danh sách sau khi sắp xếp
+    }
 }
-
-
