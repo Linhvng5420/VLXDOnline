@@ -22,6 +22,26 @@
     <!-- Avatar của Nhân Viên -->
 
     <!-- EditText Tên Nhân Viên (Mặc định: Không Cho Sửa)-->
+    <TextView
+        android:id="@+id/tvIDNhanVien"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:autoSizeMaxTextSize="50sp"
+        android:autoSizeTextType="uniform"
+        android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="ID"
+        android:textAlignment="gravity"
+        android:textColor="#18991D"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilTenNhanVien"
         android:layout_width="match_parent"
@@ -244,18 +264,4 @@
         app:maxImageSize="40dp"
         app:tint="#FF0000" />
 
-    <TextView
-        android:id="@+id/tvIDNhanVien"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/bg_item_lg"
-        android:padding="20dp"
-        android:text="TextView"
-        android:textColor="#18991D"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

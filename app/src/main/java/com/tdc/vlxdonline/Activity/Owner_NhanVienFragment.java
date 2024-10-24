@@ -1,10 +1,13 @@
 package com.tdc.vlxdonline.Activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +40,9 @@ public class Owner_NhanVienFragment extends Fragment {
     // Login Data
     String emailUser = null;
 
+    // Lưu lại danh sách nhân viên ban đầu trước khi tìm kiếm
+    private List<NhanVien> originalList = new ArrayList<>();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,6 +53,7 @@ public class Owner_NhanVienFragment extends Fragment {
         return ownerNhanvienBinding.getRoot();
     }
 
+    // TODO: HÀM XỬ LÝ CHỨC NĂNG CỦA VIEW APP
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -72,6 +79,15 @@ public class Owner_NhanVienFragment extends Fragment {
 
         // nhấn nút thêm nhân viên
         nhanNutThemNhanVien();
+
+        // Thiết lập tìm kiếm
+        timKiemNhanVien();
+        // Lắng nghe sự kiện nhấn ra ngoài thanh tìm kiếm để tắt con trỏ và ẩn bàn phím
+        ownerNhanvienBinding.getRoot().setOnTouchListener((v, event) -> {
+            hideKeyboard(v); // Ẩn bàn phím
+            ownerNhanvienBinding.searchView.clearFocus(); // Xóa focus để tắt con trỏ trong SearchView
+            return false;
+        });
     }
 
     private void getNhanVienData() {
@@ -106,6 +122,9 @@ public class Owner_NhanVienFragment extends Fragment {
                         }
                     }
                 }
+
+                // Sắp xếp danh sách theo mã NV
+                nhanVienAdapter.sortNhanVienList();
 
                 // Thông báo cho adapter cập nhật dữ liệu
                 nhanVienAdapter.notifyDataSetChanged();
@@ -151,6 +170,56 @@ public class Owner_NhanVienFragment extends Fragment {
                         .commit();
             }
         });
+    }
+
+    // CHỨC NĂNG TÌM KIẾM NHÂN VIÊN
+    private void timKiemNhanVien() {
+        ownerNhanvienBinding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Xử lý việc tìm kiếm ngay khi người dùng nhập từ khóa, không cần đợi submit.
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Kiểm tra nếu từ khóa rỗng, trả lại danh sách ban đầu
+                if (newText.isEmpty()) {
+                    nhanVienAdapter.updateList(new ArrayList<>(originalList)); // Cập nhật lại danh sách ban đầu
+                } else {
+                    // Gọi hàm filter để tìm kiếm nhân viên
+                    filterNhanVien(newText);
+                }
+                return true;
+            }
+        });
+
+        // Tắt con trỏ khi SearchView bị mất focus
+        ownerNhanvienBinding.searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                ownerNhanvienBinding.searchView.clearFocus(); // Xóa focus khi mất focus
+            }
+        });
+    }
+
+    private void filterNhanVien(String query) {
+        List<NhanVien> filteredList = new ArrayList<>();
+
+        for (NhanVien nhanVien : originalList) {
+            // Kiểm tra nếu tên hoặc ID của nhân viên chứa từ khóa tìm kiếm (không phân biệt chữ hoa/chữ thường)
+            if (nhanVien.getTennv().toLowerCase().contains(query.toLowerCase()) ||
+                    nhanVien.getIdnv().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(nhanVien);
+            }
+        }
+
+        // Cập nhật danh sách đã lọc vào adapter
+        nhanVienAdapter.updateList(filteredList);
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override

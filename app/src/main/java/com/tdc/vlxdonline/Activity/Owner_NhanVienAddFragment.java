@@ -153,7 +153,6 @@ public class Owner_NhanVienAddFragment extends Fragment {
 
                         docIDChucVuBangTen(tenChucVuMoi);
 
-
                         nhanVien.setTennv(addBinding.etTenNhanVien.getText().toString());
                         nhanVien.setSdt(addBinding.etSDT.getText().toString());
                         nhanVien.setEmailnv(addBinding.etEmail.getText().toString());
@@ -163,7 +162,6 @@ public class Owner_NhanVienAddFragment extends Fragment {
                         // Tạo mã nhân viên mới bằng timestamp
                         long timestamp = System.currentTimeMillis();
                         String maNhanVien = "nv" + timestamp;
-                        nhanVien.setIdnv(maNhanVien);
 
                         // Lưu nhân viên vào Firebase với key
                         databaseReference = FirebaseDatabase.getInstance().getReference("nhanvien");

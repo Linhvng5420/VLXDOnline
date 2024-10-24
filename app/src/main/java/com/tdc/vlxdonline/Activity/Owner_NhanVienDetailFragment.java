@@ -46,6 +46,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
     private Spinner spinnerChucVu;
     private ArrayAdapter<String> chucVuAdapter;
     private ArrayList<String> listChucVuSpinner = new ArrayList<>();
+    private String luuLaiTenChucVu = "N/A";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
         return nhanvienDetailBinding.getRoot(); // Trả về toàn bộ giao diện của fragment
     }
 
-    //TODO: THỰC HIỆN KHAI BÁO, KHỞI TẠO VÀ XỬ LÝ LOGIC TẠI ĐÂY
+    //TODO: HÀM XỬ LÝ CHỨC NĂNG CỦA VIEW APP
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -137,7 +138,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             // Hiển thị thông tin ID nhân viên lên giao diện
             Toast.makeText(getContext(), "ID Nhân Viên: " + selectedIDNhanVien, Toast.LENGTH_SHORT).show();
             Log.d("l.e", "nhanIDNhanVienTuBundle: " + selectedIDNhanVien.toString());
-            nhanvienDetailBinding.tvIDNhanVien.setText("ID: " + selectedIDNhanVien.toUpperCase());
+            nhanvienDetailBinding.tvIDNhanVien.setText(selectedIDNhanVien);
 
             // Lấy thông tin nhân viên từ firebase thông qua ID
             databaseReference = FirebaseDatabase.getInstance().getReference("nhanvien");
@@ -183,9 +184,9 @@ public class Owner_NhanVienDetailFragment extends Fragment {
     private void docTenChucVuBangID(String chucVuId) {
         if (chucVuId == null || chucVuId.isEmpty()) {
             // Nếu chucVuId null hoặc rỗng, hiển thị thông báo lỗi
-            nhanvienDetailBinding.etChucVu.setText("Lỗi Database, Mất Field Chức Vụ");
-            Log.d("l.e", "Lỗi Database, Mất Field Chức Vụ.");
-            return; // Dừng hàm tại đây để tránh gọi Firebase với chucVuId null
+            nhanvienDetailBinding.etChucVu.setText("Lỗi Database [chucvu], Liên hệ Adminstrator.");
+            Log.d("l.e", "Lỗi Database không có Field Chức Vụ.");
+            return;
         }
 
         // Tìm chức vụ có ID trùng khớp trong danh sách
@@ -199,10 +200,11 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             }
 
             if (tenChucVu != null) {
+                luuLaiTenChucVu = tenChucVu;
                 nhanvienDetailBinding.etChucVu.setText(tenChucVu);
-                Log.d("l.e", "docDuLieuChucVu: " + chucVuId + " - " + tenChucVu);
+                Log.d("l.e", "docDuLieuChucVu: Lấy được chức vụ với ID = " + chucVuId + ", Tên = " + tenChucVu + ", luuLaiTenChucVu = " + luuLaiTenChucVu);
             } else {
-                nhanvienDetailBinding.etChucVu.setText("Không tìm thấy chức vụ");
+                nhanvienDetailBinding.etChucVu.setText("Chức vụ có Mã \"" + chucVuId + "\" không tồn tại trong CSDL.");
                 Log.d("l.e", "Không tìm thấy chức vụ với ID: " + chucVuId);
             }
         } else
@@ -268,6 +270,7 @@ public class Owner_NhanVienDetailFragment extends Fragment {
             nhanvienDetailBinding.etChucVu.setVisibility(View.INVISIBLE);
             nhanvienDetailBinding.spinnerChucVu.setVisibility(View.VISIBLE);
             nhanvienDetailBinding.tvChucVu.setVisibility(View.VISIBLE);
+            nhanvienDetailBinding.tvChucVu.setText("Chức Vụ");
 
             // Hiển thị nút Lưu Lại, Xóa, Hủy. Ẩn nút Chỉnh Sửa
             nhanvienDetailBinding.btnLuuLai.setVisibility(View.VISIBLE);
@@ -302,6 +305,8 @@ public class Owner_NhanVienDetailFragment extends Fragment {
                         nhanvienDetailBinding.btnXoa.setVisibility(View.INVISIBLE);
                         nhanvienDetailBinding.btnHuy.setVisibility(View.INVISIBLE);
                         nhanvienDetailBinding.btnChinhSua.setVisibility(View.VISIBLE);
+
+                        nhanIDNhanVienTuBundle();
                     })
                     .setNegativeButton("Không Hủy", null) // Hiển thị hộp thoại
                     .show();
