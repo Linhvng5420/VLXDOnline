@@ -16,7 +16,7 @@
 
         <!--Danh Sách Nhân Viên-->
         <SearchView
-            android:id="@+id/ownerNhanVien_search"
+            android:id="@+id/searchView"
             android:layout_width="0dp"
             android:layout_height="46dp"
             android:layout_marginStart="16dp"
@@ -43,7 +43,7 @@
             android:text="Thêm Nhân Viên"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ownerNhanVien_search" />
+            app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
         <TextView
             android:id="@+id/textView2"

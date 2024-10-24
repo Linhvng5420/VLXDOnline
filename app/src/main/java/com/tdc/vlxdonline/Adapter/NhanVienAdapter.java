@@ -127,6 +127,12 @@ public class NhanVienAdapter extends RecyclerView.Adapter<NhanVienAdapter.NhanVi
         }
 
     }
+
+    // Hàm này dùng để cập nhật danh sách khi thực hiện tìm kiếm
+    public void updateList(List<NhanVien> filteredList) {
+        this.nhanVienList = filteredList;
+        notifyDataSetChanged(); // Thông báo cho adapter biết dữ liệu đã thay đổi
+    }
 }
 
 

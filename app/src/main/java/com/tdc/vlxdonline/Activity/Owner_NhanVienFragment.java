@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +34,9 @@ public class Owner_NhanVienFragment extends Fragment {
     // FIREBASE: Khai báo DatabaseReference
     private DatabaseReference databaseReference;
 
+    // Lưu lại danh sách nhân viên ban đầu trước khi tìm kiếm
+    private List<NhanVien> originalList = new ArrayList<>();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,6 +47,7 @@ public class Owner_NhanVienFragment extends Fragment {
         return ownerNhanvienBinding.getRoot();
     }
 
+    // TODO: HÀM XỬ LÝ CHỨC NĂNG CỦA VIEW APP
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -62,6 +67,9 @@ public class Owner_NhanVienFragment extends Fragment {
 
         // nhấn nút thêm nhân viên
         nhanNutThemNhanVien();
+
+        // Thiết lập tìm kiếm
+        timKiemNhanVien();
     }
 
     private void getNhanVienData() {
@@ -84,7 +92,7 @@ public class Owner_NhanVienFragment extends Fragment {
 
                         // Thêm nhân viên vào danh sách
                         nhanVienAdapter.getNhanVienList().add(nhanVien);
-//                        Log.d("l.e", " " + nhanVien.toString());
+                        originalList.add(nhanVien); // Lưu vào danh sách gốc
                     }
                 }
 
@@ -132,6 +140,43 @@ public class Owner_NhanVienFragment extends Fragment {
                         .commit();
             }
         });
+    }
+
+    private void timKiemNhanVien() {
+        ownerNhanvienBinding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Xử lý việc tìm kiếm ngay khi người dùng nhập từ khóa, không cần đợi submit.
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Kiểm tra nếu từ khóa rỗng, trả lại danh sách ban đầu
+                if (newText.isEmpty()) {
+                    nhanVienAdapter.updateList(new ArrayList<>(originalList)); // Cập nhật lại danh sách ban đầu
+                } else {
+                    // Gọi hàm filter để tìm kiếm nhân viên
+                    filterNhanVien(newText);
+                }
+                return true;
+            }
+        });
+    }
+
+    private void filterNhanVien(String query) {
+        List<NhanVien> filteredList = new ArrayList<>();
+
+        for (NhanVien nhanVien : originalList) {
+            // Kiểm tra nếu tên hoặc ID của nhân viên chứa từ khóa tìm kiếm (không phân biệt chữ hoa/chữ thường)
+            if (nhanVien.getTennv().toLowerCase().contains(query.toLowerCase()) ||
+                    nhanVien.getIdnv().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(nhanVien);
+            }
+        }
+
+        // Cập nhật danh sách đã lọc vào adapter
+        nhanVienAdapter.updateList(filteredList);
     }
 
     @Override
