@@ -8,16 +8,15 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="5dp"
         android:backgroundTint="@color/cardview_light_background"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="12dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#01FA0C"
             android:orientation="horizontal">
 
             <TextView
@@ -27,8 +26,10 @@
                 android:layout_weight="1"
                 android:autoSizeMaxTextSize="20sp"
                 android:autoSizeTextType="uniform"
+                android:background="#64DD17"
                 android:gravity="center|start"
-                android:paddingStart="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="5dp"
                 android:text="ID"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -37,28 +38,33 @@
                 android:id="@+id/tvTenNV"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:autoSizeMaxTextSize="20sp"
                 android:autoSizeTextType="uniform"
+                android:background="#00C853"
                 android:gravity="center|start"
-                android:paddingStart="10dp"
-                android:text="Name"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="Tên Nhân Viên"
                 android:textAlignment="textStart"
-                android:textColor="#000" />
+                android:textColor="#000"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvChucVu"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:autoSizeMaxTextSize="20sp"
                 android:autoSizeTextType="uniform"
+                android:background="#64DD17"
                 android:gravity="center|start"
-                android:paddingStart="10dp"
-                android:text="Position"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="Chức Vụ"
                 android:textAlignment="textStart"
                 android:textColor="#000"
-                android:textSize="20sp" />
+                android:textStyle="bold" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
