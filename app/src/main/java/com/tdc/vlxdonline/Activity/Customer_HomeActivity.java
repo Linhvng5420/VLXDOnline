@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,12 +21,16 @@ public class Customer_HomeActivity extends AppCompatActivity {
     // Binding
     ActivityCustomerHomeBinding customerHomeBinding;
     private String currentTag = null;
+    public static KhachHang info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         customerHomeBinding = ActivityCustomerHomeBinding.inflate(getLayoutInflater());
         setContentView(customerHomeBinding.getRoot());
+
+        String email = getIntent().getStringExtra("email");
+        Toast.makeText(this, email, Toast.LENGTH_SHORT).show();
 
 		// Bắt sự kiện
         ReplaceFragment(new CustomerHomeFragment());

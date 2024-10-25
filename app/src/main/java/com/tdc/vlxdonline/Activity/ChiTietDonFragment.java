@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,11 +47,24 @@ public class ChiTietDonFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         KhoiTao();
-        // Xac nhan khach hang da thanh toan
+
+        // Adapter va Event chi tiet don
+        adapter = new ChiTietDonHangAdapter(getActivity(), dataChiTietDon);
+        adapter.setOnChiTietDonClick(new ChiTietDonHangAdapter.OnChiTietDonClick() {
+            @Override
+            public void onItemClick(int position) {
+                ((Customer_HomeActivity) getActivity()).ReplaceFragment(new ProdDetailCustomerFragment(dataChiTietDon.get(position).getIdSanPham()));
+            }
+        });
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        binding.rcChiTietDon.setLayoutManager(linearLayoutManager);
+        binding.rcChiTietDon.setAdapter(adapter);
+
         binding.btnTrangThaiTt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // Xac nhan khach hang da thanh toan
             }
         });
         // Bat su kien nut Trang Thai Van Chuyen (Nhieu loai su kien, dua vao doi tuong dang dung)
@@ -62,10 +76,13 @@ public class ChiTietDonFragment extends Fragment {
 
 //                Update điều kiện typeUser = 2 thành typeEmployee = 1 khi có nhân viên giao hàng
                 if (LoginActivity.typeUser == 2 && trangThaiVc == 1) {
+                    // Chuyển sang trạng thái đang giao hàng
 
                 } else if (LoginActivity.typeUser == 2 && trangThaiVc == 2) {
+                    // Chuyển sang trạng thái chờ nhận hàng
 
                 } else if (LoginActivity.typeUser == 1) {
+                    // Chuyển sang trạng thái hoàn tất giao hàng
 
                 }
             }
@@ -79,20 +96,12 @@ public class ChiTietDonFragment extends Fragment {
         binding.btnTrangThai.setEnabled(false);
         binding.btnTrangThaiTt.setEnabled(false);
         binding.btnTrangThaiTt.setVisibility(View.GONE);
+        binding.tvTongTien.setText(getChuoiTong());
 
-        StringBuilder chuoi = new StringBuilder(donHang.getTongTien());
-        if (chuoi.length() > 3) {
-            int dem = 0;
-            int doDai = chuoi.length() - 1;
-            for (int i = doDai; i > 0; i--) {
-                dem = dem + 1;
-                if (dem == 3) {
-                    chuoi.insert(i, '.');
-                    dem = 0;
-                }
-            }
-        }
-        binding.tvTongTien.setText(chuoi);
+        // Danh Sach Chi Tiet Don
+        dataChiTietDon.clear();
+        // Doc data o day
+        if (adapter != null) adapter.notifyDataSetChanged();
 
         int trangThaiVc = Integer.parseInt(donHang.getTrangThai());
         int trangThaiTt = Integer.parseInt(donHang.getTrangThaiTT());
@@ -132,7 +141,22 @@ public class ChiTietDonFragment extends Fragment {
             }
         }
 
+    }
 
+    private StringBuilder getChuoiTong(){
+        StringBuilder chuoi = new StringBuilder(donHang.getTongTien());
+        if (chuoi.length() > 3) {
+            int dem = 0;
+            int doDai = chuoi.length() - 1;
+            for (int i = doDai; i > 0; i--) {
+                dem = dem + 1;
+                if (dem == 3) {
+                    chuoi.insert(i, '.');
+                    dem = 0;
+                }
+            }
+        }
+        return chuoi;
     }
 
     @Override

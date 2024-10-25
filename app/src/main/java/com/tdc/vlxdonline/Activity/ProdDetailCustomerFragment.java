@@ -38,6 +38,9 @@ public class ProdDetailCustomerFragment extends Fragment {
     public ProdDetailCustomerFragment(Products product) {
         this.product = product;
     }
+    public ProdDetailCustomerFragment(String idProduct) {
+
+    }
 
     private void setUpDisplay() {
         Glide.with(getActivity()).load(product.getAnh()).into(binding.ivAnhChinh);
@@ -47,6 +50,10 @@ public class ProdDetailCustomerFragment extends Fragment {
         binding.tvDaBanDetail.setText("Đã Bán: " + product.getDaBan());
         binding.tvDonViDetail.setText(product.getDonVi());
         binding.tvMoTaDetail.setText(product.getMoTa());
+
+        // Reset All Data
+        dataAnh.clear();
+        dataProds.clear();
 
         dataAnh.add("https://th.bing.com/th?id=OIF.0yfM4yF7hYIDB6%2bmwxU4GQ&w=172&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7");
         dataAnh.add("https://th.bing.com/th/id/OIF.lf4QHwb4DMz5wHZ84QYJmQ?w=183&h=183&c=7&r=0&o=5&dpr=1.3&pid=1.7");
@@ -59,7 +66,10 @@ public class ProdDetailCustomerFragment extends Fragment {
         dataProds.add(new Products("D", "D", "D", "1", "4", "https://th.bing.com/th?id=OIF.EGFQW6dgdgP%2fL6l2yvVChg&rs=1&pid=ImgDetMain", "400000", "3.5", "1", "1000", "580"));
 
         Glide.with(getActivity()).load(dataAnh.get(0)).into(binding.imgDetail);
-
+        if (imageAdapter != null) {
+            imageAdapter.notifyDataSetChanged();
+            productAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -92,7 +102,7 @@ public class ProdDetailCustomerFragment extends Fragment {
         binding.rcAnhSp.setLayoutManager(linearLayoutManager);
         binding.rcAnhSp.setAdapter(imageAdapter);
         // Adapter San Pham
-        productAdapter = new ProductAdapter(getActivity(), dataProds, View.GONE);
+        productAdapter = new ProductAdapter(getActivity(), dataProds, View.VISIBLE);
         productAdapter.setOnItemProductClickListener(new ProductAdapter.OnItemProductClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
@@ -102,7 +112,8 @@ public class ProdDetailCustomerFragment extends Fragment {
 
             @Override
             public void OnBtnBuyClick(View view, int position) {
-
+                setUpDisplay();
+                Toast.makeText(getActivity(), "Co Ton Tai", Toast.LENGTH_SHORT).show();
             }
         });
         binding.rcOfferProd.setLayoutManager(new GridLayoutManager(getActivity(), 2));
@@ -111,7 +122,7 @@ public class ProdDetailCustomerFragment extends Fragment {
         binding.btnDatHangNgay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ((Customer_HomeActivity) getActivity()).ReplaceFragment(new DatHangNgayFragment(product, Integer.parseInt(binding.edtSoLuong.getText().toString())));
             }
         });
         // Su Kien Tang Giam SL

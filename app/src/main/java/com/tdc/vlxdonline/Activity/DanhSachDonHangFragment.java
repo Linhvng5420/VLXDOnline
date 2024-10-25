@@ -25,7 +25,6 @@ public class DanhSachDonHangFragment extends Fragment {
 
     FragmentDanhSachDonHangBinding binding;
     ArrayList<DonHang> data = new ArrayList<>();
-    ArrayList<DonHang> tempData = new ArrayList<>();
     DonHangAdapter adapter;
     private int type;
     private String tuKhoa = "";
@@ -70,7 +69,7 @@ public class DanhSachDonHangFragment extends Fragment {
                 DonHang donHang = data.get(position);
                 if (Integer.parseInt(donHang.getPhiTraGop()) > 0) {
 
-                }else{
+                } else {
                     ((Customer_HomeActivity) getActivity()).ReplaceFragment(new ChiTietDonFragment(donHang));
                 }
             }
@@ -119,25 +118,41 @@ public class DanhSachDonHangFragment extends Fragment {
     }
 
     private void KhoiTao() {
-        if (tuKhoa.isEmpty()) {
-            if (trangThaiLoc == 0 || trangThaiLoc == 1 || trangThaiLoc == -1) {
-                if (LoginActivity.typeUser == 0) {
+        // Reset Data Don Hang
+        data.clear();
 
-                } else if (LoginActivity.typeUser == 1) {
+        if (!tuKhoa.isEmpty()) {
+        }
+        if (trangThaiLoc != -1){
+            if (trangThaiLoc == 0) {
 
-                } else if (LoginActivity.typeUser == 2 && LoginActivity.typeEmployee == 0) {
+            } else if (trangThaiLoc == 1) {
+                if (true) {
 
-                } else if (LoginActivity.typeUser == 2 && LoginActivity.typeEmployee == 1) {
-                    if (type == 0) {
+                } else if (false) {
 
-                    } else if (type == 1) {
-
-                    } else if (type == 2) {
-
-                    }
                 }
             }
         }
+
+        if (LoginActivity.typeUser == 0) {
+
+        } else if (LoginActivity.typeUser == 1) {
+
+        } else if (LoginActivity.typeEmployee == 0) {
+
+        } else if (LoginActivity.typeEmployee == 1) {
+            if (type == 0) {
+
+            } else if (type == 1) {
+
+            } else if (type == 2) {
+
+            }
+        }
+
+        if (adapter != null) adapter.notifyDataSetChanged();
+
     }
 
     @Override

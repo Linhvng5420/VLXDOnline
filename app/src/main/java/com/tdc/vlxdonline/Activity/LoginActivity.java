@@ -25,11 +25,10 @@ public class LoginActivity extends AppCompatActivity {
 
     ActivityLoginBinding binding;
     public static int typeUser, typeEmployee = -1;
-    public static String idUser = "";
+    String idUser = "";
     ArrayList<TypeUser> dataTypeUser = new ArrayList<>();
     ArrayList<Users> dataUsers = new ArrayList<>();
     ArrayAdapter adapter;
-    static String emailUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,19 +47,19 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean checkLg = Login();
                 if (checkLg) {
+                    Class c = null;
                     if (typeUser == 0) {
-                        Intent intent = new Intent(LoginActivity.this, Owner_HomeActivity.class);
-                        startActivity(intent);
+                        c = Owner_HomeActivity.class;
                     } else if (typeUser == 1) {
-                        Intent intent = new Intent(LoginActivity.this, Customer_HomeActivity.class);
-                        startActivity(intent);
+                        c = Customer_HomeActivity.class;
                     } else if (typeEmployee == 0) {
-                        Intent intent = new Intent(LoginActivity.this, Warehouse_HomeActivity.class);
-                        startActivity(intent);
+                        c = Warehouse_HomeActivity.class;
                     } else if (typeEmployee == 1) {
-                        Intent intent = new Intent(LoginActivity.this, Shipper_HomeActivity.class);
-                        startActivity(intent);
+                        c = Shipper_HomeActivity.class;
                     }
+                    Intent intent = new Intent(LoginActivity.this, c);
+                    intent.putExtra("email", idUser);
+                    startActivity(intent);
                 }else{
                     Toast.makeText(LoginActivity.this, "Sai Thông Tin Đăng Nhập!", Toast.LENGTH_SHORT).show();
                 }
@@ -111,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }else if (user.getEmail().equals(binding.edtEmailLg.getText().toString())
                     && user.getPass().equals(binding.edtPassLg.getText().toString())) {
-                emailUser = user.getEmail();
+                idUser = user.getEmail();
                 if (typeUser == 2) {
                     typeEmployee = 0;
                 }

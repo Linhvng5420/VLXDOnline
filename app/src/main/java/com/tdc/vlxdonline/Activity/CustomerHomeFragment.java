@@ -107,10 +107,30 @@ public class CustomerHomeFragment extends Fragment {
 
             }
         });
+        // Event Click Product
+        productAdapter = new ProductAdapter(getActivity(), dataProds, View.VISIBLE);
+        productAdapter.setOnItemProductClickListener(new ProductAdapter.OnItemProductClickListener() {
+            @Override
+            public void OnItemClick(View view, int position) {
+                Products product = dataProds.get(position);
+                ((Customer_HomeActivity) getActivity()).ReplaceFragment(new ProdDetailCustomerFragment(product));
+            }
+
+            @Override
+            public void OnBtnBuyClick(View view, int position) {
+                ((Customer_HomeActivity) getActivity()).ReplaceFragment(new DatHangNgayFragment(dataProds.get(position), 1));
+            }
+        });
+        binding.rcProdCustomerHome.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        binding.rcProdCustomerHome.setAdapter(productAdapter);
 
     }
 
     private void KhoiTao() {
+        // Reset All Data
+        dataLoc.clear();
+        dataSapXep.clear();
+        dataCategorys.clear();
 
         dataLoc.add("Lọc Theo");
         dataLoc.add("Số sao từ 1 - 3");
@@ -132,30 +152,20 @@ public class CustomerHomeFragment extends Fragment {
         dataCategorys.add(new Categorys("Cate 2", "2", "https://th.bing.com/th/id/OIF.lf4QHwb4DMz5wHZ84QYJmQ?w=183&h=183&c=7&r=0&o=5&dpr=1.3&pid=1.7"));
         dataCategorys.add(new Categorys("Cate 3", "3", "https://th.bing.com/th/id/OIP.UWORqopZEI954B5G-Z4sbgHaHQ?w=169&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"));
         dataCategorys.add(new Categorys("Cate 4", "4", "https://th.bing.com/th/id/OIP.BO1VNjeGOUGcGRWQNUVCZQHaHa?w=1024&h=1024&rs=1&pid=ImgDetMain"));
-        dataProds.add(new Products("A", "A", "A", "1", "1", "https://th.bing.com/th/id/OIP.UWORqopZEI954B5G-Z4sbgHaHQ?w=169&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7", "100000", "0.0", "1", "1000", "580"));
-        dataProds.add(new Products("B", "B", "B", "1", "2", "https://th.bing.com/th/id/OIP.BO1VNjeGOUGcGRWQNUVCZQHaHa?w=1024&h=1024&rs=1&pid=ImgDetMain", "200000", "4.0", "1", "1000", "580"));
-        dataProds.add(new Products("C", "C", "C", "1", "3", "https://th.bing.com/th/id/OIP.vyMrfzra1TPcklie3-GA9gHaH9?w=180&h=183&c=7&r=0&o=5&dpr=1.3&pid=1.7", "300000", "5.0", "1", "1000", "580"));
-        dataProds.add(new Products("D", "D", "D", "1", "4", "https://th.bing.com/th?id=OIF.EGFQW6dgdgP%2fL6l2yvVChg&rs=1&pid=ImgDetMain", "400000", "3.5", "1", "1000", "580"));
 
         setHienThiSanPham();
     }
 
     private void setHienThiSanPham() {
-        productAdapter = new ProductAdapter(getActivity(), dataProds, View.VISIBLE);
-        productAdapter.setOnItemProductClickListener(new ProductAdapter.OnItemProductClickListener() {
-            @Override
-            public void OnItemClick(View view, int position) {
-                Products product = dataProds.get(position);
-                ((Customer_HomeActivity) getActivity()).ReplaceFragment(new ProdDetailCustomerFragment(product));
-            }
 
-            @Override
-            public void OnBtnBuyClick(View view, int position) {
+        dataProds.clear();
+        dataProds.add(new Products("A", "A", "A", "1", "1", "https://th.bing.com/th/id/OIP.UWORqopZEI954B5G-Z4sbgHaHQ?w=169&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7", "100000", "0.0", "1", "1000", "580"));
+        dataProds.add(new Products("B", "B", "B", "1", "2", "https://th.bing.com/th/id/OIP.BO1VNjeGOUGcGRWQNUVCZQHaHa?w=1024&h=1024&rs=1&pid=ImgDetMain", "200000", "4.0", "1", "1000", "580"));
+        dataProds.add(new Products("C", "C", "C", "1", "3", "https://th.bing.com/th/id/OIP.vyMrfzra1TPcklie3-GA9gHaH9?w=180&h=183&c=7&r=0&o=5&dpr=1.3&pid=1.7", "300000", "5.0", "1", "1000", "580"));
+        dataProds.add(new Products("D", "D", "D", "1", "4", "https://th.bing.com/th?id=OIF.EGFQW6dgdgP%2fL6l2yvVChg&rs=1&pid=ImgDetMain", "400000", "3.5", "1", "1000", "580"));
 
-            }
-        });
-        binding.rcProdCustomerHome.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        binding.rcProdCustomerHome.setAdapter(productAdapter);
+        if (productAdapter != null) productAdapter.notifyDataSetChanged();
+
     }
 
     private void SapXepDanhSach(int type){
